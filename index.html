@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Lumina Chat — Premium AI Companion</title>
+ <!-- Modern Premium Typography -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="index.css?v=2.1.0">
+ <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>Core</text></svg>">
+</head>
+<body class="theme-cosmic">
+ 
+ <!-- Background Elements for Mesh Gradient -->
+ <div class="mesh-gradient bg-glow-1"></div>
+ <div class="mesh-gradient bg-glow-2"></div>
+ <div class="mesh-gradient bg-glow-3"></div>
+
+<!-- Floating restore button (visible when sidebar is hidden) -->
+<button id="sidebarRestoreBtn" onclick="toggleSidebar()" title="แสดง Sidebar">
+  <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white;"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+</button>
+
+ <div class="app-container">
+ 
+ <!-- SIDEBAR: Navigation, Personas, and Session History -->
+ <aside class="sidebar" id="appSidebar">
+ <div class="sidebar-header">
+ <div class="logo-wrapper" onclick="toggleSidebar()" title="ซ่อน/แสดง Sidebar" style="cursor:pointer;">
+ <div class="logo-orb"></div>
+ <span class="logo-text">Lumina<span class="logo-highlight">AI</span></span>
+ </div>
+ <button class="btn-icon sidebar-close-mobile" onclick="toggleSidebar()" aria-label="Close Sidebar">
+ <svg viewBox="0 0 24 24" class="svg-icon"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+ </button>
+ </div>
+
+ <!-- New Chat Button -->
+  <button class="btn btn-primary btn-new-chat" onclick="createNewChat()">
+  <svg viewBox="0 0 24 24" class="svg-icon btn-icon-svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+  <span>เเชทใหม่ (New Chat)</span>
+  </button>
+
+  <!-- Search Chat Input -->
+  <div style="padding: 0 12px; margin-bottom: 8px; margin-top: 8px;">
+    <div style="position: relative; display: flex; align-items: center;">
+      <svg viewBox="0 0 24 24" style="position: absolute; left: 8px; width: 12px; height: 12px; fill: var(--text-muted);"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="chatSearchInput" oninput="renderHistoryList()" placeholder="ค้นหาแชท..." style="width: 100%; padding: 8px 8px 8px 24px; font-size: var(--text-xs); background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 4px; color: var(--text-main); font-family: inherit; transition: all 0.2s;" />
+    </div>
+  </div>
+
+  <!-- Section: History -->
+  <div class="sidebar-section history-section flex-grow">
+  <h3 class="section-title">Recent Chats</h3>
+  <div class="chat-history-list" id="historyList">
+  <!-- Dynamic History Inserted Here -->
+  </div>
+  </div>
+
+  <!-- Section: User Vault (คลังผู้ใช้) -->
+  <div class="sidebar-section vault-sidebar-section" style="border-top: 4px solid rgba(255, 255, 255, 0.05); padding-top: 12px; margin-top: auto; display: flex; flex-direction: column; gap: 8px; max-height: 180px; margin-bottom: 12px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px;">
+      <h3 class="section-title" style="margin: 0; font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">คลังผู้ใช้ (Context Vault)</h3>
+      <button class="btn-icon" onclick="toggleVaultModal(true)" title="จัดการคลังผู้ใช้" style="padding: 4px; color: var(--accent-color); background: none; border: none; cursor: pointer;">
+        <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; fill: currentColor;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      </button>
+    </div>
+    <div id="sidebarVaultList" style="display: flex; flex-direction: column; gap: 4px; overflow-y: auto; max-height: 140px; padding: 4px;">
+      <div style="font-size: var(--text-xs); color: var(--text-muted); padding: 8px 4px; font-style: italic;">ไม่มีเอกสารในคลัง</div>
+    </div>
+  </div>
+
+ <!-- Sidebar Footer Settings -->
+ <div class="sidebar-footer">
+ <div class="settings-row">
+ <!-- Sound Toggle -->
+ <button class="btn-icon footer-btn" onclick="toggleSound()" id="soundToggle" title="Toggle Sound FX">
+ <svg viewBox="0 0 24 24" class="svg-icon" id="soundIcon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+ </button>
+
+ <!-- Theme Toggler Selector -->
+ <div class="theme-selector-wrapper">
+ <button class="btn-icon footer-btn theme-active-btn" onclick="openThemeMenu()" id="themeTrigger" title="Switch Theme">
+ <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+ </button>
+ <div class="theme-dropdown" id="themeDropdown">
+ <button class="theme-option" onclick="changeTheme('cosmic')">
+ <span class="theme-dot cosmic-dot"></span> Cosmic Glow
+ </button>
+ <button class="theme-option" onclick="changeTheme('emerald')">
+ <span class="theme-dot emerald-dot"></span> Midnight Emerald
+ </button>
+ <button class="theme-option" onclick="changeTheme('solar')">
+ <span class="theme-dot solar-dot"></span> Solar Dawn (Light)
+ </button>
+ </div>
+ </div>
+
+ <!-- Reset Application Data -->
+ <button class="btn-icon footer-btn" onclick="clearAppData()" title="Clear All History">
+ <svg viewBox="0 0 24 24" class="svg-icon"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+ </button>
+ </div>
+ </div>
+ </aside>
+
+ <!-- MAIN CONTAINER: Chat Area -->
+ <main class="chat-main">
+ <!-- Chat Header -->
+ <header class="chat-header">
+ <div class="header-left">
+ <button class="btn-icon sidebar-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+ <svg viewBox="0 0 24 24" class="svg-icon"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+ </button>
+ 
+ <div class="header-bot-info">
+ <h2 class="header-bot-name" id="activeBotName">Aria</h2>
+ <div class="header-status-badge">
+ <span class="status-badge-dot"></span>
+ <span class="status-badge-text" id="activeBotRole">Coding Expert</span>
+ </div>
+ </div>
+ </div>
+
+ <div class="header-right">
+ <button class="btn-icon header-action-btn" onclick="toggleRightPanel()" title="Toggle Playground Panel" id="rightPanelToggleBtn">
+ <svg viewBox="0 0 24 24" class="svg-icon"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+ </button>
+ </div>
+ </header>
+
+ <!-- Chat Message Area -->
+ <div class="chat-messages-container" id="chatContainer">
+ 
+ <!-- Welcome/Empty State Screen -->
+ <div class="empty-state" id="emptyState">
+ <div class="empty-sparkle-orb">*</div>
+ <h1 class="empty-title">Welcome, <span class="gradient-text" id="greetingName">Explorer</span>!</h1>
+ <p class="empty-subtitle">Select a companion on the left and ask anything. Experience real-time coding assistants, creative muses, or warm emotional guides.</p>
+ 
+ <div class="suggestions-grid" id="suggestionGrid">
+ <!-- Suggestion cards are injected dynamically based on selected Persona -->
+ </div>
+ </div>
+
+ <!-- Messages will appear here -->
+ <div class="messages-list" id="messagesList"></div>
+
+ <!-- Typing indicator -->
+ <div class="typing-indicator-wrapper hide" id="typingIndicator">
+ <div class="typing-bubble">
+ <div class="typing-bot-avatar" id="typingBotAvatar">AI</div>
+ <div class="typing-dots">
+ <span class="typing-dot-item"></span>
+ <span class="typing-dot-item"></span>
+ <span class="typing-dot-item"></span>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Chat Bottom Input Bar -->
+ <footer class="chat-footer">
+ <div class="input-glass-container">
+ <!-- Vault accessible via Sidebar button -->
+
+ <!-- Inline Chat File Attach Button (📎 paperclip) -->
+ <button class="btn-icon input-action-btn chat-attach-btn" onclick="triggerChatFileInput()" title="Attach file to this message (PDF, TXT, images, code)" id="chatAttachBtn">
+  <svg viewBox="0 0 24 24" class="svg-icon"><path d="M21.586 10.461l-10.05 10.075c-1.95 1.949-5.122 1.949-7.071 0-1.95-1.95-1.95-5.122 0-7.072L13.526 4.43c1.171-1.171 3.073-1.171 4.243 0 1.17 1.171 1.17 3.073 0 4.242l-8.507 8.533c-.39.39-1.024.39-1.414 0-.391-.39-.391-1.023 0-1.414l7.093-7.118-1.414-1.414-7.093 7.118c-1.172 1.172-1.172 3.073 0 4.243 1.17 1.17 3.073 1.17 4.242 0l8.507-8.533c1.95-1.95 1.95-5.122 0-7.072-1.95-1.95-5.122-1.95-7.072 0L4.929 12.925c-2.731 2.73-2.731 7.17 0 9.899 2.731 2.731 7.17 2.731 9.9 0l10.05-10.075-1.293-1.288z"/></svg>
+ </button>
+
+ <!-- Hidden file input for direct chat attachment -->
+ <input type="file" id="chatInlineFileInput" style="display:none;" onchange="handleChatInlineFile(event)" multiple accept=".txt,.md,.js,.ts,.py,.html,.css,.json,.csv,.xml,.yaml,.yml,.log,.pdf,.png,.jpg,.jpeg,.gif,.webp,.svg">
+ 
+ <!-- Deep Search Toggle Button -->
+ <button class="btn-icon input-action-btn search-toggle-btn" onclick="toggleDeepSearch()" id="deepSearchToggleBtn" title="Deep Semantic Search (Toggle Live Web Crawl)">
+ <svg viewBox="0 0 24 24" class="svg-icon"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+ </button>
+ 
+ <!-- AI Model Selector -->
+ <div class="model-select-wrapper">
+  <button class="btn-model-select" onclick="toggleModelDropdown(event)" id="modelSelectTrigger" title="Select AI Model">
+  Core <span id="activeModelLabel">Archer 1.0</span> <span class="arrow-down">▾</span>
+  </button>
+  <div class="model-dropdown-menu" id="modelDropdownMenu">
+  <button class="model-dropdown-option active" onclick="selectAIModel('archer', 'Archer 1.0', 'Core', event)">
+  <span class="opt-icon"><svg viewBox="0 0 24 24" class="opt-svg-icon"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="2" x2="12" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="19" x2="12" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="12" x2="5" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="19" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+ <div class="opt-meta">
+ <span class="opt-name">Archer 1.0</span>
+ <span class="opt-desc">Logic, coding & strict math</span>
+ </div>
+ </button>
+ <button class="model-dropdown-option" onclick="selectAIModel('azure', 'Azure Lite', 'Fast', event)">
+ <span class="opt-icon"><svg viewBox="0 0 24 24" class="opt-svg-icon"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+ <div class="opt-meta">
+ <span class="opt-name">Azure Lite</span>
+ <span class="opt-desc">Ultra-fast light utility</span>
+ </div>
+ </button>
+ <button class="model-dropdown-option" onclick="selectAIModel('trami', 'Trami Max', 'Max', event)">
+ <span class="opt-icon"><svg viewBox="0 0 24 24" class="opt-svg-icon"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+ <div class="opt-meta">
+ <span class="opt-name">Trami Max</span>
+ <span class="opt-desc">Creative synthesis & writing</span>
+ </div>
+ </button>
+   <!-- ── Think Mode Toggle ─────────────────── -->
+   <div class="model-dropdown-divider"></div>
+   <button class="model-dropdown-option think-mode-option" id="thinkModeBtn" onclick="toggleThinkMode(event)" title="เปิด/ปิด Think Mode: AI แสดง reasoning จริงแบบ real-time">
+    <span class="opt-icon"><svg viewBox="0 0 24 24" class="opt-svg-icon"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z"/><path d="M12 2C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26C17.81 13.47 19 11.38 19 9c0-3.86-3.14-7-7-7z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+    <div class="opt-meta">
+     <span class="opt-name">Think Mode</span>
+     <span class="opt-desc" id="thinkModeDesc">Deep reasoning for complex tasks</span>
+    </div>
+    <span class="think-mode-badge" id="thinkModeBadge">OFF</span>
+   </button>
+   <button class="model-dropdown-option think-mode-option" id="fileAccessBtn" onclick="toggleFileAccess(event)" title="AI เข้าถึงไฟล์บน server ได้">
+    <span class="opt-icon"><svg viewBox="0 0 24 24" class="opt-svg-icon"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+    <div class="opt-meta">
+     <span class="opt-name">File Access</span>
+     <span class="opt-desc" id="fileAccessDesc">AI อ่าน/เขียนไฟล์บน server</span>
+    </div>
+    <span class="think-mode-badge" id="fileAccessBadge">OFF</span>
+   </button>
+  </div>
+ </div>
+
+ <!-- Dynamic Context Gauge Chip inside Input -->
+ <div class="context-gauge-chip hide" id="contextGaugeChip" onclick="toggleVaultModal(true)" title="View Vault Memory">
+ <span class="gauge-chip-dot"></span>
+ <span id="gaugeChipText">0 Tokens</span>
+ </div>
+
+ 
+ <!-- Inline Attached Files Preview Strip -->
+ <div class="chat-inline-files" id="chatInlineFiles" style="display:none;"></div>
+
+ <!-- Text Area (Auto-growing) -->
+ <textarea class="chat-textarea" id="chatInput" placeholder="Type your message or attach files with 📎..." rows="1" oninput="autoGrowTextarea(this)" onkeydown="handleInputKeydown(event)"></textarea>
+ 
+ <!-- Send Button -->
+ <button class="btn-send" onclick="sendMessage()" id="sendBtn" title="Send Message">
+ <svg viewBox="0 0 24 24" class="svg-icon send-svg"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+ </button>
+ </div>
+ <div class="footer-terms">Lumina AI can make mistakes. Verify important information.</div>
+ </footer>
+ </main>
+
+ <!-- SANDBOX PANEL: Live Code Preview & Editor -->
+ <aside class="sandbox-panel hide" id="sandboxPanel">
+ <div class="sandbox-header">
+ <div class="sandbox-title-block">
+ <span class="sandbox-icon">️</span>
+ <div class="sandbox-header-meta">
+ <h4>Lumina Sandbox</h4>
+ <span class="profile-level-badge" id="sandboxAppTitle" style="color: var(--accent-color);">Live Web Preview</span>
+ </div>
+ </div>
+ <div class="sandbox-actions">
+ <!-- Hide Tabs Toggle Button -->
+ <button class="btn-icon footer-btn" id="btnHideTabs" onclick="toggleSandboxTabs()" title="Hide Tabs" style="margin-right:4px;transition:transform 0.25s ease;">
+   <svg viewBox="0 0 24 24" class="svg-icon"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+ </button>
+ <!-- Tab Buttons (toggled by hide button) -->
+ <div id="sandboxTabActions" style="display:flex;align-items:center;gap:4px;overflow:hidden;transition:all 0.25s ease;">
+ <button class="btn-sandbox-tab active" id="btn-tab-preview" onclick="switchSandboxTab('preview')">Preview</button>
+ <button class="btn-sandbox-tab" id="btn-tab-code" onclick="switchSandboxTab('code')">Code</button>
+ <button class="btn-sandbox-tab" id="btn-tab-studio" onclick="switchSandboxTab('studio')">Studio</button>
+ <button class="btn-sandbox-tab" id="btn-tab-pipeline" onclick="switchSandboxTab('pipeline')">AI Agents</button>
+ </div>
+ <button class="btn-icon sandbox-close-btn" onclick="toggleSandbox(false)" title="Close Sandbox">
+ <svg viewBox="0 0 24 24" class="svg-icon"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+ </button>
+ </div>
+ </div>
+ <div class="sandbox-body">
+ <!-- Preview Tab Content -->
+ <div class="sandbox-tab-content" id="sandbox-content-preview">
+ <iframe id="sandboxIframe" sandbox="allow-scripts allow-modals" title="Sandbox Output"></iframe>
+ </div>
+ <!-- Code Tab Content -->
+ <div class="sandbox-tab-content hide" id="sandbox-content-code">
+ <div class="code-editor-container">
+ <!-- Left pane: code view -->
+ <div class="code-view-block">
+ <label class="studio-label">Code Sandbox Source Code</label>
+ <pre class="sandbox-code-pre"><code id="sandboxCodeDisplay"></code></pre>
+ </div>
+ 
+ <!-- Right pane: AI Code Refiner -->
+ <div class="code-refiner-block">
+ <label class="studio-label">AI Lumina Code Refiner (AI Assistant)</label>
+ <div class="settings-card flex-column" style="gap: 12px; display: flex; flex-direction: column; padding: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md);">
+ <p style="font-size: var(--text-xs); color: var(--text-muted); line-height: 1.4; margin: 0;">Specify edits or enhancements you want to apply to the code on the left. The supplementary AI agent will refactor it and reload the preview instantly.</p>
+ 
+ <textarea id="sandboxAiInstruction" placeholder="Describe edits... e.g. 'Change theme to neon emerald', 'Add a Lap list to stopwatch', 'Make it responsive'" style="width: 100%; height: 80px; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); border-radius: var(--border-radius-sm); padding: 12px; color: var(--text-main); font-family: var(--font-ui); font-size: var(--text-sm); resize: none; outline: none;"></textarea>
+ 
+ <button class="btn-studio-generate animate-pulse" id="btnRefineCode" onclick="refineSandboxCodeWithAi()" style="padding: 12px 0; font-size: var(--text-sm); margin-top: 8px;">
+ <span>Configure Edit Code with AI</span>
+ </button>
+ 
+ <!-- Refiner status indicator -->
+ <div id="refinerStatusArea" class="hide" style="font-size: var(--text-xs); color: var(--accent-color); font-weight: 700; display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: var(--border-radius-sm); background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.2);">
+ <div style="display: flex; align-items: center; gap: 8px;">
+ <span class="loading-dots" style="display: inline-block; font-size: var(--text-sm);">Fast</span>
+ <span id="refinerStatusText">Analyzing syntax structure...</span>
+ </div>
+ </div>
+ </div>
+ 
+ <!-- Refined Actions -->
+ <div class="settings-card flex-column" style="gap: 8px; display: flex; flex-direction: column; padding: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md);">
+ <span style="font-size: var(--text-xs); font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Export Actions</span>
+ <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+ <button class="btn-img-action" onclick="downloadRefinedCode()" style="padding: 12px 0; font-size: var(--text-xs);">Download Download HTML</button>
+ <button class="btn-img-action" onclick="sendRefinedCodeBackToChat()" style="padding: 12px 0; font-size: var(--text-xs);">Chat Send back to Chat</button>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- Image Studio Tab Content -->
+ <div class="sandbox-tab-content hide" id="sandbox-content-studio">
+ <div class="studio-container">
+ <div class="studio-controls-panel">
+ <!-- Model Selector Group -->
+ <div class="studio-group">
+ <label class="studio-label">AI Image Model Collection</label>
+ <div class="studio-model-grid">
+ <div class="studio-model-card active" data-model="flux" onclick="selectStudioModel('flux')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">Flux</span>
+ <span class="studio-model-name">Flux Pro</span>
+ </div>
+ <p class="studio-model-desc">Superior adherence & anatomy</p>
+ </div>
+ <div class="studio-model-card" data-model="flux-anime" onclick="selectStudioModel('flux-anime')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">Anime</span>
+ <span class="studio-model-name">Flux Anime</span>
+ </div>
+ <p class="studio-model-desc">Anime & manga illustration</p>
+ </div>
+ <div class="studio-model-card" data-model="flux-realism" onclick="selectStudioModel('flux-realism')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">Realism</span>
+ <span class="studio-model-name">Flux Realism</span>
+ </div>
+ <p class="studio-model-desc">Photorealistic lighting & flares</p>
+ </div>
+ <div class="studio-model-card" data-model="flux-3d" onclick="selectStudioModel('flux-3d')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">Pixar</span>
+ <span class="studio-model-name">Pixar 3D</span>
+ </div>
+ <p class="studio-model-desc">Pixar & Disney movie style</p>
+ </div>
+ <div class="studio-model-card" data-model="any-dark" onclick="selectStudioModel('any-dark')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">Dream</span>
+ <span class="studio-model-name">Dark Dream</span>
+ </div>
+ <p class="studio-model-desc">Cyberpunk & dark fantasy</p>
+ </div>
+ <div class="studio-model-card" data-model="turbo" onclick="selectStudioModel('turbo')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">Fast</span>
+ <span class="studio-model-name">SDXL Turbo</span>
+ </div>
+ <p class="studio-model-desc">Fast general generative engine</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Prompt Box -->
+ <div class="studio-group">
+ <div class="studio-label-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+ <label class="studio-label" style="margin-bottom: 0;">Prompt Describe Your Vision</label>
+ <button class="btn-enhance-prompt" onclick="enhanceStudioPrompt()">Auto Magic Enhance</button>
+ </div>
+ <textarea class="studio-textarea" id="studioPromptInput" placeholder="A futuristic majestic cybernetic owl, cinematic neon backlighting, high detail, masterpiece..."></textarea>
+ </div>
+
+ <!-- Aspect Ratio & Style Presets -->
+ <div class="studio-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+ <div class="studio-half-group">
+ <label class="studio-label">Scale Aspect Ratio</label>
+ <div class="studio-aspect-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+ <button class="studio-aspect-btn active" data-ratio="1:1" onclick="selectStudioRatio('1:1')">1:1</button>
+ <button class="studio-aspect-btn" data-ratio="16:9" onclick="selectStudioRatio('16:9')">16:9</button>
+ <button class="studio-aspect-btn" data-ratio="9:16" onclick="selectStudioRatio('9:16')">9:16</button>
+ <button class="studio-aspect-btn" data-ratio="4:3" onclick="selectStudioRatio('4:3')">4:3</button>
+ </div>
+ </div>
+ <div class="studio-half-group">
+ <label class="studio-label" for="studioStyleSelect">Studio Style Preset</label>
+ <select class="studio-select" id="studioStyleSelect" style="width: 100%;" onchange="applyStudioStyle()">
+ <option value="">None (Raw Prompt)</option>
+ <option value="cinematic">Realism Cinematic Photographic</option>
+ <option value="watercolor">Studio Acrylic Watercolor</option>
+ <option value="cyberpunk"> Cyberpunk Synthwave</option>
+ <option value="fantasy">Max Mythical Dark Fantasy</option>
+ <option value="vector">Scale Minimalist Vector Logo</option>
+ <option value="pencil">️ Hand-drawn Pencil Sketch</option>
+ <option value="isometric"> Isometric 3D Voxel</option>
+ </select>
+ </div>
+ </div>
+
+ <!-- Spark Button -->
+ <button class="btn-studio-generate animate-pulse" id="btnStudioGenerate" onclick="generateStudioImage()">
+ <span>Studio Spark Image Generation</span>
+ </button>
+ </div>
+
+ <!-- Preview / History Panel -->
+ <div class="studio-preview-panel">
+ <div class="studio-render-container" id="studioRenderArea">
+ <div class="studio-welcome">
+ <div class="studio-spark-icon">*</div>
+ <h4>Creative Playground</h4>
+ <p>Specify prompts, choose free AI models on the left, and let Lumina's neural rendering engine synthesize beautiful art live.</p>
+ </div>
+ </div>
+ 
+ <!-- History Gallery -->
+ <div class="studio-history-section">
+ <span class="studio-label" style="display: block; margin-bottom: 8px;"> Generation History</span>
+ <div class="studio-history-grid" id="studioHistoryGrid">
+ <!-- Injected dynamically -->
+ <div class="studio-empty-history" style="font-size: var(--text-xs); color: var(--text-muted); text-align: center; padding: 16px 0; width: 100%;">
+ No images generated in this session.
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- Multi-Agent Pipeline Tab Content -->
+ <div class="sandbox-tab-content hide" id="sandbox-content-pipeline">
+ <div class="pipeline-container" style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; padding: 20px; height: 100%; overflow-y: auto;">
+ <!-- Left Panel: Controls & Configurations -->
+ <div class="pipeline-controls-panel" style="display: flex; flex-direction: column; gap: 16px;">
+ <!-- StateGraph Presets -->
+ <div class="studio-group">
+ <label class="studio-label">AI Select Orchestration Framework</label>
+ <div class="studio-model-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+ <div class="studio-model-card active" id="preset-basic" onclick="selectPipelinePreset('basic')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">[Basic]</span>
+ <span class="studio-model-name">10-Agent Basic Pipeline</span>
+ </div>
+ <p class="studio-model-desc">Standard sequential developer pipeline (CrewAI)</p>
+ </div>
+ <div class="studio-model-card" id="preset-debate" onclick="selectPipelinePreset('debate')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">[Debate]</span>
+ <span class="studio-model-name">10-Agent Debate Arena</span>
+ </div>
+ <p class="studio-model-desc">AI agents debate & review code (Microsoft AutoGen)</p>
+ </div>
+ <div class="studio-model-card" id="preset-reflection" onclick="selectPipelinePreset('reflection')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">[Reflection]</span>
+ <span class="studio-model-name">11-Agent Reflection Node</span>
+ </div>
+ <p class="studio-model-desc">Dual VETO memory loop loops (LangGraph Boilerplate)</p>
+ </div>
+ <div class="studio-model-card" id="preset-mythos" onclick="selectPipelinePreset('mythos')">
+ <div class="studio-model-header">
+ <span class="studio-model-icon">Core</span>
+ <span class="studio-model-name">Mythos High Logic</span>
+ </div>
+ <p class="studio-model-desc">LoRA Fine-tuning simulator (Qwen 2.5 Coder SFT)</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Goal Description -->
+ <div class="studio-group">
+ <label class="studio-label" for="pipelineGoalInput">Prompt Define Pipeline Task / Fine-Tuning Target</label>
+ <textarea class="studio-textarea" id="pipelineGoalInput" placeholder="Enter target... e.g. 'Build an optimized 3D particle landscape', 'Train a reverse-engineering assembly parser'" style="height: 60px;"></textarea>
+ </div>
+
+ <!-- Hyperparameters Panel (Only displayed for Mythos mode) -->
+ <div class="settings-card flex-column hide" id="hyperparamsCard" style="gap: 12px; display: flex; flex-direction: column; padding: 16px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md);">
+ <span class="studio-label" style="margin-bottom: 4px;">Configure LoRA Fine-Tuning Hyperparameters</span>
+ <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: var(--text-xs);">
+ <div style="display: flex; flex-direction: column; gap: 4px;">
+ <span style="color: var(--text-muted); font-weight: 700;">Learning Rate</span>
+ <select class="studio-select" id="paramLR" onchange="updateHyperparameter('LR', this.value)" style="padding: 4px 8px; font-size: var(--text-xs);">
+ <option value="2e-4">2e-4 (Fast SFT)</option>
+ <option value="1e-4">1e-4 (Stable)</option>
+ <option value="5e-5">5e-5 (Precision)</option>
+ </select>
+ </div>
+ <div style="display: flex; flex-direction: column; gap: 4px;">
+ <span style="color: var(--text-muted); font-weight: 700;">Training Epochs</span>
+ <select class="studio-select" id="paramEpochs" onchange="updateHyperparameter('Epochs', this.value)" style="padding: 4px 8px; font-size: var(--text-xs);">
+ <option value="3">3 Epochs (Standard)</option>
+ <option value="1">1 Epoch (Quick)</option>
+ <option value="5">5 Epochs (Deep Fine-Tune)</option>
+ </select>
+ </div>
+ <div style="display: flex; flex-direction: column; gap: 4px;">
+ <span style="color: var(--text-muted); font-weight: 700;">LoRA Rank (r)</span>
+ <select class="studio-select" id="paramLoRA" onchange="updateHyperparameter('LoRA', this.value)" style="padding: 4px 8px; font-size: var(--text-xs);">
+ <option value="16">r = 16 (Standard)</option>
+ <option value="8">r = 8 (Lightweight)</option>
+ <option value="32">r = 32 (High Capacity)</option>
+ </select>
+ </div>
+ <div style="display: flex; flex-direction: column; gap: 4px;">
+ <span style="color: var(--text-muted); font-weight: 700;">Base Model Target</span>
+ <select class="studio-select" style="padding: 4px 8px; font-size: var(--text-xs);">
+ <option>Qwen 2.5 Coder 7B</option>
+ <option>Llama 3 8B Instruct</option>
+ <option>Mistral Nemo 12B</option>
+ </select>
+ </div>
+ </div>
+ </div>
+
+ <!-- Start Button -->
+ <button class="btn-studio-generate animate-pulse" id="btnStartPipeline" onclick="startPipelineOrTraining()" style="padding: 16px 0; font-size: var(--text-sm);">
+ <span> Begin Agent Pipeline / SFT Fine-Tuning</span>
+ </button>
+ </div>
+
+ <!-- Right Panel: Simulation Canvas & Graphs -->
+ <div class="pipeline-canvas-panel" style="display: flex; flex-direction: column; gap: 16px; height: 100%; overflow: hidden;">
+ <!-- Node Graph Panel -->
+ <div class="settings-card" id="nodeGraphContainer" style="padding: 16px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); flex-grow: 1; display: flex; flex-direction: column; gap: 8px; overflow: hidden; min-height: 250px;">
+ <span class="studio-label" style="display: block;">[Reflection] Visual StateGraph Orchestrator</span>
+ <div class="pipeline-node-grid" id="pipelineNodeGraph">
+ <!-- Ingestor -->
+ <div class="agent-node" id="node-0" title="Agent 1: The Ingestor">
+ <div class="node-icon">Ingest</div>
+ <span class="node-name">Ingest</span>
+ </div>
+ <!-- Intent Analyst -->
+ <div class="agent-node" id="node-1" title="Agent 2: The Intent Analyst">
+ <div class="node-icon">Intent</div>
+ <span class="node-name">Intent</span>
+ </div>
+ <!-- Compliance -->
+ <div class="agent-node" id="node-2" title="Agent 3: The Compliance Checker">
+ <div class="node-icon">Rule</div>
+ <span class="node-name">Rule</span>
+ </div>
+ <!-- Brainstormer -->
+ <div class="agent-node" id="node-3" title="Agent 4: The Brainstormer">
+ <div class="node-icon">Storm</div>
+ <span class="node-name">Storm</span>
+ </div>
+ <!-- Proposer -->
+ <div class="agent-node" id="node-4" title="Agent 5: The Proposer (Executor)">
+ <div class="node-icon">Configure</div>
+ <span class="node-name">Propose</span>
+ </div>
+ <!-- Memory Keeper -->
+ <div class="agent-node" id="node-5" title="Agent 6: The Memory Constraint Keeper">
+ <div class="node-icon">Memory</div>
+ <span class="node-name">Mem</span>
+ </div>
+ <!-- User Proxy / Devil's Advocate -->
+ <div class="agent-node" id="node-6" title="Agent 7: User Proxy (VETO / Devil's Advocate)">
+ <div class="node-icon">[Debate]</div>
+ <span class="node-name">Proxy</span>
+ </div>
+ <!-- QA Tester -->
+ <div class="agent-node" id="node-7" title="Agent 8: QA / Bug Tester">
+ <div class="node-icon">QA</div>
+ <span class="node-name">QA</span>
+ </div>
+ <!-- Formatter -->
+ <div class="agent-node" id="node-8" title="Agent 9: The Formatter">
+ <div class="node-icon">Success</div>
+ <span class="node-name">Format</span>
+ </div>
+ <!-- Security -->
+ <div class="agent-node" id="node-9" title="Agent 10: Final Security Guard">
+ <div class="node-icon">Security</div>
+ <span class="node-name">Sec</span>
+ </div>
+ <!-- Loop Controller -->
+ <div class="agent-node" id="node-10" title="Agent 11: Loop Controller & Supreme Judge">
+ <div class="node-icon">Judge</div>
+ <span class="node-name">Judge</span>
+ </div>
+ </div>
+ </div>
+
+ <!-- SFT Training Loss Card (Only displayed for Mythos mode) -->
+ <div class="settings-card hide" id="lossGraphCard" style="padding: 16px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); display: flex; flex-direction: column; gap: 8px;">
+ <span class="studio-label" style="display: block;"> Mythos Fine-Tuning Loss Convergence</span>
+ <div style="display: flex; gap: 8px; justify-content: space-between; align-items: flex-end; height: 80px; padding: 8px 0; border-bottom: 4px solid rgba(255,255,255,0.08); position: relative;">
+ <div class="loss-graph-bar" id="loss-bar-0" style="width: 25px; height: 100%; background: linear-gradient(0deg, var(--accent-color), #ec4899); border-radius: 3px; position: relative;" title="Init loss: 1.45"></div>
+ <div class="loss-graph-bar" id="loss-bar-1" style="width: 25px; height: 75%; background: linear-gradient(0deg, var(--accent-color), #ec4899); border-radius: 3px; position: relative;" title="Epoch 1 loss: 0.85"></div>
+ <div class="loss-graph-bar" id="loss-bar-2" style="width: 25px; height: 50%; background: linear-gradient(0deg, var(--accent-color), #ec4899); border-radius: 3px; position: relative;" title="Epoch 2 loss: 0.42"></div>
+ <div class="loss-graph-bar" id="loss-bar-3" style="width: 25px; height: 28%; background: linear-gradient(0deg, var(--accent-color), #ec4899); border-radius: 3px; position: relative;" title="Epoch 3 loss: 0.18"></div>
+ <div class="loss-graph-bar" id="loss-bar-4" style="width: 25px; height: 15%; background: linear-gradient(0deg, var(--accent-color), #ec4899); border-radius: 3px; position: relative;" title="Epoch 4 loss: 0.09"></div>
+ <div class="loss-graph-bar" id="loss-bar-5" style="width: 25px; height: 8%; background: linear-gradient(0deg, var(--accent-color), #ec4899); border-radius: 3px; position: relative;" title="Final loss: 0.04"></div>
+ 
+ <!-- Stats overlay -->
+ <div style="position: absolute; right: 12px; top: 12px; text-align: right; font-size: var(--text-xs); color: var(--text-muted); font-family: 'JetBrains Mono'; line-height: 1.4;">
+ SFT Iterations: <span id="sftIters" style="color: var(--accent-color);">0 / 120</span><br>
+ Loss: <span id="sftLossVal" style="color: #ec4899;">1.450</span><br>
+ Token/sec: <span id="sftSpeed" style="color: var(--text-main);">0.0</span>
+ </div>
+ </div>
+ <div style="display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--text-muted); font-weight: 700; text-transform: uppercase;">
+ <span>Init</span>
+ <span>Epoch 1</span>
+ <span>Epoch 2</span>
+ <span>Epoch 3</span>
+ <span>Epoch 4</span>
+ <span>Converged</span>
+ </div>
+ </div>
+
+ <!-- Active Pipeline Thought Card -->
+ <div class="settings-card hide" id="pipelineThoughtCard" style="padding: 12px; background: rgba(139, 92, 246, 0.04); border: 1px solid rgba(139, 92, 246, 0.25); border-radius: var(--border-radius-md); display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+ <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 4px solid rgba(167, 139, 250, 0.15); padding-bottom: 8px;">
+ <div style="display: flex; align-items: center; gap: 8px;">
+ <span class="status-badge-dot" style="background: var(--accent-color); width: 8px; height: 8px; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--accent-color); animation: pulse-glow 1.5s infinite;"></span>
+ <span style="font-family: 'JetBrains Mono'; font-size: var(--text-xs); color: var(--accent-color); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">Active Agent Thought</span>
+ </div>
+ <span id="pipelineThoughtAgent" class="profile-level-badge" style="font-size: var(--text-xs); color: var(--accent-color);">IDLE</span>
+ </div>
+ <div id="pipelineActiveThought" style="font-size: var(--text-xs); color: var(--text-main); font-style: italic; line-height: 1.4; min-height: 20px;">Waiting to spark pipeline...</div>
+ </div>
+
+ <!-- Live Monospace Terminal Console -->
+ <div class="settings-card" style="padding: 12px; background: #000; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--border-radius-md); height: 160px; display: flex; flex-direction: column; gap: 8px; overflow: hidden;">
+ <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+ <span style="font-family: 'JetBrains Mono'; font-size: var(--text-xs); color: var(--accent-color); font-weight: 700; letter-spacing: 0.5px;">SYSTEM CONSOLE TERMINAL</span>
+ <span id="pipelineStatusBadge" class="profile-level-badge" style="font-size: var(--text-xs); color:#ec4899;">IDLE</span>
+ </div>
+ <pre id="pipelineConsole" style="flex-grow: 1; overflow-y: auto; margin: 0; padding: 8px; font-family: 'JetBrains Mono', monospace; font-size: var(--text-xs); line-height: 1.4; color: #a78bfa; white-space: pre-wrap; word-break: break-all;">Lumina Multi-Agent OS V2 loaded. Select mode and goal, then click trigger.</pre>
+ </div>
+
+ <!-- Integration action card -->
+ <div class="settings-card hide" id="pipelineExportCard" style="padding: 8px; background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.2); border-radius: var(--border-radius-md); display: flex; justify-content: space-between; align-items: center;">
+ <span style="font-size: var(--text-xs); font-weight: 700; color: var(--text-main);">Pipeline Execution Successful!</span>
+ <div style="display: flex; gap: 8px;">
+ <button class="btn-inline-action active" onclick="hotReloadPipelinePreview()" style="font-size: var(--text-xs); padding: 8px 12px;">Preview Live Preview</button>
+ <button class="btn-inline-action" onclick="exportPipelineLogs()" style="font-size: var(--text-xs); padding: 8px 12px;">Chat Export to Chat</button>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </aside>
+
+ <!-- RIGHT PANEL: User Profile & Preferences -->
+ <section class="right-panel" id="rightPanel">
+ <div class="right-panel-header" style="display:flex;align-items:center;justify-content:space-between;">
+ <h3 class="panel-header-title">User Profile</h3>
+ <div style="display:flex;align-items:center;gap:8px;">
+  <button id="logoutBtn" style="background:none;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.4);font-size:11px;padding:4px 10px;cursor:pointer;font-family:inherit;transition:all 0.2s;">Sign out</button>
+  <button class="btn-icon panel-close-btn" onclick="toggleRightPanel()" title="Close Settings">
+ <svg viewBox="0 0 24 24" class="svg-icon"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+ </button>
+  </div>
+ </div>
+
+ <div class="panel-scroll-content">
+ <!-- User Profile Card -->
+ <div class="panel-group">
+ <h4 class="group-title">User Identity</h4>
+ <div class="user-profile-card">
+ <div class="profile-avatar-large" id="profileAvatar">User</div>
+ <div class="profile-info-block">
+ <div class="profile-field-row">
+ <span class="profile-field-label">Name</span>
+ <input type="text" class="profile-name-input" id="profileNameInput" value="Enterprise Partner" onchange="updateProfileName(this.value)" placeholder="Enter Name..." title="Click to rename">
+ </div>
+ <div class="profile-field-row">
+ <span class="profile-field-label">Email</span>
+ <input type="email" class="profile-email-input" id="profileEmailInput" value="partner@organization.com" onchange="updateProfileEmail(this.value)" placeholder="Enter Email..." title="Click to edit email">
+ </div>
+ <div class="profile-status-badge-row">
+ <span class="profile-level-badge" id="profilePlanBadge">Professional Plan</span>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Lumina Task Agent Checklist -->
+ <div class="panel-group" id="taskAgentPanel">
+ <h4 class="group-title">Lumina Task Agent</h4>
+ <div class="settings-card flex-column" style="gap: 12px; display: flex; flex-direction: column;">
+ <div class="agent-goal-row" style="display: flex; flex-direction: column; gap: 4px;">
+ <span class="settings-label" style="font-size: var(--text-xs); font-weight: 700;">Active Task Goal</span>
+ <span class="agent-goal-text" id="activeAgentGoal" style="font-size: var(--text-sm); font-weight: 500; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">No active task</span>
+ </div>
+ <div class="agent-progress-row">
+ <div class="progress-bar-wrapper" style="height: 6px; background: var(--glass-highlight); border-radius: 10px; overflow: hidden; width: 100%;">
+ <div class="progress-bar-fill" id="agentProgressBarFill" style="width: 0%; height: 100%; transition: var(--transition-smooth);"></div>
+ </div>
+ <div class="progress-labels" style="display: flex; justify-content: space-between; margin-top: 8px; font-size: var(--text-xs); font-weight: 700;">
+ <span id="agentProgressPercent">0%</span>
+ <span id="agentProgressStatus" class="profile-level-badge" style="color: var(--accent-color);">Idle</span>
+ </div>
+ </div>
+ <div class="agent-checklist" id="agentChecklist" style="display: flex; flex-direction: column; gap: 8px; max-height: 150px; overflow-y: auto; padding-right: 4px;">
+ <div style="font-size: var(--text-xs); color: var(--text-muted); text-align: center; padding: 8px 0;">Agent is currently idle. Type a goal in chat to start.</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Subscription Plans Selector -->
+ <div class="panel-group">
+ <h4 class="group-title">Select Subscription Plan</h4>
+
+ <!-- Usage bar -->
+ <div class="plan-usage-wrap">
+  <div class="plan-usage-labels">
+   <span class="plan-usage-stat" id="planTokensUsed">0 used</span>
+   <span class="plan-usage-stat" id="planTokensLeft">100K left</span>
+  </div>
+  <div class="plan-usage-track">
+   <div class="plan-usage-fill" id="planUsageBar" style="width:0%"></div>
+  </div>
+ </div>
+
+ <div class="plan-tiers-list" id="planTiersList">
+ <!-- Standard Tier -->
+ <div class="plan-tier-card" id="plan-standard" onclick="selectPlanTier('standard', 'Standard Plan', '$9/mo', event)">
+  <div class="plan-tier-header">
+   <span class="plan-tier-title">Standard</span>
+   <span class="plan-tier-price">$9/mo</span>
+  </div>
+  <p class="plan-tier-desc">Essential AI access for single users.</p>
+  <div class="plan-token-limit">100K tokens/month</div>
+ </div>
+
+ <!-- Professional Tier -->
+ <div class="plan-tier-card" id="plan-professional" onclick="selectPlanTier('professional', 'Professional Plan', '$29/mo', event)">
+  <div class="plan-tier-header">
+   <span class="plan-tier-title">Professional</span>
+   <span class="plan-tier-price">$29/mo</span>
+  </div>
+  <span class="plan-card-popular">Popular</span>
+  <p class="plan-tier-desc">Advanced models, fast speeds, priority support.</p>
+  <div class="plan-token-limit">500K tokens/month</div>
+ </div>
+
+ <!-- Enterprise Elite Tier -->
+ <div class="plan-tier-card" id="plan-enterprise" onclick="selectPlanTier('enterprise', 'Enterprise Elite', '$79/mo', event)">
+  <div class="plan-tier-header">
+   <span class="plan-tier-title">Enterprise</span>
+   <span class="plan-tier-price">$79/mo</span>
+  </div>
+  <p class="plan-tier-desc">Dedicated capacity, priority model access.</p>
+  <div class="plan-token-limit unlimited">Unlimited tokens</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Preferences Settings -->
+ <div class="panel-group">
+ <h4 class="group-title">Preferences</h4>
+ 
+ <!-- Sound Toggle Card -->
+ <div class="settings-card flex-between">
+ <span class="settings-label">Sound Effects Alerts</span>
+ <label class="toggle-switch">
+ <input type="checkbox" id="soundToggleCheckbox" onchange="toggleSound()" checked>
+ <span class="slider-toggle"></span>
+ </label>
+ </div>
+
+ <!-- Theme Card Options -->
+ <div class="settings-card">
+ <span class="settings-label margin-bottom-sm block">Visual Theme Mode</span>
+ <div class="theme-buttons-grid">
+ <button class="theme-btn-card cosmic-card" onclick="changeTheme('cosmic')">
+ <span class="theme-card-dot cosmic-dot"></span> Cosmic Glow
+ </button>
+ <button class="theme-btn-card emerald-card" onclick="changeTheme('emerald')">
+ <span class="theme-card-dot emerald-dot"></span> Emerald
+ </button>
+ <button class="theme-btn-card solar-card" onclick="changeTheme('solar')">
+ <span class="theme-card-dot solar-dot"></span> Solar Dawn
+ </button>
+ </div>
+ </div>
+
+ </div>
+
+ </section>
+
+ </div>
+
+ <!-- Hidden file inputs -->
+ <input type="file" id="realFileInput" style="display:none;" onchange="handleRealFileChange(event)" multiple>
+
+ <!-- CONTEXT VAULT MODAL (1 MILLION TOKEN ENGINE) -->
+ <div class="modal-overlay" id="vaultModal">
+ <div class="modal-vault-card">
+ <div class="vault-modal-header">
+ <div class="vault-header-title-wrapper">
+ <span class="vault-header-icon">Rule</span>
+ <div class="vault-title-block">
+ <h3>Lumina Context Vault</h3>
+ <p>1,000,000 Token Infinite Memory Engine</p>
+ </div>
+ </div>
+ <button class="btn-icon" onclick="toggleVaultModal(false)" title="Close Vault">
+ <svg viewBox="0 0 24 24" class="svg-icon"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+ </button>
+ </div>
+
+ <div class="vault-modal-body">
+ <!-- Context Gauge Meter -->
+ <div class="vault-gauge-wrapper">
+ <div class="gauge-labels-row">
+ <span class="gauge-label">Active context window</span>
+ <span class="gauge-value" id="vaultGaugeVal">0 / 1,000,000 tokens (0%)</span>
+ </div>
+ <div class="vault-progress-bar-wrapper">
+ <div class="vault-progress-bar-fill" id="vaultProgressFill" style="width: 0%"></div>
+ </div>
+ <p class="vault-gauge-desc">Files uploaded are parsed and fully injected into the model's active attention window. Content remains persistent and will never be forgotten during the active session.</p>
+ </div>
+
+ <!-- Drag and Drop area -->
+ <div class="vault-drop-zone" onclick="triggerFileInput()" id="vaultDropZone">
+ <div class="drop-zone-icon">Ingest</div>
+ <h4>Drag & drop text or code files here</h4>
+ <p>or click to browse from your computer (txt, log, sql, js, css, html, md, json)</p>
+ </div>
+
+ <!-- Attached Files list -->
+ <div class="vault-files-section">
+ <h4 class="vault-section-title">Attached Memory Blocks (<span id="vaultFilesCount">0</span>)</h4>
+ <div class="vault-files-list" id="vaultFilesList">
+ <div class="vault-empty-files">No documents in current active context. Click above to attach large text files.</div>
+ </div>
+ </div>
+ </div>
+ 
+ <div class="vault-modal-footer">
+ <button class="btn btn-secondary" onclick="clearVault()">Clear Vault</button>
+ <button class="btn btn-primary animate-pulse" onclick="toggleVaultModal(false)">Close & Apply Context</button>
+ </div>
+ </div>
+  </div> <!-- closing tag for vaultModal -->
+  </div> <!-- closing tag for app-container -->
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast-container">Toast message</div>
+
+  <!-- Main JavaScript Logic -->
+  <script src="auth.js"></script>
+<script src="app.js?v=2.2.2"></script>
+</body>
+</html>

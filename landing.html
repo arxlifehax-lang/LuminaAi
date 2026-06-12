@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuminaAI — Think Deeper, Build Faster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#06060a;
+  --ink2:#0e0e16;
+  --glass:rgba(255,255,255,0.04);
+  --rim:rgba(255,255,255,0.07);
+  --rim2:rgba(255,255,255,0.12);
+  --text:#eeedf8;
+  --muted:rgba(238,237,248,0.45);
+  --faint:rgba(238,237,248,0.2);
+  --acc:#7c6bfa;
+  --acc2:#e879f9;
+  --acc3:#38bdf8;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'DM Serif Display',serif;
+  --sans:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--ink);color:var(--text);overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}
+img{display:block}
+
+/* ── Scrollbar ────────────────────────────────────── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(124,107,250,0.3);border-radius:4px}
+
+/* ── Background canvas ─────────────────────────────── */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── Noise overlay ────────────────────────────────── */
+body::after{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  opacity:0.4;
+}
+
+/* ── Layout wrapper ───────────────────────────────── */
+.z{position:relative;z-index:2}
+
+/* ── NAV ──────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 max(5vw,24px);height:64px;
+  background:rgba(6,6,10,0.7);
+  backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  transition:border-color 0.3s;
+}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-mark{
+  width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-mark svg{width:16px;height:16px;fill:none;stroke:white;stroke-width:2;stroke-linecap:round}
+.nav-name{font-size:16px;font-weight:600;letter-spacing:-0.02em}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:14px;color:var(--muted);transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.btn-nav{
+  padding:8px 20px;border-radius:8px;font-size:14px;font-weight:500;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  color:white;cursor:pointer;border:none;font-family:var(--sans);
+  transition:opacity 0.2s,transform 0.2s;
+}
+.btn-nav:hover{opacity:0.85;transform:translateY(-1px)}
+.btn-survey{
+  padding:8px 18px;border-radius:8px;font-size:14px;font-weight:500;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.18);
+  color:var(--muted);cursor:pointer;font-family:var(--sans);
+  transition:all 0.2s;
+}
+.btn-survey:hover{border-color:rgba(124,107,250,0.5);color:var(--text);background:rgba(124,107,250,0.08)}
+
+/* ── HERO ─────────────────────────────────────────── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:120px max(5vw,24px) 80px;text-align:center;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;border-radius:20px;margin-bottom:32px;
+  background:rgba(124,107,250,0.1);border:1px solid rgba(124,107,250,0.25);
+  font-size:12px;font-family:var(--mono);color:rgba(196,187,255,0.9);
+  letter-spacing:0.06em;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:#a78bfa;animation:bdot 2s ease-in-out infinite}
+@keyframes bdot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(167,139,250,0.5)}50%{opacity:0.6;box-shadow:0 0 0 5px rgba(167,139,250,0)}}
+.hero h1{
+  font-family:var(--serif);
+  font-size:clamp(44px,7.5vw,88px);
+  line-height:1.05;letter-spacing:-0.03em;
+  max-width:900px;margin-bottom:24px;
+}
+.hero h1 em{font-style:italic;background:linear-gradient(90deg,var(--acc) 0%,var(--acc2) 55%,var(--acc3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{
+  font-size:clamp(16px,2.2vw,20px);color:var(--muted);
+  max-width:560px;margin-bottom:48px;line-height:1.7;font-weight:300;
+}
+.hero-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn-primary{
+  padding:15px 32px;border-radius:12px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  color:white;font-size:16px;font-weight:500;
+  border:none;cursor:pointer;font-family:var(--sans);
+  box-shadow:0 0 40px rgba(124,107,250,0.3);
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(124,107,250,0.45)}
+.btn-ghost{
+  padding:14px 28px;border-radius:12px;
+  border:1px solid var(--rim2);color:var(--muted);
+  font-size:16px;font-weight:400;
+  background:none;cursor:pointer;font-family:var(--sans);
+  transition:border-color 0.2s,color 0.2s;
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.25);color:var(--text)}
+.hero-note{margin-top:16px;font-size:12px;color:var(--faint);font-family:var(--mono)}
+
+/* hero visual */
+.hero-visual{
+  margin-top:72px;width:100%;max-width:800px;
+  border-radius:16px;overflow:hidden;
+  border:1px solid var(--rim);
+  box-shadow:0 40px 120px rgba(0,0,0,0.6),0 0 0 1px rgba(124,107,250,0.1);
+  position:relative;
+}
+.hero-visual::before{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,transparent 60%,var(--ink) 100%);
+}
+.chat-mockup{background:#0d0d16;padding:20px}
+.chat-top{display:flex;align-items:center;gap:8px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.chat-top-dot{width:8px;height:8px;border-radius:50%}
+.d1{background:#ff5f57}.d2{background:#febc2e}.d3{background:#28c840}
+.chat-title{font-size:12px;color:var(--faint);font-family:var(--mono);margin:0 auto}
+.chat-msgs{display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;gap:10px;align-items:flex-start}
+.msg.right{flex-direction:row-reverse}
+.av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.av-ai{background:linear-gradient(135deg,var(--acc),var(--acc2))}
+.av-u{background:rgba(255,255,255,0.1);color:var(--muted)}
+.bubble{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6;max-width:78%;text-align:left}
+.bubble-ai{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);color:var(--text)}
+.bubble-u{background:rgba(124,107,250,0.18);border:1px solid rgba(124,107,250,0.25);color:var(--text)}
+.think-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:6px;margin-bottom:8px;
+  background:rgba(124,107,250,0.08);border:1px solid rgba(124,107,250,0.2);
+  font-size:11px;color:rgba(167,139,250,0.8);font-family:var(--mono);
+}
+.think-dot{width:5px;height:5px;border-radius:50%;background:#a78bfa;animation:bdot 1.2s infinite}
+.code-block{background:rgba(0,0,0,0.3);border-radius:6px;padding:10px 12px;font-family:var(--mono);font-size:11px;color:#93c5fd;margin-top:6px}
+.kw{color:#c084fc}.fn{color:#4ade80}.str{color:#fbbf24}
+.cursor{display:inline-block;width:2px;height:13px;background:var(--acc2);animation:blink 1s infinite;vertical-align:middle;margin-left:2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── SECTION SHARED ───────────────────────────────── */
+section{padding:100px max(5vw,24px)}
+.section-tag{font-size:11px;font-family:var(--mono);color:rgba(124,107,250,0.8);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:16px}
+.section-h{font-family:var(--serif);font-size:clamp(32px,4.5vw,52px);letter-spacing:-0.03em;line-height:1.1;margin-bottom:16px}
+.section-sub{font-size:clamp(15px,1.8vw,18px);color:var(--muted);max-width:520px;line-height:1.7;font-weight:300}
+.center{text-align:center;align-items:center}
+
+/* ── FEATURES ─────────────────────────────────────── */
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1px;margin-top:64px;
+  border:1px solid var(--rim);border-radius:16px;overflow:hidden;
+}
+.feat-card{
+  background:var(--glass);
+  padding:32px 28px;
+  transition:background 0.25s;
+  position:relative;overflow:hidden;
+}
+.feat-card:hover{background:rgba(255,255,255,0.07)}
+.feat-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,107,250,0.4),transparent);
+  transform:scaleX(0);transition:transform 0.3s;
+}
+.feat-card:hover::after{transform:scaleX(1)}
+.feat-icon{
+  width:42px;height:42px;border-radius:10px;margin-bottom:20px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(124,107,250,0.12);border:1px solid rgba(124,107,250,0.2);
+}
+.feat-icon svg{width:20px;height:20px;fill:none;stroke:#a78bfa;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.feat-name{font-size:16px;font-weight:600;margin-bottom:8px;letter-spacing:-0.01em}
+.feat-desc{font-size:14px;color:var(--muted);line-height:1.65}
+.feat-tag{display:inline-block;margin-top:14px;font-size:11px;font-family:var(--mono);color:rgba(124,107,250,0.7);letter-spacing:0.06em}
+
+/* ── HOW IT WORKS ─────────────────────────────────── */
+.steps{display:flex;flex-direction:column;gap:0;margin-top:64px;max-width:640px}
+.step{display:flex;gap:24px;position:relative}
+.step:not(:last-child)::after{
+  content:'';position:absolute;left:19px;top:52px;bottom:-24px;
+  width:1px;background:linear-gradient(to bottom,rgba(124,107,250,0.3),transparent);
+}
+.step-num{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  background:rgba(124,107,250,0.1);border:1px solid rgba(124,107,250,0.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;color:#a78bfa;font-family:var(--mono);
+  position:relative;z-index:1;
+}
+.step-body{padding-bottom:48px}
+.step-title{font-size:18px;font-weight:600;letter-spacing:-0.01em;margin-bottom:8px}
+.step-desc{font-size:14px;color:var(--muted);line-height:1.65}
+.step-code{
+  margin-top:14px;padding:12px 16px;border-radius:8px;
+  background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);
+  font-family:var(--mono);font-size:12px;color:#93c5fd;
+}
+
+/* ── MODELS SECTION ───────────────────────────────── */
+.models-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px}
+.model-chip{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 18px;border-radius:10px;
+  background:var(--glass);border:1px solid var(--rim);
+  transition:border-color 0.2s,background 0.2s;cursor:default;
+}
+.model-chip:hover{border-color:rgba(124,107,250,0.35);background:rgba(124,107,250,0.06)}
+.mc-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+.mc-name{font-size:13px;font-weight:500}
+.mc-desc{font-size:11px;color:var(--faint);margin-top:1px}
+
+/* ── STATS ────────────────────────────────────────── */
+.stats-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:1px;border:1px solid var(--rim);border-radius:16px;overflow:hidden;
+  margin-top:40px;
+}
+.stat{
+  padding:32px 24px;background:var(--glass);text-align:center;
+}
+.stat-num{
+  font-family:var(--serif);font-size:clamp(32px,4vw,48px);
+  letter-spacing:-0.04em;margin-bottom:6px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.stat-label{font-size:13px;color:var(--muted)}
+
+/* ── CTA BANNER ───────────────────────────────────── */
+.cta-banner{
+  margin:0 max(5vw,24px) 100px;
+  background:linear-gradient(135deg,rgba(124,107,250,0.12),rgba(232,121,249,0.08));
+  border:1px solid rgba(124,107,250,0.2);
+  border-radius:20px;padding:64px 48px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-banner::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:240px;height:240px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,121,249,0.1),transparent 70%);
+}
+.cta-banner::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,107,250,0.12),transparent 70%);
+}
+.cta-banner h2{font-family:var(--serif);font-size:clamp(28px,4vw,44px);letter-spacing:-0.03em;margin-bottom:14px;position:relative;z-index:1}
+.cta-banner p{font-size:16px;color:var(--muted);margin-bottom:36px;position:relative;z-index:1}
+.cta-banner .btn-primary{position:relative;z-index:1}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{
+  border-top:1px solid var(--rim);
+  padding:40px max(5vw,24px);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:var(--faint);transition:color 0.2s}
+.footer-links a:hover{color:var(--muted)}
+.footer-copy{font-size:12px;color:var(--faint);font-family:var(--mono)}
+
+/* ── SCROLL REVEAL ─────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media(max-width:640px){
+  .nav-links{display:none}
+  .hero h1{font-size:36px}
+  .cta-banner{padding:40px 24px}
+  footer{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- Animated canvas bg -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav class="z">
+  <a href="/" class="nav-logo">
+    <div class="nav-mark"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+    <span class="nav-name">LuminaAI</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#models">Models</a>
+    <a href="/survey" style="color:rgba(167,139,250,.8)">แบบสำรวจ</a>
+  </div>
+  <button class="btn-survey" onclick="openSurvey()">แบบสอบถาม</button>
+  <button class="btn-nav" onclick="location.href='/login.html'">Get Started →</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero z">
+  <div class="hero-badge reveal"><span class="badge-dot"></span>Lumina AI v2.2 — Now with Think Mode</div>
+  <h1 class="reveal reveal-delay-1">
+    The AI that<br>
+    <em>thinks before it answers.</em>
+  </h1>
+  <p class="hero-sub reveal reveal-delay-2">
+    Lumina AI คือระบบ AI ที่ออกแบบมาเพื่อการคิดเชิงลึก
+    วิเคราะห์ปัญหาซับซ้อน และสร้างสรรค์งานพร้อมกับคุณ
+  </p>
+  <div class="hero-ctas reveal reveal-delay-3">
+    <button class="btn-primary" onclick="location.href='/login.html'">เริ่มต้นใช้งานฟรี</button>
+    <button class="btn-ghost" onclick="location.href='#features'">ดูความสามารถ</button>
+  </div>
+  <p class="hero-note reveal">เข้าสู่ระบบด้วย Google — ไม่ต้องสมัครสมาชิกเพิ่ม</p>
+
+  <!-- Chat mockup -->
+  <div class="hero-visual reveal">
+    <div class="chat-mockup">
+      <div class="chat-top">
+        <div class="chat-top-dot d1"></div>
+        <div class="chat-top-dot d2"></div>
+        <div class="chat-top-dot d3"></div>
+        <span class="chat-title">LuminaAI — Archer 1.0</span>
+      </div>
+      <div class="chat-msgs">
+        <div class="msg right">
+          <div class="av av-u">คุณ</div>
+          <div class="bubble bubble-u">อธิบาย Binary Search Tree และเขียน implementation ใน Python หน่อย</div>
+        </div>
+        <div class="msg">
+          <div class="av av-ai">AI</div>
+          <div class="bubble bubble-ai">
+            <div class="think-pill"><span class="think-dot"></span>Let me think first... 2.4s</div>
+            BST คือโครงสร้างข้อมูลที่แต่ละ node มีค่า <strong>น้อยกว่าลูกซ้าย</strong> และ <strong>มากกว่าลูกขวา</strong>
+            <div class="code-block"><span class="kw">class</span> <span class="fn">Node</span>:<br>&nbsp;&nbsp;<span class="kw">def</span> <span class="fn">__init__</span>(self, val):<br>&nbsp;&nbsp;&nbsp;&nbsp;self.val = val<br>&nbsp;&nbsp;&nbsp;&nbsp;self.left = self.right = <span class="kw">None</span><br><br><span class="kw">class</span> <span class="fn">BST</span>:<br>&nbsp;&nbsp;<span class="kw">def</span> <span class="fn">insert</span>(self, root, val):<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if not</span> root: <span class="kw">return</span> <span class="fn">Node</span>(val)<span class="cursor"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="z" style="padding:0 max(5vw,24px)">
+  <div class="stats-row reveal">
+    <div class="stat"><div class="stat-num">8B+</div><div class="stat-label">พารามิเตอร์</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Agent Personas</div></div>
+    <div class="stat"><div class="stat-num">Think</div><div class="stat-label">Chain-of-Thought</div></div>
+    <div class="stat"><div class="stat-num">Real-time</div><div class="stat-label">Streaming</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="z" id="features">
+  <div class="section-tag reveal">capabilities</div>
+  <h2 class="section-h reveal">ออกแบบมาเพื่อ<br><em>งานที่ซับซ้อน</em></h2>
+  <p class="section-sub reveal">ทุก feature ถูกสร้างขึ้นเพื่อให้ AI ทำงานร่วมกับคุณได้จริง ไม่ใช่แค่ตอบคำถาม</p>
+
+  <div class="features-grid">
+    <!-- Think Mode -->
+    <div class="feat-card reveal">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div class="feat-name">Think Mode</div>
+      <div class="feat-desc">AI แสดง reasoning process แบบ real-time ก่อนตอบ เห็นทุกขั้นตอนการคิด วิเคราะห์ และตรวจสอบคำตอบ</div>
+      <span class="feat-tag">chain-of-thought</span>
+    </div>
+    <!-- File Access -->
+    <div class="feat-card reveal reveal-delay-1">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <div class="feat-name">File Access</div>
+      <div class="feat-desc">AI เข้าถึงและแก้ไขไฟล์บน server ได้โดยตรง อ่านโค้ด เขียน script หรือจัดการข้อมูลได้ทันที</div>
+      <span class="feat-tag">tool calling</span>
+    </div>
+    <!-- Multi-Agent -->
+    <div class="feat-card reveal reveal-delay-2">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><circle cx="5" cy="14" r="2.5"/><circle cx="19" cy="14" r="2.5"/></svg>
+      </div>
+      <div class="feat-name">Multi-Persona</div>
+      <div class="feat-desc">เลือก persona ที่เหมาะกับงาน — Archer สำหรับ logic, Azure สำหรับความเร็ว, Trami สำหรับ creativity</div>
+      <span class="feat-tag">adaptive ai</span>
+    </div>
+    <!-- Vision -->
+    <div class="feat-card reveal">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div class="feat-name">Vision & Images</div>
+      <div class="feat-desc">แนบรูปภาพ screenshot หรือ diagram แล้วให้ AI วิเคราะห์ อธิบาย หรือ debug ได้ทันที</div>
+      <span class="feat-tag">multimodal</span>
+    </div>
+    <!-- Sandbox -->
+    <div class="feat-card reveal reveal-delay-1">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <div class="feat-name">Live Sandbox</div>
+      <div class="feat-desc">รัน HTML/CSS/JS ที่ AI เขียนได้ทันทีในหน้าต่าง preview แยกต่างหาก เห็น output จริงๆ ไม่ต้อง copy ออกไป</div>
+      <span class="feat-tag">live preview</span>
+    </div>
+    <!-- SFT -->
+    <div class="feat-card reveal reveal-delay-2">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="feat-name">Self-Learning</div>
+      <div class="feat-desc">ทุกบทสนทนาถูกบันทึกเป็น training data อัตโนมัติ fine-tune model ของคุณเองให้ดีขึ้นเรื่อยๆ</div>
+      <span class="feat-tag">continual learning</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="z" id="how" style="display:flex;gap:80px;flex-wrap:wrap;align-items:flex-start">
+  <div style="flex:1;min-width:280px">
+    <div class="section-tag reveal">how it works</div>
+    <h2 class="section-h reveal">ใช้งานง่าย<br><em>ใน 3 ขั้นตอน</em></h2>
+    <p class="section-sub reveal">ตั้งค่าครั้งเดียว ใช้งานได้ทันที ไม่ว่าจะ local หรือบน cloud</p>
+  </div>
+  <div class="steps" style="flex:1;min-width:280px">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <div class="step-title">Sign in ด้วย Google</div>
+        <div class="step-desc">ไม่ต้องสร้าง account ใหม่ ใช้บัญชี Google ที่มีอยู่แล้วได้เลย ปลอดภัยด้วย OAuth 2.0</div>
+      </div>
+    </div>
+    <div class="step reveal reveal-delay-1">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <div class="step-title">เชื่อมต่อ AI Server</div>
+        <div class="step-desc">รัน Python server บน local หรือ Colab ระบบจะสร้าง ngrok URL ให้อัตโนมัติ</div>
+        <div class="step-code">python LuminazerPre-training.py --mode serve --port 8001</div>
+      </div>
+    </div>
+    <div class="step reveal reveal-delay-2">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <div class="step-title">เริ่มสนทนาได้เลย</div>
+        <div class="step-desc">เปิด Think Mode สำหรับงานซับซ้อน แนบรูปให้วิเคราะห์ หรือให้ AI เข้าถึงไฟล์บน server ของคุณ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELS -->
+<section class="z" id="models" style="background:rgba(255,255,255,0.015);border-top:1px solid var(--rim);border-bottom:1px solid var(--rim)">
+  <div class="section-tag reveal center" style="display:flex;flex-direction:column">supported models</div>
+  <h2 class="section-h reveal" style="text-align:center;margin:0 auto 8px">ใช้ได้กับทุก model</h2>
+  <p class="section-sub reveal" style="text-align:center;margin:0 auto 0">รองรับ OpenRouter, local Lumina, และ Colab GPU</p>
+  <div class="models-row" style="justify-content:center;margin-top:40px">
+    <div class="model-chip reveal"><div class="mc-icon" style="background:rgba(66,133,244,0.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#4285F4" stroke-width="2" stroke-linecap="round"/></svg></div><div><div class="mc-name">Gemini 2.5 Flash</div><div class="mc-desc">Google · Free tier</div></div></div>
+    <div class="model-chip reveal reveal-delay-1"><div class="mc-icon" style="background:rgba(232,121,249,0.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#e879f9" stroke-width="2"/><path d="M8 12h8M12 8v8" stroke="#e879f9" stroke-width="2" stroke-linecap="round"/></svg></div><div><div class="mc-name">DeepSeek R1</div><div class="mc-desc">Reasoning · Free</div></div></div>
+    <div class="model-chip reveal reveal-delay-2"><div class="mc-icon" style="background:rgba(56,189,248,0.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="mc-name">Qwen 3.7 Max</div><div class="mc-desc">Alibaba · Agentic</div></div></div>
+    <div class="model-chip reveal"><div class="mc-icon" style="background:rgba(124,107,250,0.12)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#7c6bfa" stroke-width="2" stroke-linecap="round"/></svg></div><div><div class="mc-name">Lumina Local</div><div class="mc-desc">Your own · Fine-tuned</div></div></div>
+    <div class="model-chip reveal reveal-delay-1"><div class="mc-icon" style="background:rgba(74,222,128,0.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#4ade80" stroke-width="2"/><path d="M8 12h8M12 8v8" stroke="#4ade80" stroke-width="2" stroke-linecap="round"/></svg></div><div><div class="mc-name">Llama 3.3 70B</div><div class="mc-desc">Meta · Open source</div></div></div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="z">
+  <div class="cta-banner reveal">
+    <h2>พร้อมจะลองแล้วหรือยัง?</h2>
+    <p>เริ่มต้นฟรี ไม่ต้องใส่บัตรเครดิต ใช้ Google account ที่มีอยู่แล้ว</p>
+    <button class="btn-primary" onclick="location.href='/login.html'">เริ่มต้นใช้งาน →</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="z">
+  <div class="footer-brand">
+    <div class="nav-mark"><svg viewBox="0 0 24 24" style="fill:none;stroke:white;stroke-width:2;stroke-linecap:round;width:16px;height:16px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+    <span style="font-size:14px;font-weight:500">LuminaAI</span>
+  </div>
+  <div class="footer-links">
+    <a href="#features">Features</a>
+    <a href="#how">Docs</a>
+    <a href="https://github.com" target="_blank">GitHub</a>
+    <a href="#">Privacy</a>
+  </div>
+  <span class="footer-copy">© 2025 LuminaAI</span>
+</footer>
+
+<script>
+// ── Animated background particles ───────────────────────────────────────
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function Particle() {
+  this.x = Math.random() * W;
+  this.y = Math.random() * H;
+  this.r = Math.random() * 1.4 + 0.3;
+  this.vx = (Math.random() - 0.5) * 0.18;
+  this.vy = (Math.random() - 0.5) * 0.18;
+  this.alpha = Math.random() * 0.35 + 0.05;
+}
+
+function init() {
+  resize();
+  particles = Array.from({length: 90}, () => new Particle());
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  // Ambient gradient
+  const g1 = ctx.createRadialGradient(W*0.2, H*0.15, 0, W*0.2, H*0.15, W*0.5);
+  g1.addColorStop(0, 'rgba(124,107,250,0.07)');
+  g1.addColorStop(1, 'transparent');
+  ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H);
+  const g2 = ctx.createRadialGradient(W*0.8, H*0.8, 0, W*0.8, H*0.8, W*0.5);
+  g2.addColorStop(0, 'rgba(232,121,249,0.05)');
+  g2.addColorStop(1, 'transparent');
+  ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
+
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(167,139,250,${p.alpha})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+
+init();
+draw();
+window.addEventListener('resize', init);
+
+// ── Scroll reveal ────────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Trigger hero elements immediately
+setTimeout(() => {
+  document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+}, 100);
+</script>
+
+<!-- ════════════════════════════════════════════════════
+     SURVEY MODAL
+════════════════════════════════════════════════════ -->
+<div id="surveyOverlay" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px">
+<div id="surveyCard" style="
+  width:min(520px,96vw);
+  background:linear-gradient(160deg,rgba(18,16,28,0.97),rgba(12,10,20,0.97));
+  border:1px solid rgba(124,107,250,0.2);
+  border-radius:20px;
+  padding:36px 32px 28px;
+  box-shadow:0 40px 100px rgba(0,0,0,0.7),0 0 0 1px rgba(124,107,250,0.08);
+  position:relative;
+  overflow:hidden;
+  animation:surveyIn 0.35s cubic-bezier(0.16,1,0.3,1) both;
+">
+<!-- shimmer top border -->
+<div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,107,250,0.6),rgba(232,121,249,0.4),transparent)"></div>
+
+<!-- close -->
+<button onclick="closeSurvey()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:7px;width:30px;height:30px;color:rgba(255,255,255,0.4);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+  <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+</button>
+
+<!-- header -->
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+  <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,rgba(124,107,250,0.3),rgba(232,121,249,0.2));border:1px solid rgba(124,107,250,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+    <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:#a78bfa;stroke-width:1.8;stroke-linecap:round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+  </div>
+  <div>
+    <div style="font-size:17px;font-weight:600;color:#eeedf8;letter-spacing:-0.02em">แบบสอบถามเพื่อพัฒนา</div>
+    <div style="font-size:12px;color:rgba(238,237,248,0.4);margin-top:1px;font-family:var(--mono)">ไม่ต้องสมัคร · ไม่ต้องใส่อีเมล · ใช้เวลา 30 วินาที</div>
+  </div>
+</div>
+
+<div style="height:1px;background:rgba(255,255,255,0.06);margin:20px 0"></div>
+
+<!-- questions -->
+<div id="surveyQuestions">
+  <p style="font-size:13px;color:rgba(238,237,248,0.5);margin-bottom:18px;line-height:1.6">กรุณาระบุสภาพแวดล้อมที่พบในพื้นที่ของท่าน เพื่อนำไปปรับปรุงและพัฒนาต่อไป</p>
+  <div id="qList"></div>
+  <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+    <div id="locationBadge" style="font-size:11px;font-family:var(--mono);color:rgba(124,107,250,0.7);background:rgba(124,107,250,0.08);border:0.5px solid rgba(124,107,250,0.2);border-radius:6px;padding:3px 10px">📍 ตรวจสอบตำแหน่ง...</div>
+  </div>
+  <button onclick="submitSurvey()" id="surveySubmitBtn" style="
+    width:100%;margin-top:20px;padding:13px;border-radius:11px;
+    background:linear-gradient(135deg,#7c6bfa,#e879f9);
+    border:none;color:white;font-size:15px;font-weight:500;
+    cursor:pointer;font-family:var(--sans);
+    box-shadow:0 0 24px rgba(124,107,250,0.25);
+    transition:all 0.2s;
+  " onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+    ส่งแบบสอบถาม
+  </button>
+</div>
+
+<!-- success state -->
+<div id="surveySuccess" style="display:none;text-align:center;padding:20px 0">
+  <div style="width:56px;height:56px;border-radius:50%;background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+    <svg viewBox="0 0 24 24" style="width:26px;height:26px;fill:none;stroke:#4ade80;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <div style="font-size:18px;font-weight:600;color:#eeedf8;margin-bottom:8px">ขอบคุณสำหรับข้อมูล</div>
+  <div style="font-size:13px;color:rgba(238,237,248,0.45);line-height:1.7">ข้อมูลของท่านถูกส่งเรียบร้อยแล้ว<br>ทีมงานจะนำไปปรับปรุงพื้นที่ต่อไป</div>
+  <button onclick="closeSurvey()" style="margin-top:22px;padding:10px 28px;border-radius:9px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(238,237,248,0.7);cursor:pointer;font-family:var(--sans);font-size:14px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">ปิด</button>
+</div>
+
+</div>
+</div>
+
+<style>
+@keyframes surveyIn{from{opacity:0;transform:scale(0.94) translateY(16px)}to{opacity:1;transform:none}}
+.q-row{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-radius:10px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.07);margin-bottom:8px;transition:border-color 0.2s}
+.q-row:hover{border-color:rgba(124,107,250,0.25)}
+.q-text{font-size:14px;color:#eeedf8;line-height:1.5;flex:1;padding-right:12px}
+.q-btns{display:flex;gap:6px;flex-shrink:0}
+.q-btn{padding:6px 14px;border-radius:7px;border:0.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:rgba(238,237,248,0.55);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.18s;font-family:inherit;min-width:48px}
+.q-btn:hover{background:rgba(255,255,255,0.08);color:#eeedf8}
+.q-btn.yes-active{background:rgba(239,68,68,0.18);border-color:rgba(239,68,68,0.45);color:#fca5a5}
+.q-btn.no-active{background:rgba(74,222,128,0.12);border-color:rgba(74,222,128,0.35);color:#86efac}
+</style>
+
+<script>
+const SURVEY_QUESTIONS = [
+  { id:'trash',    text:'พบขยะในพื้นที่หรือไม่' },
+  { id:'traffic',  text:'การจราจรติดขัดในพื้นที่หรือไม่' },
+  { id:'toilet',   text:'ห้องน้ำมีกลิ่นไม่พึงประสงค์หรือไม่' },
+  { id:'drain',    text:'ท่อระบายน้ำมีกลิ่นหรือไม่' },
+];
+let surveyAnswers = {};
+let userLocation  = null;
+
+function buildSurveyUI() {
+  surveyAnswers = {};
+  const list = document.getElementById('qList');
+  list.innerHTML = SURVEY_QUESTIONS.map(q => `
+    <div class="q-row" id="qrow-${q.id}">
+      <span class="q-text">${q.text}</span>
+      <div class="q-btns">
+        <button class="q-btn" id="yes-${q.id}" onclick="setAnswer('${q.id}',true)">ใช่</button>
+        <button class="q-btn" id="no-${q.id}"  onclick="setAnswer('${q.id}',false)">ไม่</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('surveySuccess').style.display   = 'none';
+  document.getElementById('surveyQuestions').style.display = 'block';
+}
+
+function setAnswer(id, val) {
+  surveyAnswers[id] = val;
+  document.getElementById('yes-' + id).className = 'q-btn' + (val ? ' yes-active' : '');
+  document.getElementById('no-'  + id).className = 'q-btn' + (!val ? ' no-active' : '');
+}
+
+function openSurvey() {
+  buildSurveyUI();
+  const el = document.getElementById('surveyOverlay');
+  el.style.display = 'flex';
+  setTimeout(() => el.style.opacity = '1', 10);
+  // Try to get location
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      userLocation = { lat: pos.coords.latitude.toFixed(5), lng: pos.coords.longitude.toFixed(5) };
+      document.getElementById('locationBadge').textContent = 'ตำแหน่ง: ' + userLocation.lat + ', ' + userLocation.lng;
+    }, () => {
+      document.getElementById('locationBadge').textContent = 'ไม่ได้รับอนุญาตใช้ตำแหน่ง';
+    });
+  }
+}
+
+function closeSurvey() {
+  document.getElementById('surveyOverlay').style.display = 'none';
+}
+
+async function submitSurvey() {
+  if (Object.keys(surveyAnswers).length < SURVEY_QUESTIONS.length) {
+    document.getElementById('surveySubmitBtn').style.boxShadow = '0 0 0 2px #ef4444';
+    setTimeout(() => document.getElementById('surveySubmitBtn').style.boxShadow = '', 1200);
+    return;
+  }
+
+  const btn = document.getElementById('surveySubmitBtn');
+  btn.textContent = 'กำลังส่ง...'; btn.disabled = true;
+
+  const labels = { trash:'ขยะ', traffic:'การจราจร', toilet:'กลิ่นห้องน้ำ', drain:'กลิ่นท่อระบาย' };
+  const lines   = SURVEY_QUESTIONS.map(q =>
+    (surveyAnswers[q.id] ? '🔴' : '🟢') + ' ' + labels[q.id] + ': ' + (surveyAnswers[q.id] ? 'พบ' : 'ไม่พบ')
+  );
+
+  const loc  = userLocation ? userLocation.lat + ', ' + userLocation.lng : 'ไม่ทราบ';
+  const time = new Date().toLocaleString('th-TH', {timeZone:'Asia/Bangkok'});
+
+  try {
+    const res = await fetch('/api/survey', {
+      method:  'POST',
+      headers: {'Content-Type':'application/json'},
+      body:    JSON.stringify({ answers: surveyAnswers, location: userLocation, timestamp: time }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('surveyQuestions').style.display = 'none';
+      document.getElementById('surveySuccess').style.display   = 'block';
+    } else {
+      btn.textContent = 'ส่งแบบสอบถาม'; btn.disabled = false;
+      alert('เกิดข้อผิดพลาด: ' + (data.error || 'unknown'));
+    }
+  } catch(e) {
+    btn.textContent = 'ส่งแบบสอบถาม'; btn.disabled = false;
+    alert('ไม่สามารถเชื่อมต่อ server ได้');
+  }
+}
+
+// Close on backdrop click
+document.getElementById('surveyOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeSurvey();
+});
+</script>
+
+</body>
+</html>

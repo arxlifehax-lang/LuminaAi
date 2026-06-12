@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบสำรวจมลพิษ — ตลาดจัมโบ้ คลองสาม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#07070d;
+  --glass:rgba(255,255,255,0.04);
+  --rim:rgba(255,255,255,0.08);
+  --text:#eeedf8;
+  --muted:rgba(238,237,248,0.5);
+  --faint:rgba(238,237,248,0.25);
+  --acc:#7c6bfa;
+  --acc2:#e879f9;
+  --yes-bg:rgba(239,68,68,0.14);
+  --yes-border:rgba(239,68,68,0.35);
+  --yes-text:#fca5a5;
+  --no-bg:rgba(74,222,128,0.1);
+  --no-border:rgba(74,222,128,0.3);
+  --no-text:#86efac;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Sarabun',sans-serif;
+  background:var(--ink);
+  color:var(--text);
+  min-height:100vh;
+  padding-bottom:60px;
+}
+
+/* ── Background ── */
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(90px);z-index:0}
+.orb1{width:500px;height:500px;top:-100px;left:-100px;background:radial-gradient(circle,rgba(124,107,250,.12),transparent 70%)}
+.orb2{width:400px;height:400px;bottom:-80px;right:-60px;background:radial-gradient(circle,rgba(232,121,249,.09),transparent 70%)}
+
+/* ── Page layout ── */
+.page{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:40px 20px}
+
+/* ── Header card ── */
+.header-card{
+  background:linear-gradient(160deg,rgba(124,107,250,.12),rgba(232,121,249,.06));
+  border:1px solid rgba(124,107,250,.2);
+  border-radius:20px;
+  padding:36px 32px 28px;
+  margin-bottom:24px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.header-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,107,250,.6),rgba(232,121,249,.4),transparent);
+}
+.survey-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-family:'JetBrains Mono',monospace;
+  color:rgba(167,139,250,.85);letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(124,107,250,.1);border:1px solid rgba(124,107,250,.22);
+  border-radius:20px;padding:4px 14px;margin-bottom:18px;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:#a78bfa;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.survey-title{
+  font-size:clamp(22px,5vw,32px);
+  font-weight:800;
+  line-height:1.3;
+  letter-spacing:-.01em;
+  background:linear-gradient(135deg,#fff 30%,rgba(196,187,255,.85));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:20px;
+}
+
+.meta-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-top:4px;
+}
+@media(max-width:480px){.meta-grid{grid-template-columns:1fr}}
+.meta-item{
+  background:rgba(255,255,255,.04);border:0.5px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:10px 14px;text-align:left;
+}
+.meta-label{font-size:11px;color:var(--faint);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.meta-value{font-size:14px;color:var(--text);font-weight:500}
+
+/* ── Section label ── */
+.section-label{
+  font-size:11px;font-family:'JetBrains Mono',monospace;
+  color:rgba(124,107,250,.75);letter-spacing:.12em;text-transform:uppercase;
+  margin:28px 0 12px;padding-left:2px;
+}
+
+/* ── Question card ── */
+.q-card{
+  background:var(--glass);
+  border:0.5px solid rgba(255,255,255,.07);
+  border-radius:14px;
+  padding:16px 18px;
+  margin-bottom:10px;
+  transition:border-color .2s,background .2s;
+}
+.q-card:has(.q-btn.yes-active){border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.04)}
+.q-card:has(.q-btn.no-active){border-color:rgba(74,222,128,.25);background:rgba(74,222,128,.03)}
+
+.q-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.q-num{
+  font-size:11px;font-family:'JetBrains Mono',monospace;
+  color:rgba(124,107,250,.6);background:rgba(124,107,250,.1);
+  border:0.5px solid rgba(124,107,250,.2);border-radius:5px;
+  padding:2px 8px;flex-shrink:0;margin-top:1px;
+}
+.q-text{font-size:15px;font-weight:500;line-height:1.55;flex:1}
+.q-btns{display:flex;gap:7px;flex-shrink:0;margin-top:2px}
+.q-btn{
+  padding:7px 18px;border-radius:8px;
+  border:0.5px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04);
+  color:rgba(238,237,248,.55);
+  font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .18s;
+  font-family:'Sarabun',sans-serif;
+  min-width:60px;
+}
+.q-btn:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.q-btn.yes-active{background:var(--yes-bg);border-color:var(--yes-border);color:var(--yes-text)}
+.q-btn.no-active{background:var(--no-bg);border-color:var(--no-border);color:var(--no-text)}
+
+/* ── Remark input ── */
+.q-remark{
+  margin-top:10px;
+  width:100%;padding:8px 12px;
+  background:rgba(255,255,255,.03);
+  border:0.5px solid rgba(255,255,255,.07);
+  border-radius:8px;
+  color:var(--text);font-family:'Sarabun',sans-serif;font-size:13px;
+  resize:none;outline:none;
+  transition:border-color .2s;
+  display:none;
+}
+.q-remark:focus{border-color:rgba(124,107,250,.35)}
+.q-remark.show{display:block}
+
+/* ── Surveyor section ── */
+.surveyor-card{
+  background:var(--glass);
+  border:0.5px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:18px 18px 20px;
+  margin-top:8px;
+}
+.surveyor-label{font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.surveyor-field{
+  width:100%;padding:10px 14px;
+  background:rgba(255,255,255,.04);
+  border:0.5px solid rgba(255,255,255,.1);
+  border-radius:9px;
+  color:var(--text);font-family:'Sarabun',sans-serif;font-size:14px;
+  outline:none;transition:border-color .2s;
+}
+.surveyor-field:focus{border-color:rgba(124,107,250,.4)}
+.surveyor-field::placeholder{color:var(--faint)}
+
+/* ── Divider ── */
+.divider{height:0.5px;background:rgba(255,255,255,.06);margin:24px 0}
+
+/* ── Submit button ── */
+.btn-submit{
+  width:100%;padding:15px;border-radius:12px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  border:none;color:white;
+  font-family:'Sarabun',sans-serif;font-size:16px;font-weight:700;
+  cursor:pointer;letter-spacing:.01em;
+  box-shadow:0 0 32px rgba(124,107,250,.25);
+  transition:all .2s;
+}
+.btn-submit:hover{opacity:.88;transform:translateY(-1px)}
+.btn-submit:active{transform:none}
+.btn-submit:disabled{opacity:.4;cursor:default;transform:none}
+
+/* ── Status ── */
+.status{
+  margin-top:14px;padding:12px 16px;border-radius:10px;
+  font-size:14px;text-align:center;display:none;
+}
+.status.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#fca5a5}
+.status.success{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:#86efac}
+
+/* ── Success view ── */
+.success-view{display:none;text-align:center;padding:20px 0}
+.success-icon{
+  width:64px;height:64px;border-radius:50%;margin:0 auto 18px;
+  background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);
+  display:flex;align-items:center;justify-content:center;
+}
+.success-icon svg{width:30px;height:30px;fill:none;stroke:#4ade80;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.success-title{font-size:22px;font-weight:700;margin-bottom:8px}
+.success-sub{font-size:14px;color:var(--muted);line-height:1.7}
+.btn-reset{
+  margin-top:22px;padding:11px 28px;border-radius:9px;
+  background:rgba(255,255,255,.06);border:0.5px solid rgba(255,255,255,.12);
+  color:var(--muted);cursor:pointer;font-family:'Sarabun',sans-serif;font-size:14px;
+  transition:all .2s;
+}
+.btn-reset:hover{background:rgba(255,255,255,.1);color:var(--text)}
+
+/* ── Progress bar ── */
+.progress-wrap{margin-top:16px}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--faint);margin-bottom:6px}
+.progress-track{height:3px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .3s ease;width:0%}
+</style>
+</head>
+<body>
+
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+
+<div class="page">
+
+  <!-- ── Main form ── -->
+  <div id="formView">
+
+    <!-- Header card -->
+    <div class="header-card">
+      <div class="survey-badge"><span class="badge-dot"></span>แบบสำรวจอย่างเป็นทางการ</div>
+      <div class="survey-title">แบบสำรวจมลพิษ<br>ในตลาดจัมโบ้ คลองสาม</div>
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">วันที่สำรวจ</div>
+          <div class="meta-value">10 มิถุนายน พ.ศ. 2569</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">สถานที่</div>
+          <div class="meta-value">ตลาดจัมโบ้ คลองสาม</div>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>ความคืบหน้า</span>
+          <span id="progressText">0 / 5 คำถาม</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+      </div>
+    </div>
+
+    <!-- Questions -->
+    <div class="section-label">คำถามการสำรวจ</div>
+    <div id="questionList"></div>
+
+    <div class="divider"></div>
+
+    <!-- Surveyor -->
+    <div class="section-label">ผู้สำรวจ</div>
+    <div class="surveyor-card">
+      <div class="surveyor-label">ชื่อ–นามสกุล ผู้สำรวจ (จะเพิ่มภายหลัง)</div>
+      <input class="surveyor-field" id="surveyorName" type="text" placeholder="ยังไม่ระบุ — สามารถเพิ่มได้ภายหลัง">
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="btn-submit" id="submitBtn" onclick="submitSurvey()">ส่งแบบสำรวจ</button>
+    <div class="status" id="statusMsg"></div>
+
+  </div>
+
+  <!-- ── Success view ── -->
+  <div class="success-view" id="successView">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="success-title">บันทึกการสำรวจเรียบร้อย</div>
+    <div class="success-sub">
+      ข้อมูลของท่านถูกส่งเรียบร้อยแล้ว<br>
+      ขอบคุณสำหรับการมีส่วนร่วมพัฒนาชุมชน
+    </div>
+    <button class="btn-reset" onclick="resetSurvey()">สำรวจอีกครั้ง</button>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  { id: 'drain',    text: 'ท่อน้ำมีกลิ่นไม่พึงประสงค์หรือไม่',                 remark: false },
+  { id: 'toilet',   text: 'ห้องน้ำไม่สะอาดหรือมีกลิ่นไม่พึงประสงค์หรือไม่',    remark: false },
+  { id: 'traffic',  text: 'การจราจรติดขัดในบริเวณตลาดหรือไม่',                  remark: false },
+  { id: 'trash',    text: 'พบขยะตกค้างหรือไม่มีการจัดเก็บขยะอย่างเหมาะสมหรือไม่', remark: false },
+  { id: 'other',    text: 'พบปัญหามลพิษอื่นๆ ในตลาดหรือไม่',                     remark: true  },
+];
+
+let answers = {};
+
+function buildQuestions() {
+  const container = document.getElementById('questionList');
+  container.innerHTML = QUESTIONS.map((q, i) => `
+    <div class="q-card" id="qcard-${q.id}">
+      <div class="q-top">
+        <span class="q-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="q-text">${q.text}</span>
+        <div class="q-btns">
+          <button class="q-btn" id="yes-${q.id}" onclick="setAnswer('${q.id}', true)">มี</button>
+          <button class="q-btn" id="no-${q.id}"  onclick="setAnswer('${q.id}', false)">ไม่มี</button>
+        </div>
+      </div>
+      ${q.remark ? `<textarea class="q-remark" id="remark-${q.id}" placeholder="ระบุรายละเอียดเพิ่มเติม..." rows="2"></textarea>` : ''}
+    </div>`
+  ).join('');
+}
+
+function setAnswer(id, val) {
+  answers[id] = val;
+  document.getElementById('yes-' + id).className = 'q-btn' + (val  ? ' yes-active' : '');
+  document.getElementById('no-'  + id).className = 'q-btn' + (!val ? ' no-active'  : '');
+  // Show remark box if answered "มี" for 'other'
+  const rem = document.getElementById('remark-' + id);
+  if (rem) rem.classList.toggle('show', val === true);
+  updateProgress();
+}
+
+function updateProgress() {
+  const total    = QUESTIONS.length;
+  const answered = Object.keys(answers).length;
+  const pct      = Math.round((answered / total) * 100);
+  document.getElementById('progressBar').style.width  = pct + '%';
+  document.getElementById('progressText').textContent = answered + ' / ' + total + ' คำถาม';
+}
+
+async function submitSurvey() {
+  const unanswered = QUESTIONS.filter(q => !(q.id in answers));
+  if (unanswered.length > 0) {
+    showStatus('กรุณาตอบทุกข้อก่อนส่ง (' + unanswered.length + ' ข้อที่ยังไม่ตอบ)', 'error');
+    // Highlight unanswered
+    unanswered.forEach(q => {
+      const card = document.getElementById('qcard-' + q.id);
+      if (card) { card.style.borderColor = 'rgba(239,68,68,.4)'; setTimeout(() => card.style.borderColor = '', 2000); }
+    });
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+
+  const surveyor = document.getElementById('surveyorName').value.trim() || 'ไม่ระบุ';
+  const remarks  = {};
+  QUESTIONS.filter(q => q.remark).forEach(q => {
+    const el = document.getElementById('remark-' + q.id);
+    if (el) remarks[q.id] = el.value.trim();
+  });
+
+  // Get location
+  let location = null;
+  try {
+    location = await new Promise((res, rej) => {
+      navigator.geolocation.getCurrentPosition(
+        p => res({ lat: p.coords.latitude.toFixed(6), lng: p.coords.longitude.toFixed(6) }),
+        () => res(null), { timeout: 4000 }
+      );
+    });
+  } catch(e) {}
+
+  const time = new Date().toLocaleString('th-TH', { timeZone:'Asia/Bangkok' });
+
+  try {
+    const resp = await fetch('/api/survey', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        answers,
+        remarks,
+        surveyor,
+        location,
+        timestamp: time,
+        survey_title: 'แบบสำรวจมลพิษตลาดจัมโบ้ คลองสาม',
+        survey_date:  '10 มิถุนายน พ.ศ. 2569',
+      }),
+    });
+    const data = await resp.json();
+    if (data.ok) {
+      document.getElementById('formView').style.display    = 'none';
+      document.getElementById('successView').style.display = 'block';
+    } else {
+      showStatus('เกิดข้อผิดพลาด: ' + (data.error || 'ไม่ทราบสาเหตุ'), 'error');
+      btn.disabled = false; btn.textContent = 'ส่งแบบสำรวจ';
+    }
+  } catch(e) {
+    showStatus('ไม่สามารถเชื่อมต่อ server ได้', 'error');
+    btn.disabled = false; btn.textContent = 'ส่งแบบสำรวจ';
+  }
+}
+
+function showStatus(msg, type) {
+  const el = document.getElementById('statusMsg');
+  el.textContent = msg; el.className = 'status ' + type; el.style.display = 'block';
+}
+
+function resetSurvey() {
+  answers = {};
+  document.getElementById('surveyorName').value = '';
+  document.getElementById('formView').style.display    = 'block';
+  document.getElementById('successView').style.display = 'none';
+  buildQuestions();
+  updateProgress();
+}
+
+// Init
+buildQuestions();
+updateProgress();
+</script>
+
+</body>
+</html>
