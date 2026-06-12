@@ -3,7 +3,7 @@
 // ════════════════════════════════════════════════════════════════════
 
 const LuminaAuth = {
-  STORAGE_KEY: 'lumina_user_session',
+  STORAGE_KEY: 'luminaAI_user_session',
 
   // Decode Google JWT credential (client-side, no backend needed)
   parseJwt(token) {
