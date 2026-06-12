@@ -24,18 +24,22 @@ async function loadConfig() {
   }
 }
 
+let _tokenClient = null;
+
 function initGoogleLogin() {
   if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.startsWith('YOUR_')) {
     document.getElementById('configWarn').style.display = 'block';
     showStatus('ตั้งค่า GOOGLE_CLIENT_ID ใน .env ก่อน', 'error');
     return;
   }
-  google.accounts.id.initialize({
+
+  // ใช้ OAuth2 Token Client — เปิด popup account picker จริงๆ ทุก browser
+  _tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: GOOGLE_CLIENT_ID,
-    callback:  handleGoogleSignIn,
-    ux_mode:   'popup',
-    context:   'signin',
+    scope: 'openid profile email',
+    callback: handleTokenResponse,
   });
+
   document.getElementById('configWarn').style.display = 'none';
 }
 </script>
@@ -295,14 +299,6 @@ body {
   <!-- Divider -->
   <div class="divider">sign in to continue</div>
 
-  <!-- Google Sign-In (hidden One Tap trigger) -->
-  <div id="g_id_onload"
-    data-client_id=""
-    data-context="signin"
-    data-callback="handleGoogleSignIn"
-    data-auto_prompt="false">
-  </div>
-
   <!-- Custom styled Google button -->
   <button class="gsi-btn" id="gsiBtn" onclick="startGoogleSignIn()">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -335,53 +331,57 @@ window.addEventListener('DOMContentLoaded', () => {
   loadConfig();
 });
 
-// ── Handle Google credential response ────────────────────────────────────
-function handleGoogleSignIn(response) {
-  if (!response.credential) {
-    showStatus('การเข้าสู่ระบบล้มเหลว กรุณาลองอีกครั้ง', 'error');
-    resetBtn();
-    return;
-  }
-
-  const session = LuminaAuth.saveSession(response.credential);
-  if (!session) {
-    showStatus('ไม่สามารถอ่านข้อมูลบัญชีได้', 'error');
-    resetBtn();
-    return;
-  }
-
-  showStatus('เข้าสู่ระบบสำเร็จ กำลังโหลด…', 'info');
-
-  setTimeout(() => {
-    window.location.href = '/app';
-  }, 700);
-}
-
-// ── Trigger Google popup ─────────────────────────────────────────────────
-function startGoogleSignIn() {
-  const btn = document.getElementById('gsiBtn');
-  btn.classList.add('loading');
-
-  if (!GOOGLE_CLIENT_ID) {
-    showStatus('กำลังโหลด config...', 'info');
+// ── Handle OAuth2 token response (ใช้แทน One Tap) ───────────────────────
+async function handleTokenResponse(tokenResponse) {
+  if (tokenResponse.error || !tokenResponse.access_token) {
+    showStatus('การเข้าสู่ระบบล้มเหลว: ' + (tokenResponse.error || 'ไม่ได้รับ token'), 'error');
     resetBtn();
     return;
   }
 
   try {
-    google.accounts.id.prompt((notification) => {
-      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-        // One Tap not shown, use popup flow instead
-        google.accounts.id.renderButton(
-          document.getElementById('googleSignIn'),
-          { theme:'filled_black', size:'large', width:'100%', text:'continue_with' }
-        );
-      }
-    });
+    // ดึงข้อมูล user จาก Google API
+    const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: 'Bearer ' + tokenResponse.access_token }
+    }).then(r => r.json());
+
+    if (!userInfo.sub) throw new Error('ข้อมูล user ไม่สมบูรณ์');
+
+    // บันทึก session ลง localStorage (compatible กับ auth.js)
+    const session = {
+      name:    userInfo.name    || 'User',
+      email:   userInfo.email   || '',
+      picture: userInfo.picture || '',
+      sub:     userInfo.sub,
+      token:   tokenResponse.access_token,
+      exp:     Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 3600),
+      loginAt: Date.now(),
+    };
+    localStorage.setItem('lumina_user_session', JSON.stringify(session));
+
+    showStatus('เข้าสู่ระบบสำเร็จ กำลังโหลด…', 'info');
+    setTimeout(() => { window.location.href = '/app'; }, 700);
+
   } catch (e) {
-    showStatus('เกิดข้อผิดพลาด: ' + e.message, 'error');
+    showStatus('ดึงข้อมูลบัญชีล้มเหลว: ' + e.message, 'error');
     resetBtn();
   }
+}
+
+// ── Trigger Google account picker popup ─────────────────────────────────
+function startGoogleSignIn() {
+  const btn = document.getElementById('gsiBtn');
+  btn.classList.add('loading');
+
+  if (!_tokenClient) {
+    showStatus('กำลังโหลด config...', 'info');
+    btn.classList.remove('loading');
+    return;
+  }
+
+  // prompt: 'select_account' = บังคับให้เลือก account เสมอ (ทุก browser)
+  _tokenClient.requestAccessToken({ prompt: 'select_account' });
+  setTimeout(() => btn.classList.remove('loading'), 1200);
 }
 
 function showStatus(msg, type) {
