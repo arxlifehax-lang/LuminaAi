@@ -354,7 +354,7 @@ async function handleTokenResponse(tokenResponse) {
       picture: userInfo.picture || '',
       sub:     userInfo.sub,
       token:   tokenResponse.access_token,
-      exp:     Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 3600),
+      exp:     Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60), // 30 วัน
       loginAt: Date.now(),
     };
     localStorage.setItem('lumina_user_session', JSON.stringify(session));
