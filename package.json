@@ -1,17 +1,7 @@
 {
   "name": "lumina-chat",
-  "version": "1.0.0",
-  "description": "Lumina Chat — Premium AI Companion Web Application",
-  "main": "index.html",
   "scripts": {
+    "start": "node server.js",
     "dev": "node server.js"
-  },
-  "keywords": [
-    "chatbot",
-    "glassmorphism",
-    "premium-ui",
-    "web-audio-api"
-  ],
-  "author": "Antigravity AI",
-  "license": "MIT"
+  }
 }
