@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LuminaAI — Think Deeper, Build Faster</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Typography (self-hosted, see /fonts) -->
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
   --ink:#06060a;
@@ -75,14 +75,6 @@ nav{
   transition:opacity 0.2s,transform 0.2s;
 }
 .btn-nav:hover{opacity:0.85;transform:translateY(-1px)}
-.btn-survey{
-  padding:8px 18px;border-radius:8px;font-size:14px;font-weight:500;
-  background:transparent;
-  border:1px solid rgba(255,255,255,0.18);
-  color:var(--muted);cursor:pointer;font-family:var(--sans);
-  transition:all 0.2s;
-}
-.btn-survey:hover{border-color:rgba(124,107,250,0.5);color:var(--text);background:rgba(124,107,250,0.08)}
 
 /* ── HERO ─────────────────────────────────────────── */
 .hero{
@@ -324,9 +316,8 @@ footer{
     <a href="#features">Features</a>
     <a href="#how">How it works</a>
     <a href="#models">Models</a>
-    <a href="/survey" style="color:rgba(167,139,250,.8)">แบบสำรวจ</a>
+    <a href="#other" style="color:rgba(167,139,250,.8)">Other</a>
   </div>
-  <button class="btn-survey" onclick="openSurvey()">แบบสอบถาม</button>
   <button class="btn-nav" onclick="location.href='/login.html'">Get Started →</button>
 </nav>
 
@@ -492,6 +483,61 @@ footer{
     <div class="model-chip reveal reveal-delay-2"><div class="mc-icon" style="background:rgba(56,189,248,0.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="mc-name">Qwen 3.7 Max</div><div class="mc-desc">Alibaba · Agentic</div></div></div>
     <div class="model-chip reveal"><div class="mc-icon" style="background:rgba(124,107,250,0.12)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#7c6bfa" stroke-width="2" stroke-linecap="round"/></svg></div><div><div class="mc-name">Lumina Local</div><div class="mc-desc">Your own · Fine-tuned</div></div></div>
     <div class="model-chip reveal reveal-delay-1"><div class="mc-icon" style="background:rgba(74,222,128,0.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#4ade80" stroke-width="2"/><path d="M8 12h8M12 8v8" stroke="#4ade80" stroke-width="2" stroke-linecap="round"/></svg></div><div><div class="mc-name">Llama 3.3 70B</div><div class="mc-desc">Meta · Open source</div></div></div>
+  </div>
+</section>
+
+<!-- OTHER -->
+<section class="z" id="other" style="background:rgba(255,255,255,0.015);border-top:1px solid var(--rim);border-bottom:1px solid var(--rim)">
+  <div class="section-tag reveal center" style="display:flex;flex-direction:column">other</div>
+  <h2 class="section-h reveal" style="text-align:center;margin:0 auto 8px">เนื้อหาเพิ่มเติม</h2>
+  <p class="section-sub reveal" style="text-align:center;margin:0 auto 0">สื่อและเครื่องมือเสริมอื่นๆ ในโปรเจกต์นี้</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:48px;max-width:720px;margin-left:auto;margin-right:auto">
+
+    <!-- Presentation card -->
+    <div class="reveal" onclick="location.href='/presentation'" style="
+      background:var(--glass);border:1px solid var(--rim);border-radius:16px;
+      padding:32px 28px;cursor:pointer;position:relative;overflow:hidden;
+      transition:background 0.25s,border-color 0.25s,transform 0.2s;
+    "
+    onmouseover="this.style.background='rgba(255,255,255,0.07)';this.style.borderColor='rgba(124,107,250,0.35)';this.style.transform='translateY(-3px)'"
+    onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.07)';this.style.transform='none'">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(56,189,248,0.5),transparent)"></div>
+      <div style="width:44px;height:44px;border-radius:11px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2)">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:none;stroke:#38bdf8;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round">
+          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+        </svg>
+      </div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:8px;letter-spacing:-0.01em">พรีเซนเทชั่น</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.65">PBL Board Presentation — กลยุทธ์ด้านสุขาภิบาล Jumbo Market จังหวัดปทุมธานี</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:11px;font-family:var(--mono);color:rgba(56,189,248,0.7)">
+        <span>เปิดสไลด์</span>
+        <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- Survey card -->
+    <div class="reveal reveal-delay-1" onclick="openSurvey()" style="
+      background:var(--glass);border:1px solid var(--rim);border-radius:16px;
+      padding:32px 28px;cursor:pointer;position:relative;overflow:hidden;
+      transition:background 0.25s,border-color 0.25s,transform 0.2s;
+    "
+    onmouseover="this.style.background='rgba(255,255,255,0.07)';this.style.borderColor='rgba(124,107,250,0.35)';this.style.transform='translateY(-3px)'"
+    onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.07)';this.style.transform='none'">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,107,250,0.5),transparent)"></div>
+      <div style="width:44px;height:44px;border-radius:11px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;background:rgba(124,107,250,0.12);border:1px solid rgba(124,107,250,0.2)">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:none;stroke:#a78bfa;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round">
+          <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+      </div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:8px;letter-spacing:-0.01em">แบบสอบถาม</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.65">รายงานสภาพพื้นที่ — ขยะ, การจราจร, กลิ่นห้องน้ำ, ท่อระบายน้ำ ใช้เวลา 30 วินาที</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:11px;font-family:var(--mono);color:rgba(124,107,250,0.7)">
+        <span>กรอกแบบสอบถาม</span>
+        <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
   </div>
 </section>
 

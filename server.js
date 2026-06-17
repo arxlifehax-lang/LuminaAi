@@ -37,7 +37,9 @@ const MIME_TYPES = {
     '.jpg': 'image/jpeg',
     '.gif': 'image/gif',
     '.ico': 'image/x-icon',
-    '.svg': 'image/svg+xml'
+    '.svg': 'image/svg+xml',
+    '.woff2': 'font/woff2',
+    '.woff': 'font/woff'
 };
 
 const server = http.createServer((req, res) => {
@@ -276,6 +278,16 @@ const server = http.createServer((req, res) => {
     }
 
     // ── Auth pages (always accessible) ──────────────────────────────
+    if (rawPath === '/presentation' || rawPath === '/presentation.html') {
+        const pf = require('path').join(__dirname, 'presentation.html');
+        fs.readFile(pf, (e, d) => {
+            if (e) { res.writeHead(404); return res.end('Not found'); }
+            res.writeHead(200, { 'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*' });
+            res.end(d);
+        });
+        return;
+    }
+
     if (rawPath === '/survey' || rawPath === '/survey.html') {
         const sf = require('path').join(__dirname, 'survey.html');
         fs.readFile(sf, (e, d) => {

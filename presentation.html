@@ -1,0 +1,2645 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PBL Board Presentation - Jumbo Market Sanitation Strategy</title>
+    <!-- Google Fonts -->
+    
+    
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* Modern Premium Design Variables */
+        :root {
+            --bg-deep: #060913;
+            --bg-surface: rgba(11, 19, 43, 0.75);
+            --primary: #10B981; /* Sanitation Emerald */
+            --primary-glow: rgba(16, 185, 129, 0.2);
+            --accent: #F59E0B; /* Amber Gold */
+            --accent-glow: rgba(245, 158, 11, 0.2);
+            --card-bg: rgba(30, 41, 59, 0.45);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Reset & Base Rules */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.06) 0%, transparent 45%);
+            color: var(--text-main);
+            font-family: 'Sarabun', 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 15px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Top Control Bar */
+        .system-bar {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            z-index: 10;
+        }
+
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), #059669);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 20px;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .brand-text h2 {
+            font-family: 'Prompt', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .brand-text p {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* Interactive Buttons */
+        .btn-premium {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+        }
+
+        .btn-premium:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
+        }
+
+        .btn-board {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.03));
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .btn-board:hover {
+            background: var(--accent);
+            color: #060913;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35);
+            border-color: var(--accent);
+        }
+
+        /* Language Toggle Switch */
+        .lang-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 3px;
+            border-radius: 30px;
+            display: flex;
+            gap: 3px;
+        }
+
+        .lang-toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .lang-toggle-btn.active {
+            background: var(--primary);
+            color: #060913;
+            box-shadow: 0 2px 8px var(--primary-glow);
+        }
+
+        /* 16:9 Slide Chassis Frame */
+        .slide-chassis {
+            width: 1200px;
+            height: 675px; /* Aspect Ratio 16:9 precisely */
+            background: var(--bg-surface);
+            backdrop-filter: blur(6px);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            transform-origin: center center;
+            flex-shrink: 0;
+            backface-visibility: hidden;
+        }
+
+        /* Core Slide Structure */
+        .presentation-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 45px 70px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: scale(0.98) translateY(12px);
+            pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            justify-content: flex-start;
+            z-index: 1;
+        }
+
+        .presentation-slide.active-slide {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            z-index: 2;
+        }
+
+        /* Font Stylings */
+        h1, h2, h3, h4 {
+            font-family: 'Prompt', sans-serif;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .presentation-slide-header {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
+            flex-shrink: 0;
+        }
+
+        .presentation-slide-header .slide-title-wrapper {
+            border-left: 5px solid var(--primary);
+            padding-left: 18px;
+        }
+
+        .presentation-slide-header h2 {
+            font-size: 32px;
+            line-height: 1.2;
+        }
+
+        .presentation-slide-header .category-tag {
+            font-size: 12px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* General Content Layout Framework */
+        .flex-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .layout-split {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .layout-trio {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(16, 185, 129, 0.35);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.1);
+        }
+
+        .glass-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .glass-card-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .glass-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .glass-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Lists */
+        ul.custom-bullet-list {
+            list-style: none;
+        }
+
+        ul.custom-bullet-list li {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        ul.custom-bullet-list li::before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        /* Slide 1: Welcome Screen Details */
+        .cover-slide-layout {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+
+        .cover-slide-layout .executive-badge {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--primary);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .cover-slide-layout h1 {
+            font-size: 44px;
+            line-height: 1.3;
+            margin-bottom: 24px;
+            font-weight: 700;
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cover-slide-layout p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* Slide 2: Team Member Configuration (Grid Matrix) */
+        .team-matrix-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        .team-member-card {
+            position: relative;
+            background: linear-gradient(160deg, rgba(30, 41, 59, 0.45), rgba(15, 23, 42, 0.25));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px 20px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .team-member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .team-member-card:hover {
+            border-color: var(--accent);
+            background: linear-gradient(160deg, rgba(245, 158, 11, 0.06), rgba(15, 23, 42, 0.3));
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
+        }
+
+        .team-member-card:hover::before {
+            opacity: 1;
+            height: 4px;
+        }
+
+        .team-rank-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--accent);
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 999px;
+            padding: 4px 10px;
+        }
+
+        .team-avatar-frame {
+            width: 64px;
+            height: 64px;
+            background: radial-gradient(circle at 30% 30%, rgba(16, 185, 129, 0.18), rgba(245, 158, 11, 0.08));
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .team-member-info h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+
+        .team-member-info p {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 2px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Slide 5: Roadmap Timeline Graphics */
+        .roadmap-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 40px;
+            padding: 0 20px;
+        }
+
+        .roadmap-container::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 50px;
+            right: 50px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 0;
+        }
+
+        .roadmap-progress-bar {
+            position: absolute;
+            top: 25px;
+            left: 50px;
+            width: 66%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            z-index: 1;
+        }
+
+        .roadmap-node {
+            position: relative;
+            z-index: 2;
+            width: 22%;
+            text-align: center;
+        }
+
+        .roadmap-indicator-ring {
+            width: 52px;
+            height: 52px;
+            background: var(--bg-deep);
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .roadmap-node.complete .roadmap-indicator-ring {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .roadmap-node.active .roadmap-indicator-ring {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .roadmap-node h4 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .roadmap-node p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Slide 6: Strategic Summary Columns */
+        .summary-showcase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .compare-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        /* Presentation Footer Controls */
+        .slide-chassis-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding: 20px 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(4, 6, 14, 0.3);
+            z-index: 3;
+            flex-shrink: 0;
+        }
+
+        .slide-chassis-footer .presentation-nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .slide-page-number {
+            font-family: 'Prompt', sans-serif;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 2px;
+            font-size: 14px;
+        }
+
+        .btn-nav-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            color: #ffffff;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-nav-circle:hover {
+            background: var(--primary);
+            color: #060913;
+            border-color: var(--primary);
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        /* ----------------------------------------------------- */
+        /* PRESENTATION MODE (HIDES SURROUNDING UI CHROME) */
+        /* ----------------------------------------------------- */
+        body.present-mode .system-bar {
+            display: none;
+        }
+
+        body.present-mode .slide-chassis-footer {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        body.present-mode .slide-chassis:hover .slide-chassis-footer {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .exit-present-btn {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 50;
+            background: rgba(6, 9, 19, 0.6);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 9px 18px;
+            border-radius: 30px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+            opacity: 0.3;
+            transition: var(--transition);
+        }
+
+        .exit-present-btn:hover {
+            opacity: 1;
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ----------------------------------------------------- */
+        /* BOARD PORTAL PANEL (MODAL INTERFACE) */
+        /* ----------------------------------------------------- */
+        .board-portal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(4, 6, 12, 0.97);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            display: none; /* Managed by JS */
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        /* PIN Pad Screen */
+        .portal-auth-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 420px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .portal-auth-card h3 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .pin-indicators {
+            display: flex;
+            gap: 16px;
+            margin: 25px 0;
+        }
+
+        .pin-indicator-dot {
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .pin-indicator-dot.active-dot {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+        }
+
+        .pin-indicator-dot.error-shake {
+            background: #EF4444;
+            border-color: #EF4444;
+            animation: shake 0.35s;
+        }
+
+        .pin-keyboard-matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 270px;
+        }
+
+        .pin-key {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-size: 22px;
+            font-weight: 600;
+            height: 56px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .pin-key:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+        }
+
+        .auth-error-output {
+            color: #EF4444;
+            font-size: 14px;
+            margin-top: 15px;
+            height: 20px;
+            font-weight: 500;
+        }
+
+        /* Executive Dashboard Area */
+        .executive-board-console {
+            width: 100%;
+            max-width: 1240px;
+            height: 85vh;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            display: none; /* Managed by JS upon authorization */
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
+        }
+
+        .console-banner {
+            padding: 24px 45px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.01);
+            flex-shrink: 0;
+        }
+
+        .console-workspace {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        /* Navigation Sidebar */
+        .console-sidebar {
+            border-right: 1px solid var(--border);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .console-nav-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .console-nav-tab:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+        }
+
+        .console-nav-tab.active-tab {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--primary);
+        }
+
+        .console-content-viewer {
+            padding: 40px 50px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .console-panel-pane {
+            display: none;
+            animation: paneFadeIn 0.4s ease;
+        }
+
+        .console-panel-pane.active-pane {
+            display: block;
+        }
+
+        /* Report Summary Blocks */
+        .executive-action-summary {
+            background: rgba(16, 185, 129, 0.04);
+            border-left: 4px solid var(--primary);
+            padding: 24px;
+            border-radius: 0 16px 16px 0;
+            margin-bottom: 30px;
+        }
+
+        .executive-action-summary h4 {
+            color: var(--primary);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .executive-action-summary p {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* Interactive Scorecard Tool */
+        .grading-tool-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .grade-input-box {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .grade-parameter-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .grade-parameter-control select {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .grade-result-card {
+            background: radial-gradient(circle at top right, rgba(245, 158, 11, 0.08), rgba(0, 0, 0, 0));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 15px 0;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        /* Document Table Configurations */
+        .executive-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0,0,0,0.15);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .executive-table th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--primary);
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .executive-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Badges */
+        .badge-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .badge-danger { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
+        .badge-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
+        .badge-success { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+
+        /* Keyframe Animations */
+        @keyframes paneFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        /* Bilingual Display Rule Base */
+        [data-lang] { display: none; }
+        body.lang-th [data-lang="th"] { display: block; }
+        body.lang-th [data-lang="th-inline"] { display: inline; }
+        body.lang-en [data-lang="en"] { display: block; }
+        body.lang-en [data-lang="en-inline"] { display: inline; }
+
+        /* ======================================================= */
+        /* VISUAL TRANSFORMATION UPGRADE — ENHANCED PREMIUM LAYER  */
+        /* ======================================================= */
+
+        /* --- Particle Canvas --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .system-bar, .slide-chassis {
+            position: relative;
+            z-index: 1;
+        }
+        .exit-present-btn {
+            position: fixed;
+            z-index: 50;
+        }
+
+        /* --- Keyframes --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(26px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-28px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(28px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes glowPulse {
+            0%, 100% { filter: brightness(1); }
+            50%       { filter: brightness(1.25) drop-shadow(0 0 8px rgba(16,185,129,0.6)); }
+        }
+        @keyframes badgeBorderGlow {
+            0%, 100% { border-color: rgba(16,185,129,0.3); }
+            50%       { border-color: rgba(16,185,129,0.7); }
+        }
+        @keyframes orbitSpin {
+            from { transform: translate(-50%,-50%) rotate(0deg); }
+            to   { transform: translate(-50%,-50%) rotate(360deg); }
+        }
+        @keyframes orbitSpinRev {
+            from { transform: translate(-50%,-50%) rotate(0deg); }
+            to   { transform: translate(-50%,-50%) rotate(-360deg); }
+        }
+        @keyframes shimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes barGrow {
+            from { width: 0; }
+        }
+        @keyframes dotPop {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.3); }
+        }
+        @keyframes accentLineGrow {
+            from { transform: scaleY(0); opacity: 0; }
+            to   { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* --- Slide Content Stagger Animations --- */
+        .presentation-slide { will-change: opacity, transform; }
+        .orbit-ring-1, .orbit-ring-2, .orbit-ring-3 { will-change: transform; }
+        .active-slide .presentation-slide-header {
+            animation: fadeInDown 0.55s 0.12s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        .active-slide > .flex-content {
+            animation: fadeInUp 0.6s 0.22s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        /* Glass cards — trio layout */
+        .active-slide .layout-trio .glass-card:nth-child(1) { animation: fadeInUp 0.55s 0.28s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .layout-trio .glass-card:nth-child(2) { animation: fadeInUp 0.55s 0.42s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .layout-trio .glass-card:nth-child(3) { animation: fadeInUp 0.55s 0.56s cubic-bezier(0.22,1,0.36,1) both; }
+        /* Split layout */
+        .active-slide .layout-split > *:nth-child(1) { animation: fadeInLeft  0.6s 0.3s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .layout-split > *:nth-child(2) { animation: fadeInRight 0.6s 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+        /* Team member cards */
+        .active-slide .team-member-card:nth-child(1) { animation: scaleIn 0.48s 0.18s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .team-member-card:nth-child(2) { animation: scaleIn 0.48s 0.28s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .team-member-card:nth-child(3) { animation: scaleIn 0.48s 0.38s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .team-member-card:nth-child(4) { animation: scaleIn 0.48s 0.48s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .team-member-card:nth-child(5) { animation: scaleIn 0.48s 0.58s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .team-member-card:nth-child(6) { animation: scaleIn 0.48s 0.68s cubic-bezier(0.22,1,0.36,1) both; }
+        /* Roadmap nodes */
+        .active-slide .roadmap-node:nth-child(2) { animation: fadeInUp 0.5s 0.2s  cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .roadmap-node:nth-child(3) { animation: fadeInUp 0.5s 0.36s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .roadmap-node:nth-child(4) { animation: fadeInUp 0.5s 0.52s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .roadmap-node:nth-child(5) { animation: fadeInUp 0.5s 0.68s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .roadmap-progress-bar { animation: barGrow 1.4s 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+        /* Compare cards */
+        .active-slide .compare-card:nth-child(1) { animation: fadeInLeft  0.6s 0.28s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .compare-card:nth-child(2) { animation: fadeInRight 0.6s 0.44s cubic-bezier(0.22,1,0.36,1) both; }
+        /* Cover slide hero */
+        .active-slide .cover-slide-layout .executive-badge  { animation: fadeInDown 0.5s 0.1s  cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .cover-slide-layout h1               { animation: fadeInUp  0.65s 0.24s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .cover-slide-layout > p              { animation: fadeInUp  0.6s  0.42s cubic-bezier(0.22,1,0.36,1) both; }
+        .active-slide .cover-slide-layout .hero-meta       { animation: fadeInUp  0.6s  0.58s cubic-bezier(0.22,1,0.36,1) both; }
+        /* Q&A slide */
+        #slide-8.active-slide h1 { animation: scaleIn 0.7s 0.2s cubic-bezier(0.22,1,0.36,1) both; }
+
+        /* --- Orbit Rings (Cover Slide) --- */
+        .orbit-ring-container {
+            position: absolute;
+            top: 50%; left: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            top: 0; left: 0;
+        }
+        .orbit-ring-1 {
+            width: 400px; height: 400px;
+            margin-top: -200px; margin-left: -200px;
+            border: 1px dashed rgba(16,185,129,0.22);
+            animation: orbitSpin 22s linear infinite;
+        }
+        .orbit-ring-2 {
+            width: 560px; height: 560px;
+            margin-top: -280px; margin-left: -280px;
+            border: 1px dashed rgba(245,158,11,0.15);
+            animation: orbitSpinRev 35s linear infinite;
+        }
+        .orbit-ring-3 {
+            width: 720px; height: 720px;
+            margin-top: -360px; margin-left: -360px;
+            border: 1px solid rgba(16,185,129,0.06);
+            animation: orbitSpin 55s linear infinite;
+        }
+        .orbit-dot {
+            position: absolute;
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            top: -3.5px; left: calc(50% - 3.5px);
+        }
+        .orbit-dot-green {
+            background: var(--primary);
+            box-shadow: 0 0 10px rgba(16,185,129,0.8), 0 0 20px rgba(16,185,129,0.4);
+        }
+        .orbit-dot-gold {
+            background: var(--accent);
+            box-shadow: 0 0 10px rgba(245,158,11,0.8), 0 0 20px rgba(245,158,11,0.4);
+        }
+
+        /* --- Slide cover layout must allow absolute positioning --- */
+        .cover-slide-layout { position: relative; overflow: visible; }
+
+        /* --- Enhanced cover h1 gradient --- */
+        .cover-slide-layout h1 {
+            background: linear-gradient(135deg, #ffffff 25%, #a7f3d0 70%, rgba(16,185,129,0.85) 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            filter: drop-shadow(0 2px 24px rgba(16,185,129,0.18));
+        }
+
+        /* --- Animated badge glow --- */
+        .executive-badge {
+            animation: badgeBorderGlow 2.8s ease-in-out infinite !important;
+        }
+
+        /* --- Enhanced slide header left bar (gradient replace solid) --- */
+        .presentation-slide-header .slide-title-wrapper {
+            border-left: none !important;
+            padding-left: 20px !important;
+            position: relative;
+        }
+        .presentation-slide-header .slide-title-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 2px;
+            transform-origin: top;
+            animation: accentLineGrow 0.4s cubic-bezier(0.22,1,0.36,1) both;
+        }
+
+        /* --- Brand logo pulse --- */
+        .brand-logo-icon {
+            animation: glowPulse 3.5s ease-in-out infinite;
+        }
+
+        /* --- Glass card shimmer on hover --- */
+        .glass-card { overflow: hidden; }
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.05) 50%, transparent 62%);
+            background-size: 200% auto;
+            border-radius: inherit;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .glass-card:hover::after {
+            opacity: 1;
+            animation: shimmer 0.75s linear;
+        }
+        .glass-card:hover .glass-card-icon {
+            transform: scale(1.18) rotate(-5deg);
+            filter: drop-shadow(0 0 8px currentColor);
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        /* --- Roadmap active node highlight (static, no continuous animation) --- */
+        .roadmap-node.complete .roadmap-indicator-ring {
+            border-color: var(--primary);
+            box-shadow: 0 0 14px rgba(16,185,129,0.4);
+        }
+        .roadmap-node.active .roadmap-indicator-ring {
+            border-color: var(--accent);
+            box-shadow: 0 0 14px rgba(245,158,11,0.4);
+        }
+
+        /* --- Chassis subtle inner glow --- */
+        .slide-chassis {
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.8),
+                0 0 0 1px rgba(16,185,129,0.07),
+                inset 0 1px 0 rgba(255,255,255,0.06) !important;
+        }
+
+        /* --- Category tag pill --- */
+        .category-tag {
+            background: linear-gradient(90deg, rgba(245,158,11,0.12), transparent) !important;
+            padding: 2px 10px 2px 0 !important;
+            border-radius: 4px !important;
+            display: inline-block !important;
+        }
+
+        /* --- Progress Dots (footer) --- */
+        .progress-dots {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+        }
+        .progress-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.18);
+            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .progress-dot:hover { background: rgba(255,255,255,0.4); transform: scale(1.3); }
+        .progress-dot.active {
+            background: var(--primary);
+            width: 22px;
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(16,185,129,0.55);
+        }
+
+        /* --- Q&A title glow --- */
+        #slide-8 h1 {
+            background: linear-gradient(135deg, #ffffff 30%, rgba(16,185,129,0.8) 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            filter: drop-shadow(0 0 30px rgba(16,185,129,0.25));
+        }
+    
+        /* ======================================================= */
+        /* RESPONSIVE VIEWPORT FITTING - DESKTOP / TABLET / PHONE  */
+        /* ======================================================= */
+        html {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            gap: 0;
+        }
+
+        .system-bar {
+            flex-wrap: wrap;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .brand-wrapper,
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-text h2,
+        .brand-text p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .action-group {
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .exit-present-btn {
+            position: fixed !important;
+            z-index: 120 !important;
+        }
+
+        .pin-key-spacer {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .board-portal-overlay {
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+
+        .portal-auth-card {
+            width: min(420px, calc(100vw - 32px));
+            max-height: calc(100dvh - 32px);
+            overflow: auto;
+        }
+
+        .executive-board-console {
+            width: min(1240px, calc(100vw - 32px));
+            height: min(85vh, calc(100dvh - 32px));
+        }
+
+        .console-nav-tabs {
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            scrollbar-width: thin;
+        }
+
+        .console-nav-tab {
+            flex: 0 0 auto;
+            white-space: nowrap;
+        }
+
+        .grading-tool-grid {
+            grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                justify-content: flex-start;
+                padding: 10px;
+            }
+
+            .system-bar {
+                max-width: 100%;
+                margin-bottom: 8px;
+            }
+
+            .brand-logo-icon {
+                width: 34px;
+                height: 34px;
+                border-radius: 8px;
+                font-size: 17px;
+            }
+
+            .brand-text h2 {
+                font-size: 15px;
+                max-width: 52vw;
+            }
+
+            .brand-text p {
+                max-width: 52vw;
+            }
+
+            .btn-premium {
+                padding: 8px 12px;
+                font-size: 12px;
+                gap: 6px;
+            }
+
+            .lang-toggle-btn {
+                padding: 6px 11px;
+            }
+
+            .board-portal-overlay {
+                padding: 16px;
+                align-items: flex-start;
+            }
+
+            .executive-board-console {
+                border-radius: 18px;
+            }
+
+            .grading-tool-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            body {
+                padding: 8px;
+            }
+
+            .system-bar {
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .brand-wrapper {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .brand-text h2 {
+                max-width: calc(100vw - 72px);
+                font-size: 14px;
+            }
+
+            .brand-text p {
+                display: none;
+            }
+
+            .action-group {
+                width: 100%;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .btn-premium {
+                padding: 8px 10px;
+                min-height: 36px;
+            }
+
+            .btn-premium span {
+                display: none !important;
+            }
+
+            .portal-auth-card {
+                padding: 24px;
+                border-radius: 18px;
+            }
+
+            .pin-keyboard-matrix {
+                gap: 10px;
+            }
+
+            .pin-key {
+                width: 56px;
+                height: 48px;
+            }
+
+            .exit-present-btn {
+                top: 10px;
+                right: 10px;
+                padding: 9px 10px;
+            }
+
+            .exit-present-btn span {
+                display: none !important;
+            }
+        }
+
+        @media (max-height: 560px) {
+            body {
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+
+            .system-bar {
+                margin-bottom: 6px;
+            }
+
+            .brand-text p {
+                display: none;
+            }
+
+            .btn-premium {
+                padding-top: 7px;
+                padding-bottom: 7px;
+            }
+        }
+</style>
+</head>
+<body class="lang-th">
+
+    <!-- ANIMATED PARTICLE CANVAS BACKGROUND -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- EXECUTIVE SYSTEM TOP BAR -->
+    <div class="system-bar">
+        <div class="brand-wrapper">
+            <div class="brand-logo-icon">
+                <i class="fa-solid fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+                <h2 data-lang="th">ยุทธศาสตร์สิ่งแวดล้อมตลาดจัมโบ้</h2>
+                <h2 data-lang="en">Jumbo Market Sanitation Strategy</h2>
+                <p>PBL Research Group 2 • Khlong Sam, Pathum Thani</p>
+            </div>
+        </div>
+        
+        <div class="action-group">
+            <div class="lang-container">
+                <button class="lang-toggle-btn active" id="th-toggle" onclick="setAppLanguage('th')">TH</button>
+                <button class="lang-toggle-btn" id="en-toggle" onclick="setAppLanguage('en')">EN</button>
+            </div>
+            <button class="btn-premium" id="present-mode-btn" onclick="togglePresentMode()">
+                <i class="fa-solid fa-expand"></i>
+                <span data-lang="th">โหมดพรีเซน</span>
+                <span data-lang="en">Present Mode</span>
+            </button>
+            <button class="btn-premium btn-board" onclick="openExecutivePortal()">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span data-lang="th">สำหรับผู้ประเมิน</span>
+                <span data-lang="en">Board Review Desk</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN PRESENTATION ENGINE -->
+    <div class="slide-chassis">
+
+        <!-- SLIDE 1: WELCOME SCREEN -->
+        <div class="presentation-slide active-slide" id="slide-1">
+            <div class="flex-content cover-slide-layout">
+                <!-- Orbit Decoration Rings -->
+                <div class="orbit-ring-container">
+                    <div class="orbit-ring orbit-ring-1"><div class="orbit-dot orbit-dot-green"></div></div>
+                    <div class="orbit-ring orbit-ring-2"><div class="orbit-dot orbit-dot-gold"></div></div>
+                    <div class="orbit-ring orbit-ring-3"></div>
+                </div>
+                <div class="executive-badge">PBL STRATEGIC PROPOSAL • 2026</div>
+                <h1 data-lang="th">นวัตกรรมไฟจราจรอัจฉริยะด้วยไมโครบิต<br>เพื่อยกระดับสุขาภิบาลตลาดจัมโบ้ คลองสาม</h1>
+                <h1 data-lang="en">Smart Micro:bit Traffic-Light Innovation<br>for Jumbo Market Sanitation Upgrade</h1>
+                <p data-lang="th">ระบบเซนเซอร์ไมโครบิตตรวจวัดมลพิษ กลิ่น และความชื้นแบบเรียลไทม์ พร้อมแสดงผลผ่านไฟสัญญาณจราจร เพื่อเฝ้าระวังและแก้ไขปัญหาสุขาภิบาลในตลาดจัมโบ้ คลองสามอย่างยั่งยืน</p>
+                <p data-lang="en">A micro:bit sensor network tracks pollution, odor, and humidity in real time, displaying status through traffic-light signals to drive sustainable sanitation monitoring at Jumbo Market.</p>
+                
+                <div class="hero-meta" style="display: flex; gap: 40px; margin-top: 10px; font-size: 14px; color: var(--text-muted);">
+                    <div><i class="fa-solid fa-map-marker-alt" style="color: var(--primary); margin-right: 8px;"></i> อ.คลองหลวง จ.ปทุมธานี (Pathum Thani)</div>
+                    <div><i class="fa-solid fa-user-friends" style="color: var(--accent); margin-right: 8px;"></i> คณะผู้จัดทำโครงการกลุ่ม 2 (PBL Group 2)</div>
+                </div>
+            </div>
+            <div class="slide-chassis-footer">
+                <div>Jumbo Market Klong Sam • Group 2 PBL Presentation</div>
+                <div class="presentation-nav-buttons">
+                    <button class="btn-nav-circle" onclick="navigateSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <span class="slide-page-number">1 / 8</span>
+                    <button class="btn-nav-circle" onclick="navigateSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: 7 TEAM MEMBERS MATRIX -->
+        <div class="presentation-slide" id="slide-2">
+            <div class="presentation-slide-header">
+                <div class="slide-title-wrapper">
+                    <span class="category-tag">ชั้นมัธยมศึกษาปีที่ 4/2</span>
+                    <h2 data-lang="th">สมาชิกคณะสำรวจ</h2>
+                    <h2 data-lang="en">Project Survey Committee</h2>
+                </div>
+            </div>
+            <div class="flex-content">
+                <div class="team-matrix-container">
+                    <div class="team-member-card">
+                        <span class="team-rank-badge">01</span>
+                        <div class="team-avatar-frame"><i class="fa-solid fa-user"></i></div>
+                        <div class="team-member-info">
+                            <h4>นายยศกร รุ่งน้อย</h4>
+                            <p data-lang="th">เลขที่ 12</p>
+                            <p data-lang="en">No. 12</p>
+                        </div>
+                    </div>
+
+                    <div class="team-member-card">
+                        <span class="team-rank-badge">02</span>
+                        <div class="team-avatar-frame"><i class="fa-solid fa-user"></i></div>
+                        <div class="team-member-info">
+                            <h4>นายปองคุณ มหาศรี</h4>
+                            <p data-lang="th">เลขที่ 14</p>
+                            <p data-lang="en">No. 14</p>
+                        </div>
+                    </div>
+
+                    <div class="team-member-card">
+                        <span class="team-rank-badge">03</span>
+                        <div class="team-avatar-frame"><i class="fa-solid fa-user"></i></div>
+                        <div class="team-member-info">
+                            <h4>นายจตุภัทร นาสารีย์</h4>
+                            <p data-lang="th">เลขที่ 16</p>
+                            <p data-lang="en">No. 16</p>
+                        </div>
+                    </div>
+
+                    <div class="team-member-card">
+                        <span class="team-rank-badge">04</span>
+                        <div class="team-avatar-frame"><i class="fa-solid fa-user"></i></div>
+                        <div class="team-member-info">
+                            <h4>นายบุญพิพัฒน์ พูลชาติ</h4>
+                            <p data-lang="th">เลขที่ 19</p>
+                            <p data-lang="en">No. 19</p>
+                        </div>
+                    </div>
+
+                    <div class="team-member-card">
+                        <span class="team-rank-badge">05</span>
+                        <div class="team-avatar-frame"><i class="fa-solid fa-user"></i></div>
+                        <div class="team-member-info">
+                            <h4>นายพงศ์พิศ นฤพรภูดิทกุล</h4>
+                            <p data-lang="th">เลขที่ 22</p>
+                            <p data-lang="en">No. 22</p>
+                        </div>
+                    </div>
+
+                    <div class="team-member-card">
+                        <span class="team-rank-badge">06</span>
+                        <div class="team-avatar-frame"><i class="fa-solid fa-user"></i></div>
+                        <div class="team-member-info">
+                            <h4>นายภูดิศ ชุมมณี</h4>
+                            <p data-lang="th">เลขที่ 29</p>
+                            <p data-lang="en">No. 29</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-chassis-footer">
+                <div>Jumbo Market Klong Sam • Group 2 PBL Presentation</div>
+                <div class="presentation-nav-buttons">
+                    <button class="btn-nav-circle" onclick="navigateSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <span class="slide-page-number">2 / 8</span>
+                    <button class="btn-nav-circle" onclick="navigateSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: PROBLEM HOTSPOTS -->
+        <div class="presentation-slide" id="slide-3">
+            <div class="presentation-slide-header">
+                <div class="slide-title-wrapper">
+                    <span class="category-tag">Background & Rationale</span>
+                    <h2 data-lang="th">ที่มาและความสำคัญ</h2>
+                    <h2 data-lang="en">Background & Rationale</h2>
+                </div>
+            </div>
+            <div class="flex-content">
+                <div class="layout-trio">
+                    <div class="glass-card" style="border-top: 4px solid #EF4444;">
+                        <div class="glass-card-header">
+                            <div class="glass-card-icon" style="color: #EF4444;"><i class="fa-solid fa-wind"></i></div>
+                            <h3 data-lang="th">กลิ่นสะสมในโซนอาหารสด</h3>
+                            <h3 data-lang="en">Odor Accumulation in Fresh Food Zones</h3>
+                        </div>
+                        <p data-lang="th">โซนอาหารสดมีเศษวัตถุดิบ น้ำทิ้ง และการใช้พื้นที่ต่อเนื่องตลอดวัน จึงมีโอกาสเกิดกลิ่นไม่พึงประสงค์จากการย่อยสลายของอินทรียวัตถุ หากไม่มีการระบายอากาศและทำความสะอาดตามรอบที่เหมาะสม อาจกระทบต่อความรู้สึกของผู้ใช้บริการและภาพลักษณ์ด้านสุขอนามัยของตลาด</p>
+                        <p data-lang="en">Fresh food zones handle organic waste, wastewater, and continuous daily activity, making odor accumulation likely when ventilation and cleaning cycles are insufficient. This can affect customer comfort and the market's hygiene image.</p>
+                    </div>
+                    
+                    <div class="glass-card" style="border-top: 4px solid #F59E0B;">
+                        <div class="glass-card-header">
+                            <div class="glass-card-icon" style="color: #F59E0B;"><i class="fa-solid fa-toilet"></i></div>
+                            <h3 data-lang="th">ความชื้นสะสมในห้องน้ำสาธารณะ</h3>
+                            <h3 data-lang="en">Moisture Build-up in Public Restrooms</h3>
+                        </div>
+                        <p data-lang="th">ห้องน้ำสาธารณะเป็นพื้นที่ที่มีผู้ใช้งานจำนวนมากและมีความชื้นสูงอยู่เสมอ เมื่อการถ่ายเทอากาศไม่เพียงพอหรือการดูแลไม่สม่ำเสมอ ความอับชื้นอาจทำให้เกิดคราบ กลิ่น และสภาพแวดล้อมที่ไม่สะอาด จึงควรมีระบบติดตามเพื่อช่วยแจ้งเตือนก่อนปัญหาสะสมรุนแรง</p>
+                        <p data-lang="en">Public restrooms are high-use areas with naturally high moisture. If airflow or maintenance is inconsistent, dampness can lead to stains, odors, and an unhygienic environment, so monitoring can help alert staff before issues become more serious.</p>
+                    </div>
+                    
+                    <div class="glass-card" style="border-top: 4px solid #10B981;">
+                        <div class="glass-card-header">
+                            <div class="glass-card-icon" style="color: #10B981;"><i class="fa-solid fa-droplet-slash"></i></div>
+                            <h3 data-lang="th">ไขมันและเศษอาหารสะสมในระบบระบายน้ำ</h3>
+                            <h3 data-lang="en">Food Residue and Grease in Drainage</h3>
+                        </div>
+                        <p data-lang="th">ร้านอาหารและแผงจำหน่ายของสดมีน้ำล้างและเศษอาหารไหลลงสู่รางระบายน้ำเป็นประจำ หากมีไขมันหรือเศษตะกอนสะสมมากขึ้น อาจทำให้น้ำไหลช้า เกิดกลิ่น และเพิ่มภาระในการทำความสะอาด โดยเฉพาะช่วงที่มีฝนหรือมีผู้ใช้บริการหนาแน่น</p>
+                        <p data-lang="en">Food stalls and fresh produce areas regularly discharge wash water and small food residues into drains. When grease and sediment build up, drainage may slow down, odors may increase, and cleaning work becomes harder, especially during rain or peak market hours.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-chassis-footer">
+                <div>Jumbo Market Klong Sam • Group 2 PBL Presentation</div>
+                <div class="presentation-nav-buttons">
+                    <button class="btn-nav-circle" onclick="navigateSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <span class="slide-page-number">3 / 8</span>
+                    <button class="btn-nav-circle" onclick="navigateSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: INNOVATION - MICRO:BIT TRAFFIC LIGHT SYSTEM -->
+        <div class="presentation-slide" id="slide-4">
+            <div class="presentation-slide-header">
+                <div class="slide-title-wrapper">
+                    <span class="category-tag">Innovation Solution</span>
+                    <h2 data-lang="th">นวัตกรรมแก้ไขปัญหา: ระบบไฟจราจรอัจฉริยะด้วยไมโครบิต</h2>
+                    <h2 data-lang="en">Innovation Solution: Smart Micro:bit Traffic-Light System</h2>
+                </div>
+            </div>
+            <div class="flex-content" style="flex-direction: column; gap: 24px;">
+                <p style="font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 980px;" data-lang="th">ติดตั้งบอร์ดไมโครบิต (micro:bit) ร่วมกับเซนเซอร์วัดก๊าซ ความชื้น และกลิ่นในแต่ละจุดเสี่ยงของตลาด ประมวลผลค่าที่ตรวจวัดได้แบบเรียลไทม์ แล้วแสดงผลออกมาเป็นสัญญาณไฟจราจร (เขียว-เหลือง-แดง) เพื่อแจ้งเตือนพ่อค้าแม่ค้าและเจ้าหน้าที่ให้ทราบสถานะความสะอาดได้ในทันทีโดยไม่ต้องรอการตรวจสอบด้วยมือ</p>
+                <p style="font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 980px;" data-lang="en">A micro:bit board paired with gas, humidity, and odor sensors is installed at each risk zone, processing readings in real time and displaying the result as a traffic-light signal (green-yellow-red) so vendors and staff are instantly notified of hygiene status without manual inspection.</p>
+
+                <div class="layout-trio">
+                    <div class="glass-card" style="border-top: 4px solid #10B981;">
+                        <div class="glass-card-header">
+                            <div class="glass-card-icon" style="color: #10B981;"><i class="fa-solid fa-circle-check"></i></div>
+                            <h3 data-lang="th">ไฟเขียว — สภาพแวดล้อมปกติ</h3>
+                            <h3 data-lang="en">Green — Normal Conditions</h3>
+                        </div>
+                        <p data-lang="th">ค่าก๊าซ ความชื้น และกลิ่นอยู่ในเกณฑ์ปลอดภัย ไมโครบิตแสดงไฟเขียวค้างไว้ ไม่ต้องดำเนินการเพิ่มเติม</p>
+                        <p data-lang="en">Gas, humidity, and odor readings stay within safe limits; the micro:bit holds a steady green light and no action is needed.</p>
+                    </div>
+
+                    <div class="glass-card" style="border-top: 4px solid #F59E0B;">
+                        <div class="glass-card-header">
+                            <div class="glass-card-icon" style="color: #F59E0B;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <h3 data-lang="th">ไฟเหลือง — เฝ้าระวังใกล้ชิด</h3>
+                            <h3 data-lang="en">Yellow — Caution Alert</h3>
+                        </div>
+                        <p data-lang="th">ค่าที่ตรวจวัดเริ่มสูงกว่าเกณฑ์ปกติ ไมโครบิตกะพริบไฟเหลืองเตือนล่วงหน้าให้เจ้าหน้าที่เตรียมทำความสะอาด</p>
+                        <p data-lang="en">Readings begin trending above baseline; the micro:bit flashes yellow to pre-alert staff to prepare cleaning measures.</p>
+                    </div>
+
+                    <div class="glass-card" style="border-top: 4px solid #EF4444;">
+                        <div class="glass-card-header">
+                            <div class="glass-card-icon" style="color: #EF4444;"><i class="fa-solid fa-bell"></i></div>
+                            <h3 data-lang="th">ไฟแดง — วิกฤตต้องแก้ไขทันที</h3>
+                            <h3 data-lang="en">Red — Critical, Immediate Action</h3>
+                        </div>
+                        <p data-lang="th">ค่ามลพิษเกินมาตรฐานอย่างมีนัยสำคัญ ไมโครบิตส่งสัญญาณไฟแดงพร้อมเสียงเตือน ให้เจ้าหน้าที่เข้าดำเนินการแก้ไขทันที</p>
+                        <p data-lang="en">Pollution levels significantly exceed standards; the micro:bit triggers a red light with an audible alarm for immediate staff intervention.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-chassis-footer">
+                <div>Jumbo Market Klong Sam • Group 2 PBL Presentation</div>
+                <div class="presentation-nav-buttons">
+                    <button class="btn-nav-circle" onclick="navigateSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <span class="slide-page-number">4 / 8</span>
+                    <button class="btn-nav-circle" onclick="navigateSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: 3 STRATEGIC PILLARS -->
+        <div class="presentation-slide" id="slide-5">
+            <div class="presentation-slide-header">
+                <div class="slide-title-wrapper">
+                    <span class="category-tag">Strategic Pillars</span>
+                    <h2 data-lang="th">3 ยุทธศาสตร์หลักเพื่อการพลิกฟื้นสิ่งแวดล้อม</h2>
+                    <h2 data-lang="en">The 3 Strategic Pillars of Remediation</h2>
+                </div>
+            </div>
+            <div class="flex-content">
+                <div class="layout-split">
+                    <div>
+                        <ul class="custom-bullet-list">
+                            <li style="margin-bottom: 20px;">
+                                <strong style="color: var(--primary);" data-lang="th">การจัดการขยะชีวภาพเชิงรุก (Active Waste Management)</strong>
+                                <strong style="color: var(--primary);" data-lang="en">Active Organic Waste Management Integration</strong>
+                                <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;" data-lang="th">คัดแยกขยะเศษอาหารเปียก 100% บังคับภาชนะปิดมิดชิด และพ่นล้างแผงสดหลังเลิกตลาดด้วยเอนไซม์ชีวภาพขจัดสารอินทรีย์สะสม</p>
+                                <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;" data-lang="en">Mandating 100% organic waste isolation with sealed lids and scheduled enzymatic cleaning processes to strip bacteria layers.</p>
+                            </li>
+                            <li style="margin-bottom: 20px;">
+                                <strong style="color: var(--accent);" data-lang="th">การปรับปรุงวิศวกรรมทางระบายลมและระบบน้ำ (Mechanical Engineering)</strong>
+                                <strong style="color: var(--accent);" data-lang="en">Mechanical Engineering & Ventilation Layouts</strong>
+                                <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;" data-lang="th">เพิ่มระดับความลาดชันท่อน้ำทิ้ง ติดตั้งชุดถังดักกรองไขมันประจำจุดประกอบอาหาร และติดตั้งพัดลมดูดระบายแรงดันลบในส่วนห้องสุขา</p>
+                                <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;" data-lang="en">Adjust drain pipeline gradients, place solid FOG filters at culinary points, and install continuous negative pressure exhausts.</p>
+                            </li>
+                            <li style="margin-bottom: 20px;">
+                                <strong style="color: #60A5FA;" data-lang="th">ระบบจูงใจดวงดาวความสะอาด Jumbo Clean Star (Incentive Scheme)</strong>
+                                <strong style="color: #60A5FA;" data-lang="en">Jumbo Clean Star Incentive & Star Rating Framework</strong>
+                                <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;" data-lang="th">ประเมินคุณภาพความสะอาดแผงค้า (1-5 ดาว) ร้านค้าที่ได้รับคะแนนสะสมดีเยี่ยมต่อเนื่องจะได้รับการยกเว้นหรือลดค่าบำรุงตลาดส่วนกลาง</p>
+                                <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;" data-lang="en">Deploying a monthly 5-star validation rubric for all food stalls. Highly compliant merchants receive rental reductions as rewards.</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass-card" style="background: rgba(16, 185, 129, 0.03); border: 1px solid rgba(16, 185, 129, 0.25); text-align: center; padding: 40px 30px;">
+                        <div style="font-size: 56px; color: var(--primary); margin-bottom: 20px;"><i class="fa-solid fa-medal"></i></div>
+                        <h3 style="font-size: 20px; color: #ffffff;" data-lang="th">การบูรณาการแบบองค์รวม</h3>
+                        <h3 style="font-size: 20px; color: #ffffff;" data-lang="en">Holistic System Integration</h3>
+                        <p style="margin-top: 15px; font-size: 14px; line-height: 1.6;" data-lang="th">"เมื่อปรับโครงสร้างทางกายภาพที่ถูกต้อง ควบคู่กับการสร้างแรงจูงใจให้ผู้ค้า ระบบสุขาภิบาลที่ดีจะกลายเป็นความยั่งยืนอย่างถาวร"</p>
+                        <p style="margin-top: 15px; font-size: 14px; line-height: 1.6;" data-lang="en">"Combining physical sanitation corrections with gamified business incentives drives perpetual hygiene compliance."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-chassis-footer">
+                <div>Jumbo Market Klong Sam • Group 2 PBL Presentation</div>
+                <div class="presentation-nav-buttons">
+                    <button class="btn-nav-circle" onclick="navigateSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <span class="slide-page-number">5 / 8</span>
+                    <button class="btn-nav-circle" onclick="navigateSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: ROADMAP (TIMELINE) -->
+        <div class="presentation-slide" id="slide-6">
+            <div class="presentation-slide-header">
+                <div class="slide-title-wrapper">
+                    <span class="category-tag">Execution Roadmap</span>
+                    <h2 data-lang="th">ระยะเวลาดำเนินการขับเคลื่อนสิ่งแวดล้อม</h2>
+                    <h2 data-lang="en">Project Timeline & Phase Execution</h2>
+                </div>
+            </div>
+            <div class="flex-content">
+                <div class="roadmap-container">
+                    <div class="roadmap-progress-bar"></div>
+                    
+                    <div class="roadmap-node complete">
+                        <div class="roadmap-indicator-ring">01</div>
+                        <h4 data-lang="th">วิเคราะห์วิกฤต</h4>
+                        <h4 data-lang="en">Audit Phase</h4>
+                        <p data-lang="th">ใช้เกณฑ์ Checklist 38 ข้อ จำแนกพื้นที่เสี่ยง 4 โซน</p>
+                        <p data-lang="en">Assess 38 criteria; map 4 discrete risk blocks.</p>
+                    </div>
+
+                    <div class="roadmap-node complete">
+                        <div class="roadmap-indicator-ring">02</div>
+                        <h4 data-lang="th">ปรับวิศวกรรม</h4>
+                        <h4 data-lang="en">Upgrades</h4>
+                        <p data-lang="th">ปรับลาดชันท่อน้ำทิ้ง และเริ่มวางตำแหน่งถังดักไขมัน</p>
+                        <p data-lang="en">Re-gradient pipelines & position localized grease traps.</p>
+                    </div>
+
+                    <div class="roadmap-node active">
+                        <div class="roadmap-indicator-ring">03</div>
+                        <h4 data-lang="th">ทดสอบโครงการ</h4>
+                        <h4 data-lang="en">Deployment</h4>
+                        <p data-lang="th">ติดตั้งเครื่องระบายอากาศ และระบบประเมินดาว Jumbo Star</p>
+                        <p data-lang="en">Deploy ventilators and start Jumbo Star evaluations.</p>
+                    </div>
+
+                    <div class="roadmap-node">
+                        <div class="roadmap-indicator-ring">04</div>
+                        <h4 data-lang="th">รับรองมาตรฐาน</h4>
+                        <h4 data-lang="en">Certification</h4>
+                        <p data-lang="th">ต่อยอดสู่ใบรับรอง "ตลาดสดน่าซื้อระดับทอง" จากกรมอนามัย</p>
+                        <p data-lang="en">Secure prestigious Gold Class Health Accreditation.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-chassis-footer">
+                <div>Jumbo Market Klong Sam • Group 2 PBL Presentation</div>
+                <div class="presentation-nav-buttons">
+                    <button class="btn-nav-circle" onclick="navigateSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <span class="slide-page-number">6 / 8</span>
+                    <button class="btn-nav-circle" onclick="navigateSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: STRATEGIC SUMMARY (NEW SLIDE) -->
+        <div class="presentation-slide" id="slide-7">
+            <div class="presentation-slide-header">
+                <div class="slide-title-wrapper">
+                    <span class="category-tag">Strategic Summary</span>
+                    <h2 data-lang="th">บทสรุปเชิงกลยุทธ์และการเปลี่ยนแปลงที่จับต้องได้</h2>
+                    <h2 data-lang="en">Strategic Summary & Tangible Transitions</h2>
+                </div>
+            </div>
+            <div class="flex-content">
+                <div class="summary-showcase-grid">
+                    <div class="compare-card" style="border-left: 4px solid #EF4444;">
+                        <h3 style="color: #EF4444; font-size: 18px; margin-bottom: 12px;" data-lang="th"><i class="fa-solid fa-circle-xmark"></i> ก่อนเริ่มโครงการ (Before Intervention)</h3>
+                        <h3 style="color: #EF4444; font-size: 18px; margin-bottom: 12px;" data-lang="en"><i class="fa-solid fa-circle-xmark"></i> Before Intervention</h3>
+                        <ul class="custom-bullet-list" style="font-size: 14px;">
+                            <li data-lang="th">กลิ่นสะสมรุนแรงระดับ 4-5 ส่งผลต่อสุขภาพทางเดินหายใจ</li>
+                            <li data-lang="en">Severe localized odors (Level 4-5) affected respiratory health.</li>
+                            <li data-lang="th">ไขมันแข็งจับตะกรันในรางระบายน้ำรวมอุดตันตลอดสาย</li>
+                            <li data-lang="en">FOG layers clogged secondary wastewater flows.</li>
+                            <li data-lang="th">ความเสี่ยงสูงที่จะไม่ผ่านเกณฑ์ พ.ร.บ. สาธารณสุข พ.ศ. 2535</li>
+                            <li data-lang="en">High risk of non-compliance with regional public health laws.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="compare-card" style="border-left: 4px solid var(--primary);">
+                        <h3 style="color: var(--primary); font-size: 18px; margin-bottom: 12px;" data-lang="th"><i class="fa-solid fa-circle-check"></i> ผลสัมฤทธิ์และอนาคต (Expected Outcomes)</h3>
+                        <h3 style="color: var(--primary); font-size: 18px; margin-bottom: 12px;" data-lang="en"><i class="fa-solid fa-circle-check"></i> Expected Outcomes</h3>
+                        <ul class="custom-bullet-list" style="font-size: 14px;">
+                            <li data-lang="th">ลดระดับมลพิษกลิ่นค้างปลาให้อยู่ในเกณฑ์ปลอดภัย (&lt; ระดับ 2)</li>
+                            <li data-lang="en">Ammonia & fish odors reduced safely to below Level 2.</li>
+                            <li data-lang="th">ระบบดักไขมันดักกรองเศษ FOG ประสิทธิภาพสูงได้กว่า 90%</li>
+                            <li data-lang="en">90%+ efficiency in solid organic FOG extraction.</li>
+                            <li data-lang="th">ยกเกียรติประวัติตลาดจัมโบ้สู่มาตรฐาน "ตลาดน่าซื้อระดับทองคำ"</li>
+                            <li data-lang="en">Elevating Jumbo Market brand with Gold Class certification.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-chassis-footer">
+                <div>Jumbo Market Klong Sam • Group 2 PBL Presentation</div>
+                <div class="presentation-nav-buttons">
+                    <button class="btn-nav-circle" onclick="navigateSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <span class="slide-page-number">7 / 8</span>
+                    <button class="btn-nav-circle" onclick="navigateSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: Q&A WRAP-UP (NEW SLIDE) -->
+        <div class="presentation-slide" id="slide-8">
+            <div class="flex-content" style="text-align: center; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1) 0%, rgba(15, 23, 42, 0) 70%);">
+                <h1 data-lang="th" style="font-size: 80px; font-weight: 700; margin-bottom: 15px; color: #ffffff;">ช่วงตอบข้อซักถาม</h1>
+                <h1 data-lang="en" style="font-size: 80px; font-weight: 700; margin-bottom: 15px; color: #ffffff;">Q&A Session</h1>
+                
+                <hr style="width: 100px; border: 2px solid var(--primary); margin: 25px auto;">
+                
+                <p data-lang="th" style="font-size: 22px; color: var(--text-muted); max-width: 800px; line-height: 1.6;">คณะผู้ศึกษาโครงการพัฒนาสุขาภิบาล ตลาดจัมโบ้ คลองสาม พร้อมเปิดรับทุกข้อแนะนำและร่วมอภิปรายเพื่อประโยชน์สูงสุดต่อสาธารณสุขชุมชน</p>
+                <p data-lang="en" style="font-size: 22px; color: var(--text-muted); max-width: 800px; line-height: 1.6;">Our committee welcomes your professional feedback, queries, and insights to further improve environmental standards in Pathum Thani.</p>
+                
+                <div style="margin-top: 50px;">
+                    <button class="btn-premium btn-board" onclick="openExecutivePortal()" style="padding: 12px 30px;">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span data-lang="th">เปิดแฟ้มเอกสารสิ่งแวดล้อมสถิติ</span>
+                        <span data-lang="en">Review Board Documents Portal</span>
+                    </button>
+                </div>
+            </div>
+            <div class="slide-chassis-footer">
+                <div>Jumbo Market Klong Sam • Group 2 PBL Presentation</div>
+                <div class="presentation-nav-buttons">
+                    <button class="btn-nav-circle" onclick="navigateSlide(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <span class="slide-page-number">8 / 8</span>
+                    <button class="btn-nav-circle" onclick="navigateSlide(1)"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FLOATING EXIT BUTTON FOR PRESENT MODE -->
+    <button class="exit-present-btn" id="exit-present-btn" onclick="togglePresentMode()" style="display: none;">
+        <i class="fa-solid fa-compress"></i>
+        <span data-lang="th">ออกจากโหมดพรีเซน</span>
+        <span data-lang="en">Exit Present Mode</span>
+    </button>
+
+    <!-- ----------------------------------------------------- -->
+    <!-- OVERLAY PORTAL SCREEN -->
+    <!-- ----------------------------------------------------- -->
+    <div class="board-portal-overlay" id="portal-modal">
+        
+        <!-- PIN INPUT SCREEN -->
+        <div class="portal-auth-card" id="portal-lock">
+            <h3 data-lang="th">สำหรับคณะกรรมการประเมินโครงการ</h3>
+            <h3 data-lang="en">PBL Evaluator Authorization</h3>
+            <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 8px;" data-lang="th">กรุณาป้อนรหัสผ่าน 4 หลัก เพื่อตรวจสอบแฟ้มข้อมูลและเกณฑ์คะแนนรูบริก (รหัสเริ่มต้น: 1234)</p>
+            <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 8px;" data-lang="en">Enter the 4-digit board access code to review project statistics and rubric calculations (Default PIN: 1234)</p>
+            
+            <div class="pin-indicators">
+                <div class="pin-indicator-dot" id="dot-0"></div>
+                <div class="pin-indicator-dot" id="dot-1"></div>
+                <div class="pin-indicator-dot" id="dot-2"></div>
+                <div class="pin-indicator-dot" id="dot-3"></div>
+            </div>
+
+            <div class="pin-keyboard-matrix">
+                <button class="pin-key" onclick="tapKey('1')">1</button>
+                <button class="pin-key" onclick="tapKey('2')">2</button>
+                <button class="pin-key" onclick="tapKey('3')">3</button>
+                <button class="pin-key" onclick="tapKey('4')">4</button>
+                <button class="pin-key" onclick="tapKey('5')">5</button>
+                <button class="pin-key" onclick="tapKey('6')">6</button>
+                <button class="pin-key" onclick="tapKey('7')">7</button>
+                <button class="pin-key" onclick="tapKey('8')">8</button>
+                <button class="pin-key" onclick="tapKey('9')">9</button>
+                <button class="pin-key" style="color: #EF4444;" onclick="erasePin()"><i class="fa-solid fa-rotate-left"></i></button>
+                <button class="pin-key" onclick="tapKey('0')">0</button>
+                <button class="pin-key pin-key-spacer" aria-hidden="true" tabindex="-1" disabled></button>
+            </div>
+
+            <div class="auth-error-output" id="auth-err"></div>
+            
+            <button class="btn-premium" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="closeExecutivePortal()">
+                <i class="fa-solid fa-arrow-left"></i> <span data-lang="th">กลับไปที่หน้าพรีเซนเทชัน</span><span data-lang="en">Return to Presentation</span>
+            </button>
+        </div>
+
+        <!-- MAIN PANEL DASHBOARD WORKSPACE -->
+        <div class="executive-board-console" id="portal-dashboard">
+            <div class="console-banner">
+                <div>
+                    <h2 style="color: var(--primary); font-size: 22px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span data-lang="th">แฟ้มสถิติสุขาภิบาลและระบบรูบริกอัจฉริยะ</span>
+                        <span data-lang="en">Scientific Sanitation Board Portal & Rubrics</span>
+                    </h2>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;" data-lang="th">รายงานผลการตรวจประเมินพื้นที่จริงเชิงวิทยาศาสตร์ ตลาดจัมโบ้ คลองสาม</p>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;" data-lang="en">Integrated scientific methodologies, compliance frameworks and grading scorecard</p>
+                </div>
+                <button class="btn-premium" onclick="closeExecutivePortal()"><i class="fa-solid fa-xmark"></i> Close Portal</button>
+            </div>
+
+            <div class="console-workspace">
+                <!-- Navigation Sidebar -->
+                <div class="console-sidebar">
+                    <button class="console-nav-tab active-tab" data-tab="pane-overview" onclick="switchConsolePane('pane-overview')">
+                        <i class="fa-solid fa-file-invoice"></i> <span data-lang="th">รายงานการดำเนินงาน</span><span data-lang="en">Project Overview</span>
+                    </button>
+                    <button class="console-nav-tab" data-tab="pane-scientific" onclick="switchConsolePane('pane-scientific')">
+                        <i class="fa-solid fa-flask"></i> <span data-lang="th">สถิติผลการวัดจริง</span><span data-lang="en">Odor & Flow Metrics</span>
+                    </button>
+                    <button class="console-nav-tab" data-tab="pane-standards" onclick="switchConsolePane('pane-standards')">
+                        <i class="fa-solid fa-gavel"></i> <span data-lang="th">พ.ร.บ. สาธารณสุข 2535</span><span data-lang="en">Public Health Law</span>
+                    </button>
+                    <button class="console-nav-tab" data-tab="pane-rubric-grading" onclick="switchConsolePane('pane-rubric-grading')">
+                        <i class="fa-solid fa-square-poll-vertical"></i> <span data-lang="th">ระบบประเมินคะแนนสด</span><span data-lang="en">Live Rubric Grading</span>
+                    </button>
+                </div>
+
+                <!-- Main Contents Viewport -->
+                <div class="console-content-viewer">
+                    
+                    <!-- WORKSPACE 1: EXECUTIVE OVERVIEW -->
+                    <div class="console-panel-pane active-pane" id="pane-overview">
+                        <div class="executive-action-summary">
+                            <h4 data-lang="th"><i class="fa-solid fa-circle-info"></i> สรุปย่อสิ่งที่เราปฏิบัติไปแล้วจริงในพื้นที่ (Executive Project Overview)</h4>
+                            <h4 data-lang="en"><i class="fa-solid fa-circle-info"></i> Executive Project Overview</h4>
+                            <p data-lang="th">
+                                คณะผู้ศึกษาและวิจัยได้ร่วมลงพื้นที่จริงร่วมกับทีมงานจัดการตลาดและผู้ค้า เพื่อจัดทำการสำรวจและวิจัยสุขาภิบาลสิ่งแวดล้อม โดยเราได้นำชุดแบบประเมินความสอดคล้องตามสุขลักษณะรวม 38 หัวข้อย่อยมาตรวจสอบ และแบ่งพื้นที่ออกเป็น 4 โซนความเสี่ยงเพื่อจัดเก็บข้อมูลสถิติมลพิษทางกลิ่นปลาและขยะสะสม (อ้างอิงตามเกณฑ์ Odor Intensity Scale 0-5 ของกรมอนามัย) ในช่วงเวลาพีคไทม์เช้าและเย็น ตลอดจนสืบต้นตอของคราบไขมันอุดตันในระบบท่อเพื่อนำข้อมูลไปร่างเป็นโมเดลวิศวกรรมการระบายน้ำร่วมกับการจัดตั้งระบบสะสมดาว Jumbo Clean Star เพื่อรักษามาตรฐานระยะยาว
+                            </p>
+                            <p data-lang="en">
+                                Our project research committee carried out structural spatial sanitation audits directly on site, analyzing 38 compliance indicators based on municipal health bylaws. We mapped 4 discrete risk blocks (A, B, C, D) and recorded peak-hour organic odor concentrations (using the standardized 0-5 WHO Odor Intensity scale) during high-traffic morning and evening shifts. These data points led to our engineering redesign proposals for grease traps and air exhausts, merged with the Jumbo Clean Star gamified star scheme.
+                            </p>
+                        </div>
+
+                        <div class="doc-section">
+                            <h3 data-lang="th">เป้าหมายสูงสุดของโครงการ</h3>
+                            <h3 data-lang="en">Core Strategic Target</h3>
+                            <ul class="custom-bullet-list">
+                                <li data-lang="th"><strong>การปฏิบัติตามกฎหมายสาธารณสุข:</strong> ขจัดข้อพิพาทด้านสิ่งแวดล้อม กลิ่น และน้ำไหลนองกับชุมชนโดยรอบคลองสามให้เป็นศูนย์</li>
+                                <li class="en-only" data-lang="en"><strong>Statutory Legal Compliance:</strong> Eliminate environmental smell and liquid waste public complaints in the local Khlong Sam district entirely.</li>
+                                <li data-lang="th"><strong>การส่งเสริมภาพลักษณ์ธุรกิจ:</strong> ยกระดับ "ตลาดจัมโบ้ คลองสาม" สู่มาตรฐานตลาดสดน่าซื้อระดับดีเลิศ (Gold Class Certificate)</li>
+                                <li class="en-only" data-lang="en"><strong>Commercial Branding Boost:</strong> Transforming the Jumbo Market brand to earn the prestigious Gold Class Healthy Market certification.</li>
+                            </ul>
+                        </div>
+
+                        <div class="doc-section">
+                            <h3 data-lang="th">ขอบเขตการดำเนินงานทั้งหมดของโครงการ (Full Project Scope)</h3>
+                            <h3 data-lang="en">Full Project Scope & Action Plan</h3>
+                            <p style="margin-bottom: 16px;" data-lang="th">สรุปองค์ประกอบทุกส่วนของโครงการตั้งแต่การค้นพบปัญหา นวัตกรรมที่นำมาแก้ไข ยุทธศาสตร์หลัก ไปจนถึงแผนการดำเนินงานตามระยะเวลา:</p>
+                            <p style="margin-bottom: 16px;" data-lang="en">A complete breakdown of every project component, from problem discovery through innovation, strategic pillars, and the execution timeline:</p>
+
+                            <h4 style="color: var(--accent); font-size: 15px; margin: 18px 0 8px;" data-lang="th"><i class="fa-solid fa-magnifying-glass"></i> 1. การสำรวจและค้นพบปัญหา (4 โซนความเสี่ยง)</h4>
+                            <h4 style="color: var(--accent); font-size: 15px; margin: 18px 0 8px;" data-lang="en"><i class="fa-solid fa-magnifying-glass"></i> 1. Field Survey & Problem Discovery (4 Risk Zones)</h4>
+                            <ul class="custom-bullet-list" style="font-size: 14px;">
+                                <li data-lang="th">Zone A (แผงปลาและทะเล): กลิ่นแอมโมเนียและน้ำคาวปลาสะสม ระดับวิกฤต 4.5/5.0</li>
+                                <li class="en-only" data-lang="en">Zone A (Seafood Stalls): Ammonia odor & organic slurry buildup, critical 4.5/5.0</li>
+                                <li data-lang="th">Zone C (ห้องน้ำสาธารณะ): ความชื้นสะสม ขาดการระบายอากาศ ระดับ 3.2/5.0</li>
+                                <li class="en-only" data-lang="en">Zone C (Restrooms): Trapped humidity, poor ventilation, 3.2/5.0</li>
+                                <li data-lang="th">Zone D (ท่อรวมและถังเกรอะ): ไขมันตกตะกรันอุดตันท่อ กลิ่นกำมะถัน ระดับ 3.8/5.0</li>
+                                <li class="en-only" data-lang="en">Zone D (Drain Interceptors): Hardened FOG scaling, sulfur gases, 3.8/5.0</li>
+                                <li data-lang="th">Zone B (อาหารแห้งสำเร็จรูป): ผ่านเกณฑ์ปกติ ระดับ 1.5/5.0 ใช้เป็นมาตรฐานเทียบเคียง</li>
+                                <li class="en-only" data-lang="en">Zone B (Dry & Processed Foods): Within standard, 1.5/5.0, used as a baseline reference</li>
+                            </ul>
+
+                            <h4 style="color: var(--accent); font-size: 15px; margin: 18px 0 8px;" data-lang="th"><i class="fa-solid fa-microchip"></i> 2. นวัตกรรมที่นำมาแก้ไข: ระบบไฟจราจรอัจฉริยะด้วยไมโครบิต</h4>
+                            <h4 style="color: var(--accent); font-size: 15px; margin: 18px 0 8px;" data-lang="en"><i class="fa-solid fa-microchip"></i> 2. Innovation Deployed: Smart Micro:bit Traffic-Light System</h4>
+                            <ul class="custom-bullet-list" style="font-size: 14px;">
+                                <li data-lang="th">ติดตั้งบอร์ดไมโครบิตร่วมกับเซนเซอร์วัดก๊าซ ความชื้น และกลิ่นประจำแต่ละโซนเสี่ยง ประมวลผลและแจ้งเตือนแบบเรียลไทม์</li>
+                                <li class="en-only" data-lang="en">Micro:bit boards paired with gas, humidity, and odor sensors at each risk zone process and alert in real time</li>
+                                <li data-lang="th">ไฟเขียว = ปกติ, ไฟเหลือง = เฝ้าระวังล่วงหน้า, ไฟแดงพร้อมเสียงเตือน = วิกฤตต้องแก้ไขทันที</li>
+                                <li class="en-only" data-lang="en">Green = normal, yellow = early-warning caution, red with audible alarm = critical immediate action</li>
+                                <li data-lang="th">ลดเวลาการตรวจสอบด้วยมือ และทำให้พ่อค้าแม่ค้าทราบสถานะความสะอาดได้ทันทีโดยไม่ต้องรอเจ้าหน้าที่</li>
+                                <li class="en-only" data-lang="en">Reduces manual inspection time and lets vendors see hygiene status instantly without waiting on staff</li>
+                            </ul>
+
+                            <h4 style="color: var(--accent); font-size: 15px; margin: 18px 0 8px;" data-lang="th"><i class="fa-solid fa-layer-group"></i> 3. สามยุทธศาสตร์หลักเพื่อการพลิกฟื้นสิ่งแวดล้อม</h4>
+                            <h4 style="color: var(--accent); font-size: 15px; margin: 18px 0 8px;" data-lang="en"><i class="fa-solid fa-layer-group"></i> 3. The 3 Strategic Pillars of Remediation</h4>
+                            <ul class="custom-bullet-list" style="font-size: 14px;">
+                                <li data-lang="th"><strong>การจัดการขยะชีวภาพเชิงรุก:</strong> คัดแยกขยะเศษอาหารเปียก 100% บังคับภาชนะปิดมิดชิด และล้างแผงด้วยเอนไซม์ชีวภาพหลังเลิกตลาด</li>
+                                <li class="en-only" data-lang="en"><strong>Active Organic Waste Management:</strong> 100% wet-waste isolation with sealed lids and scheduled enzymatic cleaning</li>
+                                <li data-lang="th"><strong>วิศวกรรมระบายลมและน้ำ:</strong> เพิ่มความลาดชันท่อน้ำทิ้ง ติดตั้งถังดักไขมัน และพัดลมระบายแรงดันลบในห้องสุขา</li>
+                                <li class="en-only" data-lang="en"><strong>Mechanical Engineering & Ventilation:</strong> Adjusted pipeline gradients, FOG filters, and negative-pressure exhausts</li>
+                                <li data-lang="th"><strong>ระบบจูงใจ Jumbo Clean Star:</strong> ประเมินความสะอาดแผงค้า 1-5 ดาว ร้านค้าคะแนนดีได้รับลดหย่อนค่าบำรุงตลาด</li>
+                                <li class="en-only" data-lang="en"><strong>Jumbo Clean Star Incentive:</strong> 1-5 star cleanliness rubric with rental discounts for top performers</li>
+                            </ul>
+
+                            <h4 style="color: var(--accent); font-size: 15px; margin: 18px 0 8px;" data-lang="th"><i class="fa-solid fa-route"></i> 4. แผนการดำเนินงานตามระยะเวลา (4 ระยะ)</h4>
+                            <h4 style="color: var(--accent); font-size: 15px; margin: 18px 0 8px;" data-lang="en"><i class="fa-solid fa-route"></i> 4. Execution Roadmap (4 Phases)</h4>
+                            <ul class="custom-bullet-list" style="font-size: 14px;">
+                                <li data-lang="th"><strong>ระยะที่ 1 — วิเคราะห์วิกฤต:</strong> ใช้เกณฑ์ Checklist 38 ข้อ จำแนกพื้นที่เสี่ยง 4 โซน (เสร็จสิ้น)</li>
+                                <li class="en-only" data-lang="en"><strong>Phase 1 — Audit:</strong> Assessed 38 criteria and mapped 4 risk blocks (Complete)</li>
+                                <li data-lang="th"><strong>ระยะที่ 2 — ปรับวิศวกรรม:</strong> ปรับลาดชันท่อน้ำทิ้งและวางถังดักไขมัน (เสร็จสิ้น)</li>
+                                <li class="en-only" data-lang="en"><strong>Phase 2 — Upgrades:</strong> Re-gradiented pipelines and installed grease traps (Complete)</li>
+                                <li data-lang="th"><strong>ระยะที่ 3 — ทดสอบโครงการ:</strong> ติดตั้งพัดลมระบายอากาศ ระบบไฟจราจรไมโครบิต และเริ่มประเมินดาว (กำลังดำเนินการ)</li>
+                                <li class="en-only" data-lang="en"><strong>Phase 3 — Deployment:</strong> Installing ventilators, the micro:bit traffic-light system, and starting Jumbo Star evaluations (In Progress)</li>
+                                <li data-lang="th"><strong>ระยะที่ 4 — รับรองมาตรฐาน:</strong> ยื่นขอใบรับรอง "ตลาดสดน่าซื้อระดับทอง" จากกรมอนามัย (วางแผน)</li>
+                                <li class="en-only" data-lang="en"><strong>Phase 4 — Certification:</strong> Apply for Gold Class Healthy Market accreditation (Planned)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- WORKSPACE 2: SCIENTIFIC READINGS TABLE -->
+                    <div class="console-panel-pane" id="pane-scientific">
+                        <div class="doc-section">
+                            <h3 data-lang="th">บันทึกข้อมูลสถิติตรวจประเมินกลิ่นรายโซน (Odor Metrics Database)</h3>
+                            <h3 data-lang="en">Statistical Odor Intensity & Flow Audit Database</h3>
+                            <p data-lang="th">ตารางสรุปเกรดผลตรวจคัดกรองมลพิษทางอากาศและเศษอินทรียสารตามพื้นที่จริง:</p>
+                            <p data-lang="en">Summary table of real-time air contamination and wastewater scaling issues across different market sectors:</p>
+                            
+                            <table class="executive-table">
+                                <thead>
+                                    <tr>
+                                        <th data-lang="th">โซนความเสี่ยง</th>
+                                        <th data-lang="en">Target Zone</th>
+                                        <th data-lang="th">พารามิเตอร์วิจัยหลักที่ตรวจ</th>
+                                        <th data-lang="en">Monitored Parameter</th>
+                                        <th data-lang="th">ระดับความรุนแรงกลิ่นเฉลี่ย</th>
+                                        <th data-lang="en">Avg Odor Score</th>
+                                        <th data-lang="th">สถานะเร่งด่วน</th>
+                                        <th data-lang="en">Action Priority</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Zone A</strong> (อาหารสดแผงปลาและทะเล)</td>
+                                        <td><strong>Zone A</strong> (Raw Seafood & Meats)</td>
+                                        <td data-lang="th">น้ำคาวปลาสะสมในรางระบายความลาดต่ำ และแอมโมเนีย</td>
+                                        <td data-lang="en">Organic slurry, sluggish wastewater drainage, ammonia</td>
+                                        <td style="color: #EF4444; font-weight: 700;">4.5 / 5.0</td>
+                                        <td><span class="badge-pill badge-danger" data-lang="th">วิกฤตสูง</span><span class="badge-pill badge-danger" data-lang="en">Critical</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Zone C</strong> (ห้องน้ำสาธารณะ)</td>
+                                        <td><strong>Zone C</strong> (Public Restrooms)</td>
+                                        <td data-lang="th">ความชื้นสัมพัทธ์ในผนัง คราบฝังลึก และไม่มีระบายลม</td>
+                                        <td data-lang="en">High tile moisture traps, stagnant exhaust cycles</td>
+                                        <td style="color: #F59E0B; font-weight: 700;">3.2 / 5.0</td>
+                                        <td><span class="badge-pill badge-warning" data-lang="th">ควรปรับปรุง</span><span class="badge-pill badge-warning" data-lang="en">Action Required</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Zone D</strong> (ท่อรวมและถังเกรอะหลังตลาด)</td>
+                                        <td><strong>Zone D</strong> (Drain Interceptors)</td>
+                                        <td data-lang="th">ชั้นคราบไขมันตกตะกรันบล็อกทางไหล และกลิ่นกำมะถัน</td>
+                                        <td data-lang="en">Hardened FOG scaling inside sewer lines, sulfur gases</td>
+                                        <td style="color: #F59E0B; font-weight: 700;">3.8 / 5.0</td>
+                                        <td><span class="badge-pill badge-warning" data-lang="th">ควรปรับปรุง</span><span class="badge-pill badge-warning" data-lang="en">Action Required</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Zone B</strong> (โซนอาหารแห้งสำเร็จรูป)</td>
+                                        <td><strong>Zone B</strong> (Dry & Processed Foods)</td>
+                                        <td data-lang="th">ระบบการจัดการเศษขยะแห้ง และสุขวิทยาแผงปรุงอาหาร</td>
+                                        <td data-lang="en">Solid waste containers, merchant wear, hygiene compliance</td>
+                                        <td style="color: #10B981; font-weight: 700;">1.5 / 5.0</td>
+                                        <td><span class="badge-pill badge-success" data-lang="th">ผ่านเกณฑ์</span><span class="badge-pill badge-success" data-lang="en">Satisfactory</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- WORKSPACE 3: REGULATORY CODES -->
+                    <div class="console-panel-pane" id="pane-standards">
+                        <div class="doc-section">
+                            <h3 data-lang="th">ความสอดคล้องตามข้อบัญญัติและพระราชบัญญัติการสาธารณสุข พ.ศ. 2535</h3>
+                            <h3 data-lang="en">Statutory Compliance with Public Health Act B.E. 2535</h3>
+                            <p style="margin-bottom: 15px;" data-lang="th">การออกแบบและกำหนดแผนปฏิบัติงานสิ่งแวดล้อมตลาดจัมโบ้ ได้รองรับกรอบข้อบังคับหลักทางกฎหมายดังนี้:</p>
+                            <p style="margin-bottom: 15px;" data-lang="en">Our structural action plans ensure full alignment with regulatory safeguards to prevent code liabilities:</p>
+                            
+                            <ul class="custom-bullet-list">
+                                <li data-lang="th"><strong>พ.ร.บ. การสาธารณสุข พ.ศ. 2535 (หมวด 8 ตลาด):</strong> ระบุให้ผู้บริหารตลาดมีหน้าที่ควบคุมจัดการดูแลสุขลักษณะ โครงสร้าง พื้น และระบบระบายน้ำเสีย หากปล่อยปละละเลยจะเข้าข่ายฝ่าฝืนสุขลักษณะเทศบัญญัติซึ่งเจ้าพนักงานมีอำนาจสั่งพักใบอนุญาต</li>
+                                <li class="en-only" data-lang="en"><strong>Public Health Act B.E. 2535 (Chapter 8 - Markets):</strong> Holds market operators strictly accountable for structural flooring, clean drainage paths, and biological hazards. Code deviations empower municipal agents to issue immediate operational shutdowns.</li>
+                                <li data-lang="th"><strong>ข้อบัญญัติเทศบาลเมืองคลองหลวง เรื่องการกำจัดไขมันน้ำทิ้ง:</strong> น้ำเสียที่เกิดขึ้นจากการประกอบการและล้างเขียงอาหารสด จะต้องผ่านระบบบำบัดเบื้องต้นหรือถังดักจับไขมัน ห้ามระบายตรงสู่ระบบท่อทางระบายน้ำสาธารณะเด็ดขาด</li>
+                                <li class="en-only" data-lang="en"><strong>Khlong Luang Municipal Ordinance on Organic Fat Effluents:</strong> Direct discharge of cooking grease or fish slime wash into public storm drains is strictly illegal. Interceptors are mandatory.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- WORKSPACE 4: INTERACTIVE GRADING RUBRIC SYSTEM -->
+                    <div class="console-panel-pane" id="pane-rubric-grading">
+                        <div class="doc-section">
+                            <h3 data-lang="th">ระบบจำลองการให้คะแนนรูบริกสำหรับคณะผู้ประเมินโครงการ (PBL Rubrics)</h3>
+                            <h3 data-lang="en">Interactive PBL Grading Rubric Interface for Evaluators</h3>
+                            <p data-lang="th">คณะกรรมการสามารถเลือกปรับระดับคุณภาพความพึงพอใจในแต่ละหมวดหมู่ เพื่อทดสอบการคำนวณคะแนนรวมและพิจารณาประเมินเกรดได้ทันที:</p>
+                            <p data-lang="en">Adjust criteria performance grades to evaluate live project quality and view aggregated feedback report:</p>
+                            
+                            <div class="grading-tool-grid">
+                                <!-- Rubric Selector Controls -->
+                                <div class="grade-input-box">
+                                    <div class="grade-parameter-control">
+                                        <div>
+                                            <strong data-lang="th">1. ระเบียบวิธีวิจัยเชิงวิชาการ (25%)</strong>
+                                            <strong data-lang="en">1. Empirical Research Quality (25%)</strong>
+                                            <p style="font-size: 11px; color: var(--text-muted);" data-lang="th">ประเมินจากการสำรวจ 38 KPI และข้อมูล Odor Scale ในพื้นที่จริง</p>
+                                            <p style="font-size: 11px; color: var(--text-muted);" data-lang="en">Tracking baseline data across risk zones and WHO Odor metrics</p>
+                                        </div>
+                                        <select id="rubric-c1" onchange="recalculateRubricScores()">
+                                            <option value="25" data-lang="th">ดีเยี่ยม (25/25)</option>
+                                            <option value="25" data-lang="en">Excellent (25/25)</option>
+                                            <option value="20" data-lang="th">ดี (20/25)</option>
+                                            <option value="20" data-lang="en">Good (20/25)</option>
+                                            <option value="15" data-lang="th">พอใช้ (15/25)</option>
+                                            <option value="15" data-lang="en">Pass (15/25)</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="grade-parameter-control">
+                                        <div>
+                                            <strong data-lang="th">2. ความเป็นไปได้และนวัตกรรมแผนงาน (35%)</strong>
+                                            <strong data-lang="en">2. Practicality of Strategic Pillars (35%)</strong>
+                                            <p style="font-size: 11px; color: var(--text-muted);" data-lang="th">ความเป็นรูปธรรมของ 3 เสาหลักยุทธศาสตร์ และโครงการดาว</p>
+                                            <p style="font-size: 11px; color: var(--text-muted);" data-lang="en">Viability of grease traps, exhausts, and Jumbo Clean Star</p>
+                                        </div>
+                                        <select id="rubric-c2" onchange="recalculateRubricScores()">
+                                            <option value="35" data-lang="th">ดีเยี่ยม (35/35)</option>
+                                            <option value="35" data-lang="en">Excellent (35/35)</option>
+                                            <option value="28" data-lang="th">ดี (28/35)</option>
+                                            <option value="28" data-lang="en">Good (28/35)</option>
+                                            <option value="21" data-lang="th">พอใช้ (21/35)</option>
+                                            <option value="21" data-lang="en">Pass (21/35)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="grade-parameter-control">
+                                        <div>
+                                            <strong data-lang="th">3. สอดคล้องตามกรอบสุขอนามัยกฎหมาย (20%)</strong>
+                                            <strong data-lang="en">3. Statutory Health Compliance (20%)</strong>
+                                            <p style="font-size: 11px; color: var(--text-muted);" data-lang="th">ความถูกต้องตามกฎกระทรวงและข้อกำหนดกรมอนามัย</p>
+                                            <p style="font-size: 11px; color: var(--text-muted);" data-lang="en">Accurate mapping of legal frameworks and municipal bylaws</p>
+                                        </div>
+                                        <select id="rubric-c3" onchange="recalculateRubricScores()">
+                                            <option value="20" data-lang="th">ดีเยี่ยม (20/20)</option>
+                                            <option value="20" data-lang="en">Excellent (20/20)</option>
+                                            <option value="16" data-lang="th">ดี (16/20)</option>
+                                            <option value="16" data-lang="en">Good (16/20)</option>
+                                            <option value="12" data-lang="th">พอใช้ (12/20)</option>
+                                            <option value="12" data-lang="en">Pass (12/20)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="grade-parameter-control">
+                                        <div>
+                                            <strong data-lang="th">4. การนำเสนอและการประยุกต์ระบบสื่อ (20%)</strong>
+                                            <strong data-lang="en">4. Technical Pitch & Bilingual Media (20%)</strong>
+                                            <p style="font-size: 11px; color: var(--text-muted);" data-lang="th">ความชัดเจน คณะทำงาน 7 คน และสื่ออินเตอร์แอคทีฟ</p>
+                                            <p style="font-size: 11px; color: var(--text-muted);" data-lang="en">Smooth visual flow, team alignment, and bilingual logic</p>
+                                        </div>
+                                        <select id="rubric-c4" onchange="recalculateRubricScores()">
+                                            <option value="20" data-lang="th">ดีเยี่ยม (20/20)</option>
+                                            <option value="20" data-lang="en">Excellent (20/20)</option>
+                                            <option value="16" data-lang="th">ดี (16/20)</option>
+                                            <option value="16" data-lang="en">Good (16/20)</option>
+                                            <option value="12" data-lang="th">พอใช้ (12/20)</option>
+                                            <option value="12" data-lang="en">Pass (12/20)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Grading Output Module -->
+                                <div class="grade-result-card">
+                                    <h4 data-lang="th">รายงานผลสรุปประเมินเกรด</h4>
+                                    <h4 data-lang="en">Evaluation Grade Report</h4>
+                                    <div class="score-circle" id="score-output">100 / 100</div>
+                                    <div style="font-weight: 600; font-size: 16px; color: var(--primary);" id="verdict-output">ผ่านประเมินระดับดีเด่น (Outstanding Gold Award)</div>
+                                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 15px;" data-lang="th">*ระบบคำนวณตามรูบริกถ่วงน้ำหนักคะแนนอัตโนมัติ เพื่อใช้อ้างอิงการจัดส่งเกรดรายโครงการ</p>
+                                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 15px;" data-lang="en">*Scores automatically calculated in real-time according to the selected performance levels.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN INTERACTION SCRIPT -->
+    <script>
+        let currentSlideIdx = 1;
+        const totalSlidesCount = 8;
+        let activeAppLang = 'th';
+        let isPresentModeActive = false;
+
+        // Auth variables
+        const CORRECT_PORTAL_PIN = "1234";
+        let enteredPinString = "";
+        let isAuthProcessLocked = false;
+
+        // Slide navigation controller
+        function navigateSlide(direction) {
+            document.getElementById('slide-' + currentSlideIdx).classList.remove('active-slide');
+            
+            currentSlideIdx += direction;
+            if (currentSlideIdx < 1) currentSlideIdx = totalSlidesCount;
+            if (currentSlideIdx > totalSlidesCount) currentSlideIdx = 1;
+            
+            document.getElementById('slide-' + currentSlideIdx).classList.add('active-slide');
+            
+            const pagerElements = document.querySelectorAll('.slide-page-number');
+            pagerElements.forEach(pager => {
+                pager.textContent = currentSlideIdx + ' / ' + totalSlidesCount;
+            });
+            updateProgressDots();
+        }
+
+        // Auto-fit Controller: scales the fixed 1200x675 slide canvas to whatever
+        // screen/window size is available, so nothing ever gets clipped or
+        // requires the user to zoom the browser in/out (which is what was
+        // causing blurry text and slides being cut off).
+        function fitPresentationToScreen() {
+            const chassis = document.querySelector('.slide-chassis');
+            if (!chassis) return;
+
+            const presenting = document.body.classList.contains('present-mode');
+            const systemBar = document.querySelector('.system-bar');
+            const viewport = window.visualViewport || window;
+            const viewportW = viewport.width || window.innerWidth;
+            const viewportH = viewport.height || window.innerHeight;
+            const bodyStyle = window.getComputedStyle(document.body);
+            const padX = parseFloat(bodyStyle.paddingLeft) + parseFloat(bodyStyle.paddingRight);
+            const padY = parseFloat(bodyStyle.paddingTop) + parseFloat(bodyStyle.paddingBottom);
+            const barVisible = systemBar && window.getComputedStyle(systemBar).display !== 'none';
+            const barHeight = presenting || !barVisible ? 0 : systemBar.getBoundingClientRect().height;
+            const chromeGap = presenting ? 18 : 16;
+
+            const availW = Math.max(260, viewportW - padX);
+            const availH = Math.max(170, viewportH - padY - barHeight - chromeGap);
+
+            let scale = Math.min(availW / 1200, availH / 675);
+            scale = Math.min(scale, presenting ? 1.35 : 1);
+            scale = Math.max(scale, 0.24);
+
+            // CSS zoom scales both the visual slide and its layout footprint in Chromium,
+            // which prevents clipping on tablets and phones. Transform remains as fallback.
+            if ('zoom' in chassis.style) {
+                chassis.style.zoom = scale.toFixed(4);
+                chassis.style.transform = 'none';
+            } else {
+                chassis.style.zoom = '';
+                chassis.style.transform = 'scale(' + scale.toFixed(4) + ')';
+            }
+        }
+
+        window.addEventListener('resize', fitPresentationToScreen);
+        window.addEventListener('orientationchange', fitPresentationToScreen);
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', fitPresentationToScreen);
+            window.visualViewport.addEventListener('scroll', fitPresentationToScreen);
+        }
+        fitPresentationToScreen();
+
+        // Present Mode Controller (hides surrounding chrome for distraction-free presenting)
+        function togglePresentMode() {
+            isPresentModeActive = !isPresentModeActive;
+            document.body.classList.toggle('present-mode', isPresentModeActive);
+            document.getElementById('exit-present-btn').style.display = isPresentModeActive ? 'inline-flex' : 'none';
+            fitPresentationToScreen();
+
+            // Use the real Fullscreen API so present mode actually takes over the
+            // whole screen (hiding browser chrome too), instead of just hiding
+            // the on-page toolbar.
+            if (isPresentModeActive) {
+                const el = document.documentElement;
+                const request = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+                if (request) {
+                    const requestResult = request.call(el);
+                    if (requestResult && typeof requestResult.catch === 'function') {
+                        requestResult.catch(function () { /* user/browser denied fullscreen; present mode still works without it */ });
+                    }
+                }
+            } else if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+                const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+                if (exit) {
+                    const exitResult = exit.call(document);
+                    if (exitResult && typeof exitResult.catch === 'function') {
+                        exitResult.catch(function () {});
+                    }
+                }
+            }
+        }
+
+        // Keep state in sync if the user exits fullscreen via the browser itself
+        // (e.g. pressing Esc/F11 directly) rather than our own exit button.
+        function syncPresentModeWithFullscreen() {
+            const stillFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+            if (!stillFullscreen && isPresentModeActive) {
+                isPresentModeActive = false;
+                document.body.classList.remove('present-mode');
+                document.getElementById('exit-present-btn').style.display = 'none';
+                fitPresentationToScreen();
+            }
+        }
+        document.addEventListener('fullscreenchange', syncPresentModeWithFullscreen);
+        document.addEventListener('webkitfullscreenchange', syncPresentModeWithFullscreen);
+        document.addEventListener('MSFullscreenChange', syncPresentModeWithFullscreen);
+
+        // Swipe / Drag Navigation (touch & mouse)
+        (function setupSwipeNavigation() {
+            const chassisEl = document.querySelector('.slide-chassis');
+            const SWIPE_THRESHOLD = 60;
+            let startX = 0;
+            let startY = 0;
+            let isTracking = false;
+
+            function trackStart(x, y) {
+                startX = x;
+                startY = y;
+                isTracking = true;
+            }
+
+            function trackEnd(x, y) {
+                if (!isTracking) return;
+                isTracking = false;
+                const deltaX = x - startX;
+                const deltaY = y - startY;
+                if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > Math.abs(deltaY)) {
+                    navigateSlide(deltaX < 0 ? 1 : -1);
+                }
+            }
+
+            chassisEl.addEventListener('touchstart', function(e) {
+                const touch = e.touches[0];
+                trackStart(touch.clientX, touch.clientY);
+            }, { passive: true });
+
+            chassisEl.addEventListener('touchend', function(e) {
+                const touch = e.changedTouches[0];
+                trackEnd(touch.clientX, touch.clientY);
+            });
+
+            chassisEl.addEventListener('mousedown', function(e) {
+                trackStart(e.clientX, e.clientY);
+            });
+
+            chassisEl.addEventListener('mouseup', function(e) {
+                trackEnd(e.clientX, e.clientY);
+            });
+
+            chassisEl.addEventListener('mouseleave', function() {
+                isTracking = false;
+            });
+        })();
+
+        // Language toggle controller
+        function setAppLanguage(lang) {
+            activeAppLang = lang;
+            document.body.classList.remove('lang-th', 'lang-en');
+            document.body.classList.add('lang-' + lang);
+            
+            document.getElementById('th-toggle').classList.toggle('active', lang === 'th');
+            document.getElementById('en-toggle').classList.toggle('active', lang === 'en');
+            recalculateRubricScores();
+            fitPresentationToScreen();
+        }
+
+        // Executive Review Portal Controls
+        function openExecutivePortal() {
+            document.getElementById('portal-modal').style.display = 'flex';
+            document.getElementById('portal-lock').style.display = 'flex';
+            document.getElementById('portal-dashboard').style.display = 'none';
+            erasePin();
+        }
+
+        function closeExecutivePortal() {
+            document.getElementById('portal-modal').style.display = 'none';
+        }
+
+        // PIN validation controls
+        function tapKey(number) {
+            if (isAuthProcessLocked || enteredPinString.length >= 4) return;
+            
+            enteredPinString += number;
+            refreshPinDotDisplay();
+            
+            if (enteredPinString.length === 4) {
+                isAuthProcessLocked = true;
+                setTimeout(authenticatePortalPin, 300);
+            }
+        }
+
+        function erasePin() {
+            enteredPinString = "";
+            isAuthProcessLocked = false;
+            document.getElementById('auth-err').textContent = "";
+            refreshPinDotDisplay();
+        }
+
+        function refreshPinDotDisplay() {
+            for (let i = 0; i < 4; i++) {
+                const dotElement = document.getElementById('dot-' + i);
+                dotElement.classList.toggle('active-dot', i < enteredPinString.length);
+                dotElement.classList.remove('error-shake');
+            }
+        }
+
+        function authenticatePortalPin() {
+            if (enteredPinString === CORRECT_PORTAL_PIN) {
+                document.getElementById('portal-lock').style.display = 'none';
+                document.getElementById('portal-dashboard').style.display = 'flex';
+                switchConsolePane('pane-overview');
+            } else {
+                document.querySelectorAll('.pin-indicator-dot').forEach(dot => dot.classList.add('error-shake'));
+                document.getElementById('auth-err').textContent = activeAppLang === 'th' ? 'รหัส PIN ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง' : 'Incorrect authorization PIN. Please try again.';
+                setTimeout(() => {
+                    erasePin();
+                }, 800);
+            }
+        }
+        // Switch panel tabs inside modal
+        function switchConsolePane(paneId) {
+            document.querySelectorAll('.console-nav-tab').forEach(tab => {
+                tab.classList.toggle('active-tab', tab.getAttribute('data-tab') === paneId);
+            });
+            document.querySelectorAll('.console-panel-pane').forEach(pane => {
+                pane.classList.toggle('active-pane', pane.id === paneId);
+            });
+        }
+
+        // Interactive grading tool calculator
+        function recalculateRubricScores() {
+            const v1 = parseInt(document.getElementById('rubric-c1').value);
+            const v2 = parseInt(document.getElementById('rubric-c2').value);
+            const v3 = parseInt(document.getElementById('rubric-c3').value);
+            const v4 = parseInt(document.getElementById('rubric-c4').value);
+
+            const finalCumulative = v1 + v2 + v3 + v4;
+            const outputElement = document.getElementById('score-output');
+            outputElement.textContent = finalCumulative + ' / 100';
+
+            const verdictElement = document.getElementById('verdict-output');
+            
+            if (finalCumulative >= 90) {
+                verdictElement.textContent = activeAppLang === 'th' ? 'ผ่านประเมินระดับดีเด่น (Outstanding Gold Award)' : 'Outstanding Gold Award (Grade A)';
+                verdictElement.style.color = 'var(--primary)';
+            } else if (finalCumulative >= 75) {
+                verdictElement.textContent = activeAppLang === 'th' ? 'ผ่านประเมินระดับมาตรฐาน (Sufficient Silver Award)' : 'Sufficient Silver Award (Grade B)';
+                verdictElement.style.color = 'var(--accent)';
+            } else {
+                verdictElement.textContent = activeAppLang === 'th' ? 'ควรปรับปรุงแก้ไขรูปเล่มแผนงานใหม่ (Requires Upgrades)' : 'Requires Upgrades (Grade C)';
+                verdictElement.style.color = '#EF4444';
+            }
+        }
+
+        // Keyboard Event Dispatcher
+        document.addEventListener('keydown', function(event) {
+            const modalCheck = document.getElementById('portal-modal');
+            if (window.getComputedStyle(modalCheck).display === 'none') {
+                if (event.key === 'ArrowRight' || event.key === ' ') {
+                    navigateSlide(1);
+                } else if (event.key === 'ArrowLeft') {
+                    navigateSlide(-1);
+                } else if (event.key === 'Escape' && isPresentModeActive) {
+                    togglePresentMode();
+                }
+            } else {
+                if (event.key === 'Escape') {
+                    closeExecutivePortal();
+                }
+            }
+        });
+
+        /* ============================================================ */
+        /* CANVAS PARTICLE ANIMATION                                     */
+        /* ============================================================ */
+        (function initParticleCanvas() {
+            const canvas = document.getElementById('bg-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let W, H, particles = [], lastTime = 0;
+
+            function resize() {
+                W = canvas.width  = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function Particle() {
+                this.x = Math.random() * W;
+                this.y = Math.random() * H;
+                this.r = Math.random() * 1.5 + 0.4;
+                this.vx = (Math.random() - 0.5) * 0.22;
+                this.vy = (Math.random() - 0.5) * 0.22;
+                this.alpha = Math.random() * 0.4 + 0.1;
+                this.isGold = Math.random() > 0.75;
+            }
+
+            function init() {
+                particles = [];
+                for (let i = 0; i < 32; i++) particles.push(new Particle());
+            }
+
+            function draw(ts) {
+                requestAnimationFrame(draw);
+                if (ts - lastTime < 40) return; // ~25fps — smooth enough, half the CPU
+                lastTime = ts;
+                ctx.clearRect(0, 0, W, H);
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0) p.x = W;
+                    if (p.x > W) p.x = 0;
+                    if (p.y < 0) p.y = H;
+                    if (p.y > H) p.y = 0;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.isGold
+                        ? 'rgba(245,158,11,' + p.alpha + ')'
+                        : 'rgba(16,185,129,' + p.alpha + ')';
+                    ctx.fill();
+                }
+            }
+
+            resize(); init(); requestAnimationFrame(draw);
+            window.addEventListener('resize', function() { resize(); init(); });
+        })();
+
+        /* ============================================================ */
+        /* PROGRESS DOTS SYSTEM                                          */
+        /* ============================================================ */
+        function updateProgressDots() {
+            document.querySelectorAll('.progress-dot').forEach(function(dot, i) {
+                dot.classList.toggle('active', i + 1 === currentSlideIdx);
+            });
+        }
+
+        function goToSlide(n) {
+            document.getElementById('slide-' + currentSlideIdx).classList.remove('active-slide');
+            currentSlideIdx = n;
+            document.getElementById('slide-' + currentSlideIdx).classList.add('active-slide');
+            document.querySelectorAll('.slide-page-number').forEach(function(p) {
+                p.textContent = currentSlideIdx + ' / ' + totalSlidesCount;
+            });
+            updateProgressDots();
+        }
+
+        (function initProgressDots() {
+            const footers = document.querySelectorAll('.slide-chassis-footer');
+            footers.forEach(function(footer) {
+                const dots = document.createElement('div');
+                dots.className = 'progress-dots';
+                for (let i = 1; i <= totalSlidesCount; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'progress-dot' + (i === 1 ? ' active' : '');
+                    (function(idx) { dot.addEventListener('click', function() { goToSlide(idx); }); })(i);
+                    dots.appendChild(dot);
+                }
+                const navBtns = footer.querySelector('.presentation-nav-buttons');
+                footer.insertBefore(dots, navBtns);
+            });
+        })();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Cosmic Control Panel</title>
+    <!-- Import Google Fonts (Outfit and Prompt for elegant English/Thai support) -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Prompt:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #07050f;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-blue: #3b82f6;
+            --accent-emerald: #10b981;
+            
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 50%, #150f30 0%, #050209 100%);
+            color: var(--text-main);
+            font-family: 'Outfit', 'Prompt', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Pulsing Decorative Ambient Background Blobs */
+        .ambient-blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.15;
+            animation: floatBlob 10s infinite ease-in-out;
+        }
+
+        .blob-purple {
+            background: var(--accent-purple);
+            top: 10%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .blob-pink {
+            background: var(--accent-pink);
+            bottom: 10%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        /* Container Layout */
+        .dashboard-container {
+            width: 100%;
+            max-width: 1100px;
+            z-index: 1;
+        }
+
+        /* Premium Glass Header */
+        .glass-header {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-purple), var(--accent-pink), transparent);
+        }
+
+        .glass-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(167, 139, 250, 0.2);
+        }
+
+        .glass-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Two-Column Workspace */
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .workspace-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Premium Glass Card Styles */
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 20px 45px rgba(139, 92, 246, 0.18);
+        }
+
+        .glass-card h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            border-left: 4px solid var(--accent-pink);
+            padding-left: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Grid of Control Components */
+        .controllers-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Premium Sound Synth Buttons */
+        .synth-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .btn-synth {
+            font-family: 'Outfit', 'Prompt', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-synth:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.25);
+            transform: scale(1.03);
+        }
+
+        .btn-synth span.icon {
+            font-size: 20px;
+            opacity: 0.8;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-synth:hover span.icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        /* Numeric Status Grid */
+        .stats-inner-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 15px;
+        }
+
+        .stat-block {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .stat-block:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--accent-emerald);
+        }
+
+        .stat-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-emerald) 0%, #6ee7b7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Particle Storm Canvas Display */
+        .canvas-wrapper {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            background: #020105;
+            height: 250px;
+            margin-bottom: 20px;
+            transition: var(--transition-smooth);
+        }
+
+        .canvas-wrapper:hover {
+            border-color: var(--accent-pink);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .canvas-overlay-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(2, 1, 5, 0.7);
+            border: 1px solid var(--glass-border);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-pink);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            backdrop-filter: blur(8px);
+        }
+
+        /* Interactive AI Output Console */
+        .console-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            height: 150px;
+            overflow-y: auto;
+            color: #a78bfa;
+            line-height: 1.6;
+        }
+
+        .console-line {
+            margin-bottom: 4px;
+            white-space: pre-wrap;
+            animation: consolePulse 2s infinite alternate;
+        }
+
+        .console-input-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .console-input {
+            flex-grow: 1;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--text-main);
+            font-family: 'Outfit', 'Prompt', sans-serif;
+            font-size: 13px;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .console-input:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Outfit', 'Prompt', sans-serif;
+            font-size: 13px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Custom Animations */
+        @keyframes floatBlob {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(40px, -40px) scale(1.1);
+            }
+        }
+
+        @keyframes consolePulse {
+            0% {
+                opacity: 0.95;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Custom scrollbar for glassmorphic containers */
+        .console-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .console-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .console-box::-webkit-scrollbar-thumb {
+            background: var(--glass-border);
+            border-radius: 3px;
+        }
+        .console-box::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pulsing Ambient Highlights -->
+    <div class="ambient-blob blob-purple"></div>
+    <div class="ambient-blob blob-pink"></div>
+
+    <div class="dashboard-container">
+        <!-- Main Dashboard Header -->
+        <header class="glass-header">
+            <h1>Lumina Cosmic Interface</h1>
+            <p>Premium HTML / CSS / JS Real-Time Design & Sound Synthesizer Showroom</p>
+        </header>
+
+        <!-- Two Column Interactive Layout -->
+        <div class="workspace-grid">
+            <!-- Left Column: Synthesizer & Control Panel -->
+            <div class="controllers-stack">
+                <section class="glass-card">
+                    <h2>Sound & Acoustic Wave</h2>
+                    <div class="control-group" style="margin-bottom: 15px;">
+                        <span class="control-label">Web Audio API Synthesizer</span>
+                    </div>
+                    <div class="synth-grid">
+                        <button class="btn-synth" onclick="playSynth('high')">
+                            <span class="icon">🌌</span>
+                            <span>Cosmic Sine</span>
+                        </button>
+                        <button class="btn-synth" onclick="playSynth('medium')">
+                            <span class="icon">☄️</span>
+                            <span>Nebula Square</span>
+                        </button>
+                        <button class="btn-synth" onclick="playSynth('low')">
+                            <span class="icon">🛸</span>
+                            <span>Pulse Wave</span>
+                        </button>
+                        <button class="btn-synth" onclick="playSynth('sweep')">
+                            <span class="icon">✨</span>
+                            <span>Filter Sweep</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="glass-card">
+                    <h2>Live Statistics Counter</h2>
+                    <div class="control-group">
+                        <span class="control-label">Dynamic Render Nodes</span>
+                    </div>
+                    <div class="stats-inner-grid">
+                        <div class="stat-block">
+                            <div class="stat-val" id="particlesCount">150</div>
+                            <div class="stat-title">Active Nodes</div>
+                        </div>
+                        <div class="stat-block">
+                            <div class="stat-val" id="fpsVal">60.0</div>
+                            <div class="stat-title">Render FPS</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Live Particle Storm Canvas & Terminal Console -->
+            <div class="controllers-stack">
+                <section class="glass-card">
+                    <h2>Real-Time Particle Storm Canvas</h2>
+                    
+                    <div class="canvas-wrapper">
+                        <span class="canvas-overlay-tag">GPU Simulated Canvas 2D</span>
+                        <canvas id="stormCanvas"></canvas>
+                    </div>
+
+                    <h2>Interactive Neural Console</h2>
+                    <div class="console-box" id="consoleBox">
+                        <div class="console-line">> [SYSTEM INITIALIZED] Lumina cosmic sandbox connection active.</div>
+                        <div class="console-line">> [INFO] CPU and GPU hardware monitors synchronized.</div>
+                        <div class="console-line">> [READY] Click synth nodes or submit instructions to monitor response patterns.</div>
+                    </div>
+
+                    <div class="console-input-row">
+                        <input type="text" class="console-input" id="consoleInput" placeholder="พิมพ์คำสั่งหรือบันทึกข้อมูลเพื่อจำลอง..." onkeydown="handleInputKeydown(event)">
+                        <button class="btn-send" onclick="sendConsoleMessage()">ส่งคำสั่ง</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complete Client Interaction Scripts -->
+    <script>
+        // Initialize Audio Context for premium sound synthesize
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSynth(type) {
+            initAudio();
+            if (!audioCtx) return;
+
+            // Trigger oscillator
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'high') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, now);
+                osc.frequency.exponentialRampToValueAtTime(1760, now + 0.4);
+                
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(2000, now);
+
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                osc.start(now);
+                osc.stop(now + 0.45);
+                logConsole("[SYNTH] Trig: Cosmic Sine (880Hz -> 1760Hz Sweep)");
+            } 
+            else if (type === 'medium') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.exponentialRampToValueAtTime(220, now + 0.3);
+
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(800, now);
+
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+                logConsole("[SYNTH] Trig: Nebula Square (440Hz -> 220Hz Bazz)");
+            } 
+            else if (type === 'low') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(110, now);
+                
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(300, now);
+
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+                osc.start(now);
+                osc.stop(now + 0.6);
+                logConsole("[SYNTH] Trig: Pulse Wave Sub-Bass (110Hz Triangle)");
+            }
+            else if (type === 'sweep') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                
+                filter.type = 'peaking';
+                filter.frequency.setValueAtTime(100, now);
+                filter.frequency.exponentialRampToValueAtTime(4000, now + 0.8);
+                filter.Q.setValueAtTime(10, now);
+
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+                osc.start(now);
+                osc.stop(now + 0.8);
+                logConsole("[SYNTH] Trig: Filter Sweep Peak Resonance (220Hz Sawtooth)");
+            }
+        }
+
+        // Live Particle Storm Logic
+        const canvas = document.getElementById('stormCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const maxParticles = 150;
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.radius = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 1.5 - 0.75;
+                this.speedY = Math.random() * -1.5 - 0.5;
+                this.color = Math.random() > 0.5 ? '#8b5cf6' : '#ec4899';
+                this.alpha = Math.random() * 0.7 + 0.3;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.y < 0 || this.x < 0 || this.x > canvas.width) {
+                    this.reset();
+                    this.y = canvas.height;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < maxParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        let lastFrameTime = performance.now();
+        let frameCount = 0;
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw all particles
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Calculate exact FPS
+            frameCount++;
+            const now = performance.now();
+            const elapsed = now - lastFrameTime;
+            if (elapsed >= 1000) {
+                const fps = ((frameCount * 1000) / elapsed).toFixed(1);
+                document.getElementById('fpsVal').innerText = fps;
+                frameCount = 0;
+                lastFrameTime = now;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Terminal Console Log Helper
+        function logConsole(message) {
+            const consoleBox = document.getElementById('consoleBox');
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.innerText = `> ${message}`;
+            consoleBox.appendChild(line);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        function sendConsoleMessage() {
+            const input = document.getElementById('consoleInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            logConsole(`[USER INPUT] ${msg}`);
+            input.value = '';
+
+            // Premium simulated responses in academic Thai
+            setTimeout(() => {
+                if (msg.toLowerCase().includes('hello') || msg.includes('สวัสดี')) {
+                    logConsole("[AI RESPONSE] ยินดีต้อนรับสู่ระบบควบคุมเครือข่ายจำลองทางกลศาสตร์จักรวาลพร้อมให้บริการวิเคราะห์สัญญาณคลื่นเสียง");
+                } else if (msg.toLowerCase().includes('synth') || msg.includes('เสียง')) {
+                    logConsole("[AI RESPONSE] วิเคราะห์ระบบโครงสร้างเสียงสังเคราะห์: คลื่นพาหะ Sine และ Square ทำงานที่ความเร็วการคำนวณสัญญาณเต็มระดับ");
+                } else {
+                    logConsole(`[AI RESPONSE] ได้รับคำสั่งวิเคราะห์เชิงลึกหัวข้อ: "${msg}" ระบบทำการบันทึกข้อมูลและรายงานสถานะโครงข่ายประสาทเทียมเรียบร้อยแล้ว`);
+                }
+            }, 800);
+        }
+
+        function handleInputKeydown(e) {
+            if (e.key === 'Enter') {
+                sendConsoleMessage();
+            }
+        }
+
+        // Handle window events
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvas();
+            initParticles();
+            animate();
+            document.getElementById('particlesCount').innerText = maxParticles;
+        });
+    </script>
+</body>
+</html>

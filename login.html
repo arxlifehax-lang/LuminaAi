@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lumina AI — Sign In</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Typography (self-hosted, see /fonts) -->
+<link rel="stylesheet" href="fonts/fonts.css">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="auth.js"></script>
 
@@ -354,7 +354,7 @@ async function handleTokenResponse(tokenResponse) {
       picture: userInfo.picture || '',
       sub:     userInfo.sub,
       token:   tokenResponse.access_token,
-      exp:     Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60), // 30 วัน
+      exp:     Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 3600),
       loginAt: Date.now(),
     };
     localStorage.setItem('lumina_user_session', JSON.stringify(session));
