@@ -278,6 +278,16 @@ const server = http.createServer((req, res) => {
     }
 
     // ── Auth pages (always accessible) ──────────────────────────────
+    if (rawPath === '/field-survey' || rawPath === '/field-survey.html') {
+        const fsf = require('path').join(__dirname, 'field-survey.html');
+        fs.readFile(fsf, (e, d) => {
+            if (e) { res.writeHead(404); return res.end('Not found'); }
+            res.writeHead(200, { 'Content-Type': 'text/html', 'Access-Control-Allow-Origin': '*' });
+            res.end(d);
+        });
+        return;
+    }
+
     if (rawPath === '/presentation' || rawPath === '/presentation.html') {
         const pf = require('path').join(__dirname, 'presentation.html');
         fs.readFile(pf, (e, d) => {

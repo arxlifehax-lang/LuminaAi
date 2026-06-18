@@ -492,7 +492,7 @@ footer{
   <h2 class="section-h reveal" style="text-align:center;margin:0 auto 8px">เนื้อหาเพิ่มเติม</h2>
   <p class="section-sub reveal" style="text-align:center;margin:0 auto 0">สื่อและเครื่องมือเสริมอื่นๆ ในโปรเจกต์นี้</p>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:48px;max-width:720px;margin-left:auto;margin-right:auto">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:48px;max-width:1000px;margin-left:auto;margin-right:auto">
 
     <!-- Presentation card -->
     <div class="reveal" onclick="location.href='/presentation'" style="
@@ -534,6 +534,28 @@ footer{
       <div style="font-size:14px;color:var(--muted);line-height:1.65">รายงานสภาพพื้นที่ — ขยะ, การจราจร, กลิ่นห้องน้ำ, ท่อระบายน้ำ ใช้เวลา 30 วินาที</div>
       <div style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:11px;font-family:var(--mono);color:rgba(124,107,250,0.7)">
         <span>กรอกแบบสอบถาม</span>
+        <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- Field survey card -->
+    <div class="reveal reveal-delay-2" onclick="location.href='/field-survey'" style="
+      background:var(--glass);border:1px solid var(--rim);border-radius:16px;
+      padding:32px 28px;cursor:pointer;position:relative;overflow:hidden;
+      transition:background 0.25s,border-color 0.25s,transform 0.2s;
+    "
+    onmouseover="this.style.background='rgba(255,255,255,0.07)';this.style.borderColor='rgba(16,185,129,0.35)';this.style.transform='translateY(-3px)'"
+    onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.07)';this.style.transform='none'">
+      <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(16,185,129,0.5),transparent)"></div>
+      <div style="width:44px;height:44px;border-radius:11px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2)">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:none;stroke:#10B981;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:8px;letter-spacing:-0.01em">แบบสอบถาม</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.65">แบบสอบถามตลาดจัมโบ้ คลองสาม — กลุ่ม 2 ม.4/2 สำหรับเก็บข้อมูลภาคสนามจริง</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:11px;font-family:var(--mono);color:rgba(16,185,129,0.7)">
+        <span>เปิดแบบสอบถาม</span>
         <svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </div>
     </div>

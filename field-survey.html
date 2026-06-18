@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบสำรวจตลาดจัมโบ้ คลองสาม — กลุ่ม 2 ม.4/2</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+    --bg:      #060913;
+    --card:    rgba(14,24,48,0.75);
+    --border:  rgba(255,255,255,0.07);
+    --primary: #10B981;
+    --accent:  #F59E0B;
+    --danger:  #EF4444;
+    --text:    #F3F4F6;
+    --muted:   #9CA3AF;
+    --found:   rgba(16,185,129,0.12);
+    --notfound:rgba(239,68,68,0.10);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    font-family:'Sarabun','Prompt',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding:36px 18px 60px;
+    background-image:
+        radial-gradient(ellipse 55% 40% at 15% 5%,  rgba(16,185,129,0.07) 0%,transparent 65%),
+        radial-gradient(ellipse 50% 35% at 85% 95%, rgba(245,158,11,0.05) 0%,transparent 65%);
+}
+
+canvas#bg { position:fixed; inset:0; pointer-events:none; z-index:0; }
+
+.wrap { position:relative; z-index:1; max-width:620px; margin:0 auto; }
+
+/* ── Header ── */
+.header { text-align:center; margin-bottom:28px; animation:fadeInDown .6s cubic-bezier(.22,1,.36,1) both; }
+.badge {
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:11px; font-weight:600; letter-spacing:2px; color:var(--primary);
+    border:1px solid rgba(16,185,129,.3); border-radius:20px;
+    padding:5px 16px; background:rgba(16,185,129,.07); margin-bottom:16px;
+}
+.header h1 {
+    font-family:'Prompt',sans-serif; font-size:22px; font-weight:700; line-height:1.4;
+    background:linear-gradient(135deg,#fff 30%,#a7f3d0 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    margin-bottom:6px;
+}
+.header .sub { font-size:14px; color:var(--muted); }
+
+/* ── Info bar ── */
+.info-bar {
+    display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    margin-bottom:22px;
+    animation:fadeInUp .55s .1s cubic-bezier(.22,1,.36,1) both;
+}
+.info-tile {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:14px 16px;
+    backdrop-filter:blur(6px);
+}
+.info-tile .label { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:1.2px; margin-bottom:5px; }
+.info-tile .val   { font-size:14px; font-weight:600; color:var(--text); }
+.info-tile .val i { color:var(--primary); margin-right:7px; }
+
+/* ── Section ── */
+.section-head {
+    font-size:11px; font-weight:700; letter-spacing:2px; color:var(--primary);
+    margin-bottom:12px; display:flex; align-items:center; gap:8px;
+}
+.section-head i { font-size:13px; }
+
+/* ── Surveyor selector ── */
+.surveyor-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:14px; padding:20px; margin-bottom:16px;
+    backdrop-filter:blur(6px);
+    animation:fadeInUp .55s .15s cubic-bezier(.22,1,.36,1) both;
+}
+
+.surveyor-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:8px;
+}
+
+.surveyor-btn {
+    padding:10px 12px;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-family:'Sarabun',sans-serif;
+    font-size:13px; color:var(--muted);
+    cursor:pointer;
+    transition:border-color .2s, background .2s, color .2s;
+    text-align:left;
+    display:flex; align-items:center; gap:8px;
+}
+
+.surveyor-btn .no {
+    width:22px; height:22px; border-radius:50%;
+    background:rgba(255,255,255,.06);
+    font-size:11px; font-weight:700; color:var(--muted);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; transition:background .2s, color .2s;
+}
+
+.surveyor-btn:hover { border-color:rgba(16,185,129,.3); }
+
+.surveyor-btn.selected {
+    border-color:var(--primary);
+    background:rgba(16,185,129,.1);
+    color:var(--text);
+}
+.surveyor-btn.selected .no {
+    background:var(--primary); color:#fff;
+}
+
+/* ── Problem cards ── */
+.problems-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:14px; overflow:hidden;
+    margin-bottom:16px; backdrop-filter:blur(6px);
+    animation:fadeInUp .55s .25s cubic-bezier(.22,1,.36,1) both;
+}
+
+.problems-card .section-head { padding:18px 20px 0; }
+
+.problem-row {
+    display:flex; align-items:center;
+    padding:16px 20px;
+    border-bottom:1px solid var(--border);
+    gap:14px;
+    transition:background .2s;
+}
+.problem-row:last-child { border-bottom:none; }
+
+.prob-num {
+    width:28px; height:28px; border-radius:50%;
+    background:rgba(245,158,11,.12);
+    border:1px solid rgba(245,158,11,.25);
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:700; color:var(--accent);
+    flex-shrink:0;
+}
+
+.prob-label { flex:1; font-size:15px; font-weight:500; color:var(--text); }
+
+.toggle-wrap { display:flex; gap:6px; flex-shrink:0; }
+
+.tog {
+    padding:7px 14px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    font-family:'Sarabun',sans-serif;
+    font-size:13px; font-weight:600;
+    cursor:pointer;
+    transition:all .18s ease;
+    background:rgba(255,255,255,.03);
+    color:var(--muted);
+}
+
+.tog:hover { opacity:.85; }
+
+.tog.found {
+    background:var(--found);
+    border-color:var(--primary);
+    color:var(--primary);
+}
+.tog.notfound {
+    background:var(--notfound);
+    border-color:var(--danger);
+    color:var(--danger);
+}
+
+/* ── Zone / Location note ── */
+.note-card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:14px; padding:20px;
+    margin-bottom:16px; backdrop-filter:blur(6px);
+    animation:fadeInUp .55s .35s cubic-bezier(.22,1,.36,1) both;
+}
+
+.note-card label { display:block; font-size:13px; color:var(--muted); margin-bottom:10px; }
+.note-card input, .note-card textarea {
+    width:100%;
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:11px 14px;
+    font-size:14px;
+    font-family:'Sarabun',sans-serif;
+    color:var(--text);
+    outline:none;
+    transition:border-color .2s, box-shadow .2s;
+    resize:none;
+}
+.note-card input:focus, .note-card textarea:focus {
+    border-color:rgba(16,185,129,.5);
+    box-shadow:0 0 0 3px rgba(16,185,129,.08);
+}
+.note-card textarea { min-height:80px; }
+.note-card .row-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+
+/* ── Submit ── */
+.btn-submit {
+    width:100%;
+    padding:15px;
+    background:linear-gradient(135deg,#0d9669,#10B981);
+    border:none; border-radius:12px;
+    font-family:'Prompt',sans-serif;
+    font-size:15px; font-weight:600; color:#fff;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    box-shadow:0 8px 24px rgba(16,185,129,.22);
+    transition:opacity .2s, transform .2s;
+}
+.btn-submit:hover:not(:disabled) { opacity:.9; transform:translateY(-1px); }
+.btn-submit:disabled { opacity:.5; cursor:not-allowed; }
+
+/* ── Toast ── */
+#toast {
+    display:none; position:fixed;
+    top:24px; left:50%; transform:translateX(-50%);
+    z-index:9999; padding:13px 22px; border-radius:10px;
+    font-size:14px; font-weight:500;
+    font-family:'Sarabun',sans-serif;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);
+    max-width:90vw; text-align:center;
+    animation:slideDown .3s cubic-bezier(.22,1,.36,1);
+}
+#toast.ok  { background:#065f46; border:1px solid #10B981; color:#a7f3d0; }
+#toast.err { background:#7f1d1d; border:1px solid #ef4444; color:#fca5a5; }
+
+/* ── Success ── */
+#success {
+    display:none; position:fixed; inset:0; z-index:999;
+    background:rgba(6,9,19,.97); backdrop-filter:blur(10px);
+    align-items:center; justify-content:center; flex-direction:column;
+    gap:18px; text-align:center; padding:40px;
+}
+#success.show { display:flex; animation:fadeInUp .5s cubic-bezier(.22,1,.36,1); }
+.s-icon {
+    width:72px; height:72px; border-radius:50%;
+    background:rgba(16,185,129,.12); border:2px solid var(--primary);
+    display:flex; align-items:center; justify-content:center;
+    font-size:32px; color:var(--primary);
+}
+#success h2 {
+    font-family:'Prompt',sans-serif; font-size:22px;
+    background:linear-gradient(135deg,#fff,#a7f3d0);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+#success p { color:var(--muted); font-size:14px; line-height:1.65; }
+.btn-again {
+    padding:11px 28px;
+    background:rgba(16,185,129,.1);
+    border:1px solid rgba(16,185,129,.4);
+    border-radius:9px;
+    font-family:'Sarabun',sans-serif;
+    font-size:14px; font-weight:600; color:var(--primary);
+    cursor:pointer; transition:background .2s;
+    margin-top:4px;
+}
+.btn-again:hover { background:rgba(16,185,129,.18); }
+
+/* ── Animations ── */
+@keyframes fadeInUp   { from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)} }
+@keyframes fadeInDown { from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)} }
+@keyframes slideDown  { from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)} }
+
+@media(max-width:480px) {
+    .info-bar { grid-template-columns:1fr; }
+    .surveyor-grid { grid-template-columns:1fr; }
+    .prob-label { font-size:14px; }
+    .toggle-wrap .tog { padding:7px 10px; font-size:12px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="wrap">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="badge"><i class="fa-solid fa-clipboard-list"></i> แบบบันทึกการสำรวจภาคสนาม</div>
+        <h1>ตลาดจัมโบ้ คลองสาม</h1>
+        <p class="sub">โครงการ PBL กลุ่ม 2 ม.4/2 · โรงเรียนสาธิตมหาวิทยาลัยรังสิต</p>
+    </div>
+
+    <!-- Info Bar -->
+    <div class="info-bar">
+        <div class="info-tile">
+            <div class="label">📅 วันที่สำรวจ</div>
+            <div class="val"><i class="fa-regular fa-calendar"></i>10 มิถุนายน 2569</div>
+        </div>
+        <div class="info-tile">
+            <div class="label">📍 สถานที่</div>
+            <div class="val"><i class="fa-solid fa-location-dot"></i>ตลาดจัมโบ้ คลองสาม</div>
+        </div>
+    </div>
+
+    <!-- Surveyor -->
+    <div class="surveyor-card">
+        <div class="section-head"><i class="fa-solid fa-user-check"></i> ผู้บันทึกการสำรวจ <span style="color:var(--danger);margin-left:3px;">*</span></div>
+        <div class="surveyor-grid" id="surveyor-grid">
+            <button class="surveyor-btn" data-name="นายยศกร รุ่งน้อย" onclick="selectSurveyor(this)">
+                <span class="no">12</span>นายยศกร รุ่งน้อย
+            </button>
+            <button class="surveyor-btn" data-name="นายปองคุณ มหาศรี" onclick="selectSurveyor(this)">
+                <span class="no">14</span>นายปองคุณ มหาศรี
+            </button>
+            <button class="surveyor-btn" data-name="นายจตุภัทร นาสารีย์" onclick="selectSurveyor(this)">
+                <span class="no">16</span>นายจตุภัทร นาสารีย์
+            </button>
+            <button class="surveyor-btn" data-name="นายบุญพิพัฒน์ พูลชาติ" onclick="selectSurveyor(this)">
+                <span class="no">19</span>นายบุญพิพัฒน์ พูลชาติ
+            </button>
+            <button class="surveyor-btn" data-name="นายพงศ์พิศ นฤพรภูดิทกุล" onclick="selectSurveyor(this)">
+                <span class="no">22</span>นายพงศ์พิศ นฤพรภูดิทกุล
+            </button>
+            <button class="surveyor-btn" data-name="นายภูดิศ ชุมมณี" onclick="selectSurveyor(this)">
+                <span class="no">29</span>นายภูดิศ ชุมมณี
+            </button>
+        </div>
+    </div>
+
+    <!-- Problems Checklist -->
+    <div class="problems-card">
+        <div class="section-head"><i class="fa-solid fa-triangle-exclamation"></i> รายการปัญหาที่สำรวจ</div>
+
+        <div class="problem-row" data-key="p1">
+            <div class="prob-num">1</div>
+            <div class="prob-label">การจราจรติดขัด</div>
+            <div class="toggle-wrap">
+                <button class="tog" onclick="setResult(this,'p1','พบ')">✓ พบ</button>
+                <button class="tog" onclick="setResult(this,'p1','ไม่พบ')">✗ ไม่พบ</button>
+            </div>
+        </div>
+
+        <div class="problem-row" data-key="p2">
+            <div class="prob-num">2</div>
+            <div class="prob-label">กลิ่นไม่พึงประสงค์</div>
+            <div class="toggle-wrap">
+                <button class="tog" onclick="setResult(this,'p2','พบ')">✓ พบ</button>
+                <button class="tog" onclick="setResult(this,'p2','ไม่พบ')">✗ ไม่พบ</button>
+            </div>
+        </div>
+
+        <div class="problem-row" data-key="p3">
+            <div class="prob-num">3</div>
+            <div class="prob-label">ห้องน้ำไม่มีสายฉีด</div>
+            <div class="toggle-wrap">
+                <button class="tog" onclick="setResult(this,'p3','พบ')">✓ พบ</button>
+                <button class="tog" onclick="setResult(this,'p3','ไม่พบ')">✗ ไม่พบ</button>
+            </div>
+        </div>
+
+        <div class="problem-row" data-key="p4">
+            <div class="prob-num">4</div>
+            <div class="prob-label">ท่อน้ำมีกลิ่นไม่พึงประสงค์</div>
+            <div class="toggle-wrap">
+                <button class="tog" onclick="setResult(this,'p4','พบ')">✓ พบ</button>
+                <button class="tog" onclick="setResult(this,'p4','ไม่พบ')">✗ ไม่พบ</button>
+            </div>
+        </div>
+
+        <div class="problem-row" data-key="p5">
+            <div class="prob-num">5</div>
+            <div class="prob-label">ส้วมอุดตัน</div>
+            <div class="toggle-wrap">
+                <button class="tog" onclick="setResult(this,'p5','พบ')">✓ พบ</button>
+                <button class="tog" onclick="setResult(this,'p5','ไม่พบ')">✗ ไม่พบ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Location + Note -->
+    <div class="note-card">
+        <div class="section-head" style="margin-bottom:14px;"><i class="fa-solid fa-note-sticky"></i> ข้อมูลเพิ่มเติม</div>
+        <div class="row-2">
+            <div>
+                <label>โซนที่สำรวจ</label>
+                <input type="text" id="zone" placeholder="เช่น โซน A, ประตูหลัก...">
+            </div>
+            <div>
+                <label>เวลาที่สำรวจ</label>
+                <input type="text" id="time" placeholder="เช่น 09:30">
+            </div>
+        </div>
+        <label>หมายเหตุเพิ่มเติม (ถ้ามี)</label>
+        <textarea id="note" placeholder="บันทึกสิ่งที่พบเพิ่มเติม..."></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button class="btn-submit" id="btn-sub" onclick="submitSurvey()">
+        <i class="fa-solid fa-paper-plane"></i> บันทึกผลการสำรวจ
+    </button>
+
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Success -->
+<div id="success">
+    <div class="s-icon"><i class="fa-solid fa-check"></i></div>
+    <h2>บันทึกสำเร็จ!</h2>
+    <p>ผลการสำรวจถูกส่งไปยังกลุ่มแล้ว<br>ขอบคุณที่ช่วยบันทึกข้อมูลครับ 🙏</p>
+    <button class="btn-again" onclick="resetForm()">
+        <i class="fa-solid fa-rotate-left"></i> สำรวจโซนถัดไป
+    </button>
+</div>
+
+<script>
+/* ── State ── */
+const results = { p1:'', p2:'', p3:'', p4:'', p5:'' };
+const labels  = { p1:'การจราจรติดขัด', p2:'กลิ่นไม่พึงประสงค์', p3:'ห้องน้ำไม่มีสายฉีด', p4:'ท่อน้ำมีกลิ่น', p5:'ส้วมอุดตัน' };
+let selectedSurveyor = '';
+
+function selectSurveyor(el) {
+    document.querySelectorAll('.surveyor-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedSurveyor = el.dataset.name;
+}
+
+function setResult(btn, key, val) {
+    results[key] = val;
+    const row = btn.closest('.problem-row');
+    row.querySelectorAll('.tog').forEach(t => { t.classList.remove('found','notfound'); });
+    if (val === 'พบ') {
+        btn.classList.add('found');
+        row.style.background = 'rgba(16,185,129,0.04)';
+    } else {
+        btn.classList.add('notfound');
+        row.style.background = 'rgba(239,68,68,0.04)';
+    }
+}
+
+/* ── Telegram ── */
+const TG_TOKEN   = '8739961342:AAHz679HDcAs5yilXqwqRCWJC9TFPwy0dVw';
+const TG_CHAT_ID = '-1003833226240';
+
+function buildMsg() {
+    const zone = document.getElementById('zone').value.trim();
+    const time = document.getElementById('time').value.trim();
+    const note = document.getElementById('note').value.trim();
+    const now  = new Date().toLocaleString('th-TH',{timeZone:'Asia/Bangkok',hour12:false});
+
+    const icon = r => r === 'พบ' ? '🔴 พบ' : r === 'ไม่พบ' ? '🟢 ไม่พบ' : '⚪ ไม่ระบุ';
+
+    return [
+        '📋 *บันทึกสำรวจตลาดจัมโบ้ คลองสาม*',
+        '━━━━━━━━━━━━━━━━━━',
+        '📅 วันที่: 10 มิถุนายน 2569',
+        '📍 สถานที่: ตลาดจัมโบ้ คลองสาม',
+        zone ? '🗺 โซน: ' + zone : '',
+        time ? '🕐 เวลา: ' + time : '',
+        '👤 ผู้บันทึก: ' + selectedSurveyor,
+        '🖥 บันทึกเมื่อ: ' + now,
+        '',
+        '📊 *ผลการสำรวจ*',
+        '1. การจราจรติดขัด         → ' + icon(results.p1),
+        '2. กลิ่นไม่พึงประสงค์     → ' + icon(results.p2),
+        '3. ห้องน้ำไม่มีสายฉีด     → ' + icon(results.p3),
+        '4. ท่อน้ำมีกลิ่น          → ' + icon(results.p4),
+        '5. ส้วมอุดตัน             → ' + icon(results.p5),
+        '━━━━━━━━━━━━━━━━━━',
+        note ? '📝 หมายเหตุ: ' + note : ''
+    ].filter(l => l !== '').join('\n');
+}
+
+function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = type; t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 3500);
+}
+
+async function submitSurvey() {
+    if (!selectedSurveyor) return showToast('⚠️ กรุณาเลือกผู้บันทึก', 'err');
+    const missing = Object.values(results).filter(v => v === '').length;
+    if (missing > 0) return showToast('⚠️ กรุณาระบุผลทุกรายการ (' + missing + ' รายการ)', 'err');
+
+    const btn = document.getElementById('btn-sub');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังบันทึก...';
+
+    try {
+        const res = await fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({ chat_id:TG_CHAT_ID, text:buildMsg(), parse_mode:'Markdown' })
+        });
+        const data = await res.json();
+        if (data.ok) {
+            document.getElementById('success').classList.add('show');
+        } else { throw new Error(data.description); }
+    } catch(e) {
+        showToast('❌ ส่งไม่สำเร็จ: ' + e.message, 'err');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> บันทึกผลการสำรวจ';
+    }
+}
+
+function resetForm() {
+    document.getElementById('success').classList.remove('show');
+    selectedSurveyor = '';
+    document.querySelectorAll('.surveyor-btn').forEach(b => b.classList.remove('selected'));
+    Object.keys(results).forEach(k => results[k] = '');
+    document.querySelectorAll('.problem-row').forEach(r => {
+        r.style.background = '';
+        r.querySelectorAll('.tog').forEach(t => t.classList.remove('found','notfound'));
+    });
+    document.getElementById('zone').value = '';
+    document.getElementById('time').value = '';
+    document.getElementById('note').value = '';
+}
+
+/* ── Particle bg ── */
+(function() {
+    const c = document.getElementById('bg');
+    const ctx = c.getContext('2d');
+    let W, H, pts = [], last = 0;
+    function resize(){ W=c.width=innerWidth; H=c.height=innerHeight; }
+    function P(){ this.x=Math.random()*W; this.y=Math.random()*H; this.r=Math.random()*1.3+.3; this.vx=(Math.random()-.5)*.18; this.vy=(Math.random()-.5)*.18; this.a=Math.random()*.3+.07; this.gold=Math.random()>.75; }
+    function init(){ pts=[]; for(let i=0;i<26;i++) pts.push(new P()); }
+    function draw(ts){
+        requestAnimationFrame(draw);
+        if(ts-last<40) return; last=ts;
+        ctx.clearRect(0,0,W,H);
+        pts.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.gold?'rgba(245,158,11,'+p.a+')':'rgba(16,185,129,'+p.a+')'; ctx.fill(); });
+    }
+    resize(); init(); requestAnimationFrame(draw);
+    window.addEventListener('resize',()=>{ resize(); init(); });
+})();
+</script>
+</body>
+</html>
